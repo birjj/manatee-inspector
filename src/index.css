@@ -1,0 +1,58 @@
+:root {
+    --c-accent: rgb(26, 115, 232);
+    --c-error: rgb(217 48 37);
+    --c-background-0: rgb(248, 249, 249);
+    --c-background-1: rgb(241, 243, 244);
+    --c-background-2: rgb(222, 225, 230);
+    --c-hairline: rgb(202, 205, 209);
+    --c-hairline-1: rgb(182, 185, 189);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+h2 {
+    font-size: 15px;
+    font-weight: normal;
+    margin: 0;
+}
+h3 {
+    display: inline-block;
+    font-size: inherit;
+    margin: 0 1ch 0 0;
+}
+
+table {
+    border-spacing: 0;
+    table-layout: fixed;
+    border: 1px solid var(--c-hairline);
+    margin: 1em 0;
+}
+th {
+    height: 27px;
+    position: sticky;
+    top: 0;
+    font-weight: normal;
+    background: var(--c-background-1);
+    border-bottom: 2px solid var(--c-hairline);
+}
+td, th {
+    border-left: 1px solid var(--c-hairline);
+    border-bottom: 1px solid var(--c-hairline);
+    height: 18px;
+    line-height: 18px;
+    padding: 1px 4px;
+}
+td:first-child, th:first-child { border-left: none; }
+tr:last-child td { border-bottom: none; }
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

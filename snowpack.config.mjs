@@ -8,4 +8,11 @@ export default {
         "@snowpack/plugin-react-refresh",
         "@snowpack/plugin-typescript",
     ],
+    routes: [
+        {
+            match: "routes",
+            src: ".*",
+            dest: "/index.html"
+        }
+    ]
 };

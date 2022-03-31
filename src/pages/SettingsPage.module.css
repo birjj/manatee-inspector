@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.section {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    padding: 20px;
+    border-bottom: 1px solid var(--c-hairline);
+}
+.section:last-child {
+    border-bottom: none;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    white-space: normal;
+    flex-wrap: wrap;
+}
+.row input {
+    height: 24px;
+}
+
+.trash-cell {
+    padding: 0 1ch;
+    cursor: pointer;
+    user-select: none;
+}
+.trash-cell:hover {
+    background: var(--c-background-0);
+}
+.trash-cell:active {
+    background: var(--c-background-1);
+}
+.trash-cell > svg {
+    display: inherit;
+}
+
+.error {
+    flex-basis: 100%;
+    color: var(--c-error);
+    font-weight: bold;
+}

@@ -1,0 +1,41 @@
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+.toolbar-btn:hover:not(:disabled),
+.toolbar-btn--active {
+    background: var(--c-background-2);
+}
+.toolbar-btn:disabled {
+    opacity: .5;
+    cursor: initial;
+}
+
+.button {
+    background: #fff;
+    color: var(--c-accent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--c-background-2);
+    margin: 2px;
+    height: 24px;
+    padding: 0 12px;
+    font-weight: 500;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: none;
+}
+.button:hover {
+    background-color: var(--c-background-0);
+}
+.button:focus:not(:active) {
+    border-color: var(--c-accent);
+}
+.button:active {
+    transform: translateY(1px);
+}

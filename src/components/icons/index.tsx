@@ -1,0 +1,5 @@
+import React from "react";
+
+export const PlusIcon = (props: React.SVGAttributes<SVGSVGElement>) => <svg {...props} width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M6.5 2H5.5V5.5H2V6.5H5.5V10H6.5V6.5H10V5.5H6.5V2Z" fill="#202124" /></svg>;
+export const NodeSelectIcon = (props: React.SVGAttributes<SVGSVGElement>) => <svg {...props} viewBox="146 124 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path d="M146 124h16v16h-16z" opacity=".5" /><path d="M152 138h-2.5c-1 0-1.5-.5-1.5-1.5v-9c0-1 .5-1.5 1.5-1.5h9c1.5 0 1.5 1.468 1.5 1.5v2.5h-1v-3h-10v10h3zm9-5l-3 2 3 3-1 1-3-3-2 3-2-8z" fill="currentColor" /></g></svg>;
+export const TrashIcon = (props: React.SVGAttributes<SVGSVGElement>) => <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2.91 4.233" height="16" width="11"><path d="M.265 1.323h2.38L2.25 3.969H.661M2.381.53h-.529V.264h-.794v.264H.53a.27.27 0 00-.264.265v.264H2.646V.794A.27.27 0 002.38.529" /></svg>;
