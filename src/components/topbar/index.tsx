@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useMatch } from "react-router-dom";
 
 import { useApplications } from "../../hooks";
 import { AppSelector } from "../../pages/LandingPage";
@@ -11,6 +11,7 @@ const Divider = () => <div className={style.divider} />;
 
 export default function Topbar() {
     const { active } = useApplications();
+    const isSettings = !!useMatch("/settings");
 
     return <div className={style.bar}>
         <NodeSelectButton disabled={!active} />
@@ -23,12 +24,9 @@ export default function Topbar() {
             <AppSelector />
         </div>
         <span className={style.filler} />
-        {/*<NavLink to="/" className={style["button"]}>
-            <HomeIcon />
-        </NavLink>*/}
-        <NavLink to="/settings/" className={style["button"]}>
+        <Link to={isSettings ? "/" : "/settings/"} className={[style["button"], isSettings ? "active" : ""].join(" ")}>
             <SettingsIcon />
-        </NavLink>
+        </Link>
     </div>
 }
 
