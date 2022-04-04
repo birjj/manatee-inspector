@@ -1,5 +1,8 @@
 import { RefObject, useCallback, useEffect, useState } from "react";
+import { createGlobalState } from "react-hooks-global-state";
 import { useMatch, useNavigate } from "react-router-dom";
+import { runCode, selectNode } from "./manatee";
+import type { MonitorTarget } from "./manatee/monitor-socket";
 
 /** Attaches an event listener to window. TODO: extend to support  */
 export function useEventListener<K extends keyof WindowEventMap>(event: K, handler: (event: WindowEventMap[K]) => void): void;
@@ -113,3 +116,57 @@ export const useCredentials = () => {
         }
     }
 };
+
+/** SWR-like hook for selecting a DOM using Manatee */
+const { useGlobalState: useGlobalDOMState } = createGlobalState({
+    isSelecting: false,
+    isLoading: false,
+    error: null as string | null,
+    dom: null as any | null, // TODO: type the returned DOM
+    path: null as string | null
+});
+export const useCurrentDOM = () => {
+    const [isSelecting, setIsSelecting] = useGlobalDOMState("isSelecting");
+    const [isLoading, setIsLoading] = useGlobalDOMState("isLoading");
+    const [error, setError] = useGlobalDOMState("error");
+    const [dom, setDOM] = useGlobalDOMState("dom");
+    const [path, setPath] = useGlobalDOMState("path");
+    const { active: activeApp } = useApplications();
+
+    const doSelect = useCallback(() => {
+        if (!activeApp || isSelecting) { return; }
+        setIsSelecting(true);
+        setIsLoading(false);
+        setPath(null);
+        setDOM(null);
+
+        // we use an async func to actually communicate with Manatee so we don't have to nest promise callbacks
+        (async () => {
+            const node = await selectNode(activeApp.uuid);
+            setPath(node.Path);
+            setIsSelecting(false);
+            setIsLoading(true);
+            console.log("User selected node", node.Path);
+            const inspectOpts = {}; // TODO: allow users to set inspect options
+            const code = `JSON.stringify((new Field(${JSON.stringify(node.Path)})).inspect(${JSON.stringify(inspectOpts)}));`;
+            const result = await runCode(activeApp.uuid, code);
+            console.log("Got resulting DOM");
+            try {
+                return JSON.parse(result);
+            } catch (e) {
+                throw "Failed to parse response JSON: " + result;
+            }
+        })()
+            .then(data => setDOM(data))
+            .catch(e => setError(e))
+            .then(() => setIsLoading(false));
+    }, [activeApp, isSelecting, setIsSelecting, setError, setDOM, setPath]);
+
+    return {
+        isSelecting,
+        isLoading,
+        error,
+        dom,
+        selectNode: doSelect
+    };
+}

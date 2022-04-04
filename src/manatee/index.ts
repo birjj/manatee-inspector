@@ -12,7 +12,7 @@ const getPorts = () => {
     return ports;
 };
 
-export const SelectNode = (appId: string): Promise<MonitorTarget> => {
+export const selectNode = (appId: string): Promise<MonitorTarget> => {
     const { port, securePort } = getPorts();
 
     return new Promise((res, rej) => {
@@ -30,7 +30,7 @@ export const SelectNode = (appId: string): Promise<MonitorTarget> => {
     });
 };
 
-export const RunCode = (appId: string, code: string): Promise<string> => {
+export const runCode = (appId: string, code: string): Promise<string> => {
     const { port, securePort } = getPorts();
     let credentials = window.localStorage.getItem("credentials") || "";
     if (credentials) {
@@ -39,8 +39,12 @@ export const RunCode = (appId: string, code: string): Promise<string> => {
 
     return new Promise((res, rej) => {
         const socket = new DebugSocket(appId, code, credentials, port, securePort);
-        socket.on("finished", ({ result }) => {
-            res(result.Value);
+        socket.on("finished", (result) => {
+            if ("result" in result) {
+                res(result.result.Value);
+            } else {
+                rej(result.error.Value);
+            }
             socket.close();
         });
         socket.on("error", err => {

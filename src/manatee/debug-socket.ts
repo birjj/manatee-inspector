@@ -8,12 +8,23 @@ type DebugSocketEvents = {
     close: [number],
     error: [string]
 }
-type DebugResult = {
-    result: {
-        Value: string,
-        Order: number
+type DebugResult =
+    | {
+        result: {
+            Value: string,
+            Order: number
+        }
     }
-};
+    | {
+        error: {
+            Order: number,
+            Value: string
+        },
+        retry: {
+            Order: number,
+            Value: "false" | "true"
+        }
+    };
 type DebugMessage =
     | { Action: "finished", Decision: "accept", Reason: string, Result: DebugResult }
     | { Error: any, ErrorCode: number };
@@ -92,7 +103,6 @@ export default class DebugSocket {
         this.listeners[ev] = this.listeners[ev]!.filter(f => f !== listener) as any;
     }
     emit<T extends keyof DebugSocketEvents>(ev: T, ...vals: DebugSocketEvents[T]) {
-        console.log("Emitting", ev, vals);
         this.listeners[ev]?.forEach(listener => listener(...vals));
     }
 }

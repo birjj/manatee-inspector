@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, NavLink, useMatch } from "react-router-dom";
 
-import { useApplications } from "../../hooks";
+import { useApplications, useCurrentDOM } from "../../hooks";
 import { AppSelector } from "../../pages/LandingPage";
 import { HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
 
@@ -30,8 +30,16 @@ export default function Topbar() {
     </div>
 }
 
-export const NodeSelectButton = ({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-    return <button className={[style.item, style.button, className].join(" ")}>
+export const NodeSelectButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+    const { active } = useApplications();
+    const { isSelecting, selectNode } = useCurrentDOM();
+
+    return <button {...props} className={[
+        style.item,
+        style.button,
+        className,
+        isSelecting ? "active" : ""
+    ].join(" ")} disabled={disabled || !active} onClick={selectNode}>
         <NodeSelectIcon />
     </button>;
 }
