@@ -13,9 +13,7 @@ export default function Topbar() {
     const { active } = useApplications();
 
     return <div className={style.bar}>
-        <button className={[style.item, style.button].join(" ")} disabled={!active}>
-            <NodeSelectIcon />
-        </button>
+        <NodeSelectButton disabled={!active} />
         <Divider />
         <Link to="/settings/" className={style["button"]}>
             <PlusIcon />
@@ -32,4 +30,10 @@ export default function Topbar() {
             <SettingsIcon />
         </NavLink>
     </div>
+}
+
+export const NodeSelectButton = ({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+    return <button className={[style.item, style.button, className].join(" ")}>
+        <NodeSelectIcon />
+    </button>;
 }

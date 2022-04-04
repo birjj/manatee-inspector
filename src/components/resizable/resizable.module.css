@@ -1,0 +1,35 @@
+.container {
+    position: relative;
+}
+
+.border {
+    position: absolute;
+    left: -1px;
+    top: 0;
+    bottom: 0;
+
+    cursor: e-resize;
+    border-color: var(--c-hairline);
+    border-style: solid;
+    border-width: 0 1px;
+}
+
+.border:hover:not(.dragging) {
+    border-color: var(--c-accent);
+    border-width: 0 1px;
+    opacity: 0.75;
+}
+
+.border.dragging {
+    border-color: var(--c-accent);
+    border-width: 0 2px;
+}
+
+.border::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -4px;
+    width: 8px;
+}

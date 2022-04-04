@@ -23,34 +23,37 @@
     flex-grow: 1;
 }
 
-.bar .button {
+.button {
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 28px;
     cursor: pointer;
     border: none;
+    border-radius: 0;
     background: none;
     color: inherit;
     margin: 0;
     padding: 0;
+    background: var(--c-background-1);
+    box-shadow: none;
 }
 
-.bar .button>svg {
+.button>svg {
     fill: currentColor;
     height: 16px;
     width: auto;
 }
 
-.bar .button:hover:not(:disabled) {
+.button:hover:not(:disabled) {
     background: var(--c-background-2);
 }
 
-.bar .button:global(.active) {
+.button:global(.active) {
     color: var(--c-accent);
 }
 
-.bar .button:disabled {
+.button:disabled {
     opacity: .5;
     cursor: initial;
 }

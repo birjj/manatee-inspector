@@ -8,6 +8,7 @@
     --c-background-2: rgb(222, 225, 230);
     --c-hairline: rgb(202, 205, 209);
     --c-hairline-1: rgb(182, 185, 189);
+    --c-text-secondary: rgb(95, 99, 104);
 }
 
 * {
@@ -120,6 +121,13 @@ button:focus:not(:active) {
 
 button:active:not(:disabled) {
     transform: translateY(1px);
+}
+
+/* Utils */
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #root {

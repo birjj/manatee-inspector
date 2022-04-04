@@ -1,0 +1,28 @@
+.container {
+    flex-grow: 1;
+    display: flex;
+}
+
+.tree-section {
+    flex-grow: 1;
+    padding: 1em 0 0 1em;
+    overflow: auto;
+}
+
+.inspector-section {
+    width: 384px;
+    padding: 1em;
+    flex-shrink: 0;
+}
+
+.tree-empty {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+}
+
+.btn-select {
+    border: 1px solid var(--c-hairline);
+    display: inline-flex;
+    margin: 0 1ch;
+    vertical-align: middle;
+}
