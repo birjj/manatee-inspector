@@ -1,6 +1,8 @@
 :root {
     --c-accent: rgb(26, 115, 232);
-    --c-error: rgb(217 48 37);
+    --c-error: rgb(217, 48, 37);
+    --c-black: rgb(32, 33, 36);
+    --c-background: #fff;
     --c-background-0: rgb(248, 249, 249);
     --c-background-1: rgb(241, 243, 244);
     --c-background-2: rgb(222, 225, 230);
@@ -8,7 +10,9 @@
     --c-hairline-1: rgb(182, 185, 189);
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -16,23 +20,27 @@ body {
     font-size: 12px;
 }
 
+/* Typography */
 h2 {
     font-size: 15px;
     font-weight: normal;
     margin: 0;
 }
+
 h3 {
     display: inline-block;
     font-size: inherit;
     margin: 0 1ch 0 0;
 }
 
+/* Tables */
 table {
     border-spacing: 0;
     table-layout: fixed;
     border: 1px solid var(--c-hairline);
     margin: 1em 0;
 }
+
 th {
     height: 27px;
     position: sticky;
@@ -41,15 +49,78 @@ th {
     background: var(--c-background-1);
     border-bottom: 2px solid var(--c-hairline);
 }
-td, th {
+
+td,
+th {
     border-left: 1px solid var(--c-hairline);
     border-bottom: 1px solid var(--c-hairline);
     height: 18px;
     line-height: 18px;
     padding: 1px 4px;
 }
-td:first-child, th:first-child { border-left: none; }
-tr:last-child td { border-bottom: none; }
+
+td:first-child,
+th:first-child {
+    border-left: none;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Inputs */
+input,
+select {
+    border: 1px solid var(--c-hairline);
+    border-radius: 2px;
+    outline: none;
+    font: inherit;
+    padding: 2px 4px;
+}
+
+input:hover,
+select:hover {
+    border-color: var(--c-hairline-1);
+}
+
+input:active,
+input:focus,
+select:active,
+select:focus {
+    border-color: var(--c-accent);
+}
+
+input:hover {
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Buttons */
+button {
+    background: #fff;
+    color: var(--c-accent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--c-background-2);
+    margin: 2px;
+    height: 24px;
+    padding: 0 12px;
+    font-weight: 500;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: none;
+}
+
+button:hover {
+    background-color: var(--c-background-0);
+}
+
+button:focus:not(:active) {
+    border-color: var(--c-accent);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(1px);
+}
 
 #root {
     min-height: 100vh;

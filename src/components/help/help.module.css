@@ -1,0 +1,36 @@
+.container {
+    position: relative;
+}
+
+.icon {
+    height: 1.5em;
+    width: auto;
+    line-height: 1.5em;
+    vertical-align: middle;
+    user-select: none;
+}
+
+.tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translate(-50%, -4px);
+    padding: 4px;
+    border-radius: 4px;
+    background: var(--c-black);
+    color: var(--c-background);
+    font-weight: normal;
+    width: max-content;
+    max-width: 30ch;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    border-top: 4px solid var(--c-black);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+}

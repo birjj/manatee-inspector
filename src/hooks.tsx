@@ -1,4 +1,5 @@
 import { RefObject, useCallback, useEffect, useState } from "react";
+import { useMatch, useNavigate } from "react-router-dom";
 
 /** Attaches an event listener to window. TODO: extend to support  */
 export function useEventListener<K extends keyof WindowEventMap>(event: K, handler: (event: WindowEventMap[K]) => void): void;
@@ -12,6 +13,17 @@ export function useEventListener<KW extends keyof WindowEventMap, KE extends key
             target.removeEventListener(event, listener);
         };
     }, [event, elm, listener]);
+}
+
+/** Attaches an event listener for clicks outside of a ref component */
+export function useOutsideClick<T extends HTMLElement = HTMLElement>(ref: RefObject<T>, handler: (ev: MouseEvent) => void) {
+    useEventListener("mousedown", ev => {
+        const $elm = ref?.current;
+        if (!$elm || $elm.contains(ev.target as Node)) {
+            return;
+        }
+        handler(ev);
+    });
 }
 
 /** Stores persistent state in local storage */
@@ -45,7 +57,8 @@ export const useLocalStorage = <T,>(key: string, initialValue: T): [T, (val: T) 
 /** Gets/sets the list of stored applications we can send messages to */
 export const useApplications = () => {
     const [applications, setApplications] = useLocalStorage<{ uuid: string, name: string }[]>("applications", []);
-    const [activeKey, setActive] = useLocalStorage("active-app", null);
+    const activeKey = useMatch("/app/:appUuid")?.params?.appUuid;
+    const navigate = useNavigate();
 
     return {
         applications,
@@ -66,6 +79,6 @@ export const useApplications = () => {
             setApplications(apps);
         },
         active: applications.find(({ uuid }) => uuid === activeKey),
-        setActive
+        setActive: (uuid: string) => navigate(`/app/${uuid}`)
     }
 };

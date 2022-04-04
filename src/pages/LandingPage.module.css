@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo {
+    height: 1.5em;
+    width: auto;
+    margin-right: 1ch;
+}

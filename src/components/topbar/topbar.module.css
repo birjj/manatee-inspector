@@ -18,3 +18,43 @@
     margin: 5px 4px;
     height: 16px;
 }
+
+.filler {
+    flex-grow: 1;
+}
+
+.bar .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+.bar .button>svg {
+    fill: currentColor;
+    height: 16px;
+    width: auto;
+}
+
+.bar .button:hover:not(:disabled) {
+    background: var(--c-background-2);
+}
+
+.bar .button:global(.active) {
+    color: var(--c-accent);
+}
+
+.bar .button:disabled {
+    opacity: .5;
+    cursor: initial;
+}
+
+.bar select {
+    padding: 0;
+}
