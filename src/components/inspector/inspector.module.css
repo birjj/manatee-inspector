@@ -1,0 +1,13 @@
+.container {
+    font-family: Consolas, Lucida Console, Courier New, monospace;
+}
+
+.prop {
+    line-height: 1.36;
+    padding-left: 2ch;
+}
+
+.name {
+    color: var(--c-text-prop);
+    margin-left: -2ch;
+}

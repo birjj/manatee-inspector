@@ -1,0 +1,14 @@
+.container {
+    display: inline-block;
+    padding-left: 1ch;
+    vertical-align: top;
+}
+
+.empty {
+    margin-left: -1ch;
+}
+
+.key {
+    color: var(--c-text-tag);
+    margin-left: -1ch;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DOMTree from "../components/dom-tree";
+import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
 import { useCurrentDOM } from "../hooks";
@@ -13,7 +14,7 @@ const InspectPage = () => {
     return <div className={style.container}>
         <DOMTreeSection selected={selected} onSelect={setSelected} />
         <Resizable dir="LEFT" className={style["inspector-section"]}>
-            <DOMInspectorSection />
+            <DOMInspectorSection data={selected} />
         </Resizable>
     </div>;
 };
@@ -38,6 +39,6 @@ type DOMInspectorSectionProps = {
 const DOMInspectorSection = ({ data }: DOMInspectorSectionProps) => {
     // TODO: implement
     return <div>
-
+        <DOMInspector data={data} />
     </div>
 }
