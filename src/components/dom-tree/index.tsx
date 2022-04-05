@@ -1,3 +1,5 @@
+/** @fileoverview A component for rendering the DOM structure returned by Manatee as a tree */
+
 import React, { useEffect, useState } from "react";
 
 import type { DOMEntry } from "../../manatee/types";

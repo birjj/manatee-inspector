@@ -1,4 +1,5 @@
 /** @fileoverview A generator for tree-structured components (e.g. DOM tree, expandable JS objects, ...) */
+
 import React, { MouseEventHandler, useCallback, useEffect, useState } from "react";
 
 import style from "./tree.module.css";

@@ -1,3 +1,5 @@
+/** @fileoverview The top-most bar of the application, containing the element picker amongst other things */
+
 import React from "react";
 import { Link, NavLink, useMatch } from "react-router-dom";
 

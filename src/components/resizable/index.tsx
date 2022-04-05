@@ -1,3 +1,5 @@
+/** @fileoverview A generic resizable container */
+
 import React, { MouseEventHandler, useCallback, useRef, useState } from "react";
 import { useEventListener } from "../../hooks";
 

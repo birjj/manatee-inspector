@@ -1,3 +1,5 @@
+/** @fileoverview A "?" icon which shows help text when clicked */
+
 import React, { useRef, useState } from "react";
 import { useOutsideClick } from "../../hooks";
 import { HelpIcon } from "../icons";
