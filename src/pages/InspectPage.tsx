@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DOMTree from "../components/dom-tree";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
@@ -8,8 +8,10 @@ import type { DOMEntry } from "../manatee/types";
 import style from "./InspectPage.module.css";
 
 const InspectPage = () => {
+    const [selected, setSelected] = useState(undefined as DOMEntry | undefined);
+
     return <div className={style.container}>
-        <DOMTreeSection />
+        <DOMTreeSection selected={selected} onSelect={setSelected} />
         <Resizable dir="LEFT" className={style["inspector-section"]}>
             <DOMInspectorSection />
         </Resizable>
@@ -17,12 +19,11 @@ const InspectPage = () => {
 };
 export default InspectPage;
 
-const DOMTreeSection = () => {
+const DOMTreeSection = ({ selected, onSelect }: { selected: DOMEntry | undefined, onSelect: (v: DOMEntry) => void }) => {
     const { isLoading, dom } = useCurrentDOM();
-    console.log("Rendering DOM", dom);
     return <div className={[style["tree-section"], dom ? "" : "center"].join(" ")}>
         {dom
-            ? <DOMTree data={dom} open selectable />
+            ? <DOMTree data={dom} open selectable selectedValue={selected} onSelect={onSelect} />
             : <div className={style["tree-empty"]}>
                 {isLoading
                     ? <p>Loading...</p>

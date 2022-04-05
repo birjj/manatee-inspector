@@ -33,7 +33,7 @@ const Opener = ({ data, closed }: { data: DOMEntry, closed: boolean }) => {
         })}
         {closed && !isEmpty
             ? <>
-                {">…<"}
+                {">…</"}
                 <span className={style.name}>{name}</span>
             </>
             : null}

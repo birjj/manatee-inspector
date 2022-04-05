@@ -34,7 +34,7 @@ export type TreeProps<T> = {
     selectedValue?: T,
     inlineArrow?: boolean,
     onSelect?: (value: T) => void
-} & Omit<React.HTMLProps<HTMLDivElement>, "data">;
+} & Omit<React.HTMLProps<HTMLDivElement>, "data" | "selected" | "onSelect">;
 export type TreeComponent<T> = React.ComponentType<TreeProps<T>>;
 
 /**
@@ -42,7 +42,7 @@ export type TreeComponent<T> = React.ComponentType<TreeProps<T>>;
  * The opener is responsible for rendering the tree when closed (and will be told that it is closed using the `closed` prop)
  **/
 const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpenerProps<DataType>>, Closer: React.ComponentType<TreeCloserProps<DataType>>, categorizer: TreeChildCategorizer<DataType, ChildProps>) => {
-    return ({ data, open = false, selectable = false, selectedValue, inlineArrow = false, onSelect, ...props }: TreeProps<DataType>) => {
+    const Tree = ({ data, open = false, selectable = false, selectedValue, inlineArrow = false, onSelect, ...props }: TreeProps<DataType>) => {
         const [isOpen, setOpen] = useState(open);
         const [selected, setSelected] = useState(TreeSelectState.None);
         const [childData, setChildData] = useState([] as ReturnType<typeof categorizer>);
@@ -75,7 +75,7 @@ const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpene
             inlineArrow ? style["tree--inline-arrow"] : ""
         ].join(" ");
         return <div {...props} className={className}>
-            <div className={[style.line, style["line--opener"], isSelected && selected === TreeSelectState.Opener ? style.selected : ""].join(" ")} onClick={e => { e.stopPropagation(); doSelect(TreeSelectState.Opener); }}>
+            <div className={[style.line, style["line--opener"], isSelected && (selected === TreeSelectState.Opener || !isOpen) ? style.selected : ""].join(" ")} onClick={e => { e.stopPropagation(); doSelect(TreeSelectState.Opener); }}>
                 {childData.length
                     ? <span className={style.arrow} onClick={toggleOpen}>▶</span>
                     : null}
@@ -91,12 +91,13 @@ const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpene
                                 data={data}
                                 open={open}
                                 selectable={selectable}
+                                selectedValue={selectedValue}
                                 onSelect={onSelect}
                                 {...props}
                             />
                         })}
                     </div>
-                    <div className={[style.line, style["line--closer"], isSelected && selected === TreeSelectState.Closer ? style.selected : ""].join(" ")} onClick={e => { e.stopPropagation(); doSelect(TreeSelectState.Opener); }}>
+                    <div className={[style.line, style["line--closer"], isSelected && selected === TreeSelectState.Closer ? style.selected : ""].join(" ")} onClick={e => { e.stopPropagation(); doSelect(TreeSelectState.Closer); }}>
                         <Closer data={data} />
                         <span className={style.hover}></span>
                     </div>
@@ -104,5 +105,6 @@ const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpene
                 : null}
         </div>;
     };
+    return Tree;
 };
 export default treeFactory;

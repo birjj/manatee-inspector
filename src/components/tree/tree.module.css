@@ -14,6 +14,7 @@
     margin: 0 -4px;
     transform: scale(.9) translateX(-75%) rotate(0deg);
     color: var(--c-text-secondary);
+    user-select: none;
 }
 
 .tree.expanded>.line--opener>.arrow {
