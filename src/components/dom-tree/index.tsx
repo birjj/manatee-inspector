@@ -2,22 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 
-import type { DOMEntry } from "../../manatee/types";
+import type { DOMEntry, DOMEntryJava, DOMEntryWeb } from "../../manatee/types";
 import treeFactory, { TreeComponent } from "../tree";
 import style from "./dom-tree.module.css";
 
-const ATTRS: (keyof DOMEntry)[] = ["name", "label", "tooltip"];
+const getName = (data: DOMEntry) => (data as DOMEntryJava).simpleType || data.type || "unknown";
+
+const ATTRS: (keyof DOMEntryJava | keyof DOMEntryWeb)[] = ["name", "label", "tooltip", "_title", "_class", "_aria-label"];
 const Opener = ({ data, closed }: { data: DOMEntry, closed: boolean }) => {
     const [name, setName] = useState("");
     const [attrs, setAttrs] = useState({} as { [k: string]: string });
     const isEmpty = !data.children?.length;
 
     useEffect(() => {
-        setName(data.simpleType || "unknown");
+        setName(getName(data));
         const newAttrs: typeof attrs = {};
         ATTRS.forEach(key => {
-            if (data[key] === "" || data[key] === undefined) { return; }
-            newAttrs[key] = "" + data[key];
+            if ((data as any)[key] === "" || (data as any)[key] === undefined) { return; }
+            newAttrs[key] = "" + (data as any)[key];
         });
         setAttrs(newAttrs);
     }, [data]);
@@ -46,7 +48,7 @@ const Opener = ({ data, closed }: { data: DOMEntry, closed: boolean }) => {
 const Closer = ({ data }: { data: DOMEntry }) => {
     const [name, setName] = useState("");
     useEffect(() => {
-        setName(data.simpleType || "unknown");
+        setName(getName(data));
     }, [data]);
     return <span className={style.tag}>
         {"</"}

@@ -1,4 +1,6 @@
-export type DOMEntry = {
+export type DOMEntry = DOMEntryJava | DOMEntryWeb;
+
+export type DOMEntryJava = {
     type: string,
     simpleType: string,
     shellType: string,
@@ -13,9 +15,21 @@ export type DOMEntry = {
     text?: string,
     editable?: boolean,
     label?: string,
-    children: DOMEntry[],
+    children: DOMEntryJava[],
     matchThis: string,
     rows?: ({ rowIndex: string, rowCount: string, selected: boolean } & { [name: string]: string })[],
     columns?: { header: string, value: string, index: number }[],
     tabs?: { [name: string]: DOMEntry }
+};
+
+export type DOMEntryWeb = {
+    _id: string;
+    _tabindex: string;
+    _class: string;
+    _style: string;
+    _title: string;
+    "_aria-label": string;
+    type: string;
+    visible: boolean;
+    children: DOMEntryWeb[]
 };
