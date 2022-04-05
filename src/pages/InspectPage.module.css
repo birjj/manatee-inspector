@@ -1,6 +1,7 @@
 .container {
     flex-grow: 1;
     display: flex;
+    overflow: auto;
 }
 
 .tree-section {
@@ -13,6 +14,7 @@
     width: 384px;
     padding: 1em;
     flex-shrink: 0;
+    overflow: auto;
 }
 
 .tree-empty {
