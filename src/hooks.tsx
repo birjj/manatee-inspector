@@ -139,7 +139,7 @@ export const useCurrentDOM = () => {
     const { active: activeApp } = useApplications();
 
     const doSelect = useCallback(() => {
-        if (!activeApp || isSelecting) { return; }
+        if (!activeApp || isSelecting) { console.warn("Attempted to select while already selecting", { activeApp, isSelecting }); return; }
         setIsSelecting(true);
         setIsLoading(false);
         setPath(null);
@@ -164,8 +164,15 @@ export const useCurrentDOM = () => {
             }
         })()
             .then(data => setDOM(data))
-            .catch(e => setError(e))
-            .then(() => setIsLoading(false));
+            .catch(e => {
+                setError(e);
+                setDOM(null);
+                setPath(null);
+            })
+            .then(() => {
+                setIsLoading(false);
+                setIsSelecting(false);
+            });
     }, [activeApp, isSelecting, setIsSelecting, setError, setDOM, setPath]);
 
     return {

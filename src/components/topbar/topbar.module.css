@@ -30,6 +30,7 @@
 }
 
 .button {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,4 +67,24 @@
 
 .bar select {
     padding: 0;
+}
+
+.error {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 8px);
+    background: var(--c-error);
+    color: var(--c-background);
+    padding: 2px 4px;
+    width: max-content;
+    max-width: 40ch;
+}
+
+.error::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -4px;
+    border-bottom: 4px solid var(--c-error);
+    border-right: 4px solid transparent;
 }

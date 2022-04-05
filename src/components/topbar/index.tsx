@@ -51,9 +51,12 @@ export default function Topbar() {
     </div>
 }
 
-export const NodeSelectButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+type NodeSelectButtonProps = {
+    showError?: boolean;
+};
+export const NodeSelectButton = ({ className, disabled, showError = true, ...props }: NodeSelectButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     const { active } = useApplications();
-    const { isSelecting, selectNode } = useCurrentDOM();
+    const { isSelecting, selectNode, error } = useCurrentDOM();
 
     return <button {...props} className={[
         style.item,
@@ -62,5 +65,10 @@ export const NodeSelectButton = ({ className, disabled, ...props }: React.Button
         isSelecting ? "active" : ""
     ].join(" ")} disabled={disabled || !active} onClick={selectNode}>
         <NodeSelectIcon />
+        {showError && error
+            ? <div className={style.error}>
+                {error}
+            </div>
+            : null}
     </button>;
 }

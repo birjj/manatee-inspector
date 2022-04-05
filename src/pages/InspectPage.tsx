@@ -26,14 +26,17 @@ const InspectPage = () => {
 export default InspectPage;
 
 const DOMTreeSection = ({ selected, onSelect }: { selected: DOMEntry | undefined, onSelect: (v: DOMEntry) => void }) => {
-    const { isLoading, dom } = useCurrentDOM();
+    const { isLoading, error, path, dom } = useCurrentDOM();
     return <div className={[style["tree-section"], dom ? "" : "center"].join(" ")}>
         {dom
             ? <DOMTree data={dom} open selectable selectedValue={selected} onSelect={onSelect} />
             : <div className={style["tree-empty"]}>
                 {isLoading
                     ? <p>Loading...</p>
-                    : <p>Pick an element <NodeSelectButton className={style["btn-select"]} /> to get started</p>}
+                    : <p>Pick an element <NodeSelectButton className={style["btn-select"]} showError={false} /> to get started</p>}
+                {error
+                    ? <p className={style.error}>{error}</p>
+                    : null}
             </div>}
     </div>
 };
@@ -42,8 +45,5 @@ type DOMInspectorSectionProps = {
     data?: any;
 }
 const DOMInspectorSection = ({ data }: DOMInspectorSectionProps) => {
-    // TODO: implement
-    return <div>
-        <DOMInspector data={data} />
-    </div>
+    return <DOMInspector data={data} />;
 }

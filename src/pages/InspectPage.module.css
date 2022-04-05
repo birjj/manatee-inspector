@@ -20,6 +20,7 @@
 .tree-empty {
     font-size: 13px;
     color: var(--c-text-secondary);
+    text-align: center;
 }
 
 .btn-select {
@@ -27,4 +28,9 @@
     display: inline-flex;
     margin: 0 1ch;
     vertical-align: middle;
+}
+
+.error {
+    color: var(--c-error);
+    font-weight: bold;
 }

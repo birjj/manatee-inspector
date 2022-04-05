@@ -71,6 +71,7 @@ export default class MonitorSocket {
         }
         this.emit("message", data);
         if ("Error" in data || "ErrorCode" in data) {
+            console.warn("Error from Manatee", data);
             this.emit("error", data.Error || "" + data.ErrorCode);
             return;
         }
