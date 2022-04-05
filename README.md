@@ -1,6 +1,9 @@
 # Manatee DOM Inspector
 
-A custom implementation of a devtools-like DOM inspector for [Sirenia's Manatee RPA application](https://www.sirenia.eu/).
+A custom implementation of a devtools-like DOM inspector for [Sirenia's Manatee RPA application](https://www.sirenia.eu/).  
+Useful for when you need a closer look at how Manatee sees the application, but don't want to trawl through kilobytes of JSON data.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/4542461/161786510-8f4f14eb-9ca1-4d81-974c-e9e84b15ddc3.png" width="596" /></p>
 
 ## Usage
 
