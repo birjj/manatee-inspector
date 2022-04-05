@@ -23,6 +23,7 @@
 .border.dragging {
     border-color: var(--c-accent);
     border-width: 0 2px;
+    left: -2px;
 }
 
 .border::before {

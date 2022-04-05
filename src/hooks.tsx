@@ -122,6 +122,8 @@ export const useCredentials = () => {
 const { useGlobalState: useGlobalDOMState } = createGlobalState({
     isSelecting: false,
     isLoading: false,
+    useCachedUI: false,
+    collectTexts: false,
     error: null as string | null,
     dom: null as DOMEntry | null,
     path: null as string | null
@@ -129,6 +131,8 @@ const { useGlobalState: useGlobalDOMState } = createGlobalState({
 export const useCurrentDOM = () => {
     const [isSelecting, setIsSelecting] = useGlobalDOMState("isSelecting");
     const [isLoading, setIsLoading] = useGlobalDOMState("isLoading");
+    const [useCachedUI, setUseCachedUI] = useGlobalDOMState("useCachedUI");
+    const [collectTexts, setCollectTexts] = useGlobalDOMState("collectTexts");
     const [error, setError] = useGlobalDOMState("error");
     const [dom, setDOM] = useGlobalDOMState("dom");
     const [path, setPath] = useGlobalDOMState("path");
@@ -147,11 +151,12 @@ export const useCurrentDOM = () => {
             setPath(node.Path);
             setIsSelecting(false);
             setIsLoading(true);
-            console.log("User selected node", node.Path);
-            const inspectOpts = {}; // TODO: allow users to set inspect options
+            const inspectOpts = {
+                useCachedUI,
+                collectTexts
+            };
             const code = `JSON.stringify((new Field(${JSON.stringify(node.Path)})).inspect(${JSON.stringify(inspectOpts)}));`;
             const result = await runCode(activeApp.uuid, code);
-            console.log("Got resulting DOM");
             try {
                 return JSON.parse(result);
             } catch (e) {
@@ -166,6 +171,10 @@ export const useCurrentDOM = () => {
     return {
         isSelecting,
         isLoading,
+        collectTexts,
+        setCollectTexts,
+        useCachedUI,
+        setUseCachedUI,
         error,
         dom,
         path,

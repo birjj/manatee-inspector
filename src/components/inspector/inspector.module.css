@@ -1,5 +1,5 @@
 .container {
-    font-family: Consolas, Lucida Console, Courier New, monospace;
+    font-family: var(--font-monospace);
 }
 
 .prop {

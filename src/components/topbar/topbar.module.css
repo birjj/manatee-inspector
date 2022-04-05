@@ -6,6 +6,12 @@
     border-bottom: 1px solid var(--c-hairline);
 }
 
+.bar>label {
+    margin-right: 1ch;
+    display: flex;
+    align-items: center;
+}
+
 .item {
     height: 26px;
     display: flex;

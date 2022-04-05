@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DOMTree from "../components/dom-tree";
 import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
@@ -10,6 +10,11 @@ import style from "./InspectPage.module.css";
 
 const InspectPage = () => {
     const [selected, setSelected] = useState(undefined as DOMEntry | undefined);
+    const { dom } = useCurrentDOM();
+
+    useEffect(() => {
+        setSelected(undefined);
+    }, [dom]);
 
     return <div className={style.container}>
         <DOMTreeSection selected={selected} onSelect={setSelected} />

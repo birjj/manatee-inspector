@@ -1,7 +1,7 @@
 /** @fileoverview The top-most bar of the application, containing the element picker amongst other things */
 
-import React from "react";
-import { Link, NavLink, useMatch } from "react-router-dom";
+import React, { useCallback } from "react";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 
 import { useApplications, useCurrentDOM } from "../../hooks";
 import { AppSelector } from "../../pages/LandingPage";
@@ -13,10 +13,26 @@ const Divider = () => <div className={style.divider} />;
 
 export default function Topbar() {
     const { active } = useApplications();
+    const { useCachedUI, setUseCachedUI, collectTexts, setCollectTexts } = useCurrentDOM();
+    const navigate = useNavigate();
     const isSettings = !!useMatch("/settings");
+
+    const onSettingsClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(e => {
+        e.stopPropagation();
+        e.preventDefault();
+        isSettings ? history.go(-1) : navigate("/settings/")
+    }, [isSettings, navigate]);
 
     return <div className={style.bar}>
         <NodeSelectButton disabled={!active} />
+        <label>
+            <input type="checkbox" checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
+            useCachedUI
+        </label>
+        <label>
+            <input type="checkbox" checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
+            collectTexts
+        </label>
         <Divider />
         <Link to="/settings/" className={style["button"]}>
             <PlusIcon />
@@ -26,7 +42,7 @@ export default function Topbar() {
             <AppSelector />
         </div>
         <span className={style.filler} />
-        <Link to={isSettings ? "/" : "/settings/"} className={[style["button"], isSettings ? "active" : ""].join(" ")}>
+        <Link to="/settings/" onClick={onSettingsClick} className={[style["button"], isSettings ? "active" : ""].join(" ")}>
             <SettingsIcon />
         </Link>
     </div>

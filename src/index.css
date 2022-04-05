@@ -1,4 +1,5 @@
 :root {
+    --font-monospace: "Consolas", "Lucida Console", "Courier New", monospace;
     --c-accent: rgb(26, 115, 232);
     --c-accent-faint: rgb(93, 146, 217);
     --c-error: rgb(217, 48, 37);
@@ -10,8 +11,6 @@
     --c-hairline: rgb(202, 205, 209);
     --c-hairline-1: rgb(182, 185, 189);
     --c-text-secondary: rgb(95, 99, 104);
-
-    --color-gray: rgb(169, 148, 166);
     --c-text-tag: rgb(136, 18, 128);
     --c-text-attr: rgb(153, 69, 0);
     --c-text-val: rgb(26, 26, 166);

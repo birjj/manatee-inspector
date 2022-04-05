@@ -1,5 +1,5 @@
 .tree {
-    font-family: Consolas, Lucida Console, Courier New, monospace;
+    font-family: var(--font-monospace);
     line-height: 1.36;
     display: flex;
     flex-direction: column;
