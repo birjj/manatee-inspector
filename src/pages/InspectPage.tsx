@@ -1,7 +1,9 @@
 import React from "react";
+import DOMTree from "../components/dom-tree";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
 import { useCurrentDOM } from "../hooks";
+import type { DOMEntry } from "../manatee/types";
 
 import style from "./InspectPage.module.css";
 
@@ -15,14 +17,12 @@ const InspectPage = () => {
 };
 export default InspectPage;
 
-type DOMTreeSectionProps = {
-    dom?: any; // TODO: type
-};
 const DOMTreeSection = () => {
     const { isLoading, dom } = useCurrentDOM();
+    console.log("Rendering DOM", dom);
     return <div className={[style["tree-section"], dom ? "" : "center"].join(" ")}>
         {dom
-            ? <pre>{JSON.stringify(dom, null, 2)}</pre>
+            ? <DOMTree data={dom} open selectable />
             : <div className={style["tree-empty"]}>
                 {isLoading
                     ? <p>Loading...</p>

@@ -3,6 +3,7 @@ import { createGlobalState } from "react-hooks-global-state";
 import { useMatch, useNavigate } from "react-router-dom";
 import { runCode, selectNode } from "./manatee";
 import type { MonitorTarget } from "./manatee/monitor-socket";
+import type { DOMEntry } from "./manatee/types";
 
 /** Attaches an event listener to window. TODO: extend to support  */
 export function useEventListener<K extends keyof WindowEventMap>(event: K, handler: (event: WindowEventMap[K]) => void): void;
@@ -122,7 +123,7 @@ const { useGlobalState: useGlobalDOMState } = createGlobalState({
     isSelecting: false,
     isLoading: false,
     error: null as string | null,
-    dom: null as any | null, // TODO: type the returned DOM
+    dom: null as DOMEntry | null,
     path: null as string | null
 });
 export const useCurrentDOM = () => {
@@ -167,6 +168,7 @@ export const useCurrentDOM = () => {
         isLoading,
         error,
         dom,
+        path,
         selectNode: doSelect
     };
 }

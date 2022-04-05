@@ -10,6 +10,14 @@
     --c-hairline: rgb(202, 205, 209);
     --c-hairline-1: rgb(182, 185, 189);
     --c-text-secondary: rgb(95, 99, 104);
+
+    --color-gray: rgb(169, 148, 166);
+    --c-text-tag: rgb(136, 18, 128);
+    --c-text-attr: rgb(153, 69, 0);
+    --c-text-val: rgb(26, 26, 166);
+    --c-text-prop: rgb(200, 0, 0);
+    --c-hover-bg: rgba(56, 121, 217, 0.1);
+    --c-selected-bg: rgb(207, 232, 252);
 }
 
 * {

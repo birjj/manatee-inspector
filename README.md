@@ -20,6 +20,7 @@ function openInChrome(url) {
 }
 
 function getManateePorts() {
+  // NOTE: you should replace this path with whatever path your ManateeDiscoverer.exe is located at
   var p = Processes.spawn("C:\\Program Files (x86)\\Sirenia\\Manatee\\prod-rsd+epjsyd\\Tools\\NativeHost\\Discoverer\\ManateeDiscoverer.exe");
   p.stdin("\x1f\x00\x00\x00"+JSON.stringify({data:{message:"port"}}));
   var outp = null;

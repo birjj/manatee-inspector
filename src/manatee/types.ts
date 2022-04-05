@@ -1,0 +1,21 @@
+export type DOMEntry = {
+    type: string,
+    simpleType: string,
+    shellType: string,
+    interfaces: string,
+    supers: string,
+    bounds: string,
+    showing: boolean,
+    enabled: boolean,
+    name: string,
+    accessibleName: string,
+    tooltip: string,
+    text?: string,
+    editable?: boolean,
+    label?: string,
+    children: DOMEntry[],
+    matchThis: string,
+    rows?: ({ rowIndex: string, rowCount: string, selected: boolean } & { [name: string]: string })[],
+    columns?: { header: string, value: string, index: number }[],
+    tabs?: { [name: string]: DOMEntry }
+};

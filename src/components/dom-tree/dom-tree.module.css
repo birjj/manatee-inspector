@@ -1,0 +1,19 @@
+.tag {
+    color: var(--c-text-secondary);
+}
+
+.name {
+    color: var(--c-text-tag);
+}
+
+.attr {
+    padding-left: 1ch;
+}
+
+.attr__name {
+    color: var(--c-text-attr);
+}
+
+.attr__val {
+    color: var(--c-text-val);
+}
