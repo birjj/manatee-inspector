@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import { AppIcon } from "../components/icons";
-import { useApplications, useCredentials } from "../hooks";
+import { useApplications, useCredentials, useCurrentDOM } from "../hooks";
 
 import style from "./LandingPage.module.css";
 import { AddAppForm, CredentialsForm } from "./SettingsPage";
@@ -31,14 +31,16 @@ const LandingPage = () => {
 export default LandingPage;
 
 export const AppSelector = ({ className, disabled, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) => {
-    const { applications, active } = useApplications();
-    const { username, password, credentials } = useCredentials();
+    const { applications } = useApplications();
+    const { username, password } = useCredentials();
+    const { reset: resetDOM } = useCurrentDOM();
     const navigate = useNavigate();
     const appUuid = useMatch("/app/:appUuid")?.params?.appUuid;
 
     const selectApp = useCallback((uuid: string) => {
+        resetDOM();
         navigate(uuid ? `/app/${uuid}/` : "");
-    }, [navigate]);
+    }, [navigate, resetDOM]);
 
     const hasCredentials = username && password;
     return <select {...props} disabled={disabled || !hasCredentials} style={{ marginLeft: "1ch", minWidth: "16ch", flexGrow: "1" }} value={appUuid || ""} onChange={e => selectApp((e.target as HTMLSelectElement).value)}>

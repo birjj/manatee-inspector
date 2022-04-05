@@ -138,6 +138,14 @@ export const useCurrentDOM = () => {
     const [path, setPath] = useGlobalDOMState("path");
     const { active: activeApp } = useApplications();
 
+    const reset = useCallback(() => {
+        setIsLoading(false);
+        setIsSelecting(false);
+        setPath(null);
+        setDOM(null);
+        setError(null);
+    }, [setIsLoading, setIsSelecting, setPath, setDOM, setError]);
+
     const doSelect = useCallback(() => {
         if (!activeApp || isSelecting) { console.warn("Attempted to select while already selecting", { activeApp, isSelecting }); return; }
         setIsSelecting(true);
@@ -186,6 +194,7 @@ export const useCurrentDOM = () => {
         error,
         dom,
         path,
-        selectNode: doSelect
+        selectNode: doSelect,
+        reset
     };
 }
