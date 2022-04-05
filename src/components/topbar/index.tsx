@@ -5,7 +5,7 @@ import { Link, useMatch, useNavigate } from "react-router-dom";
 
 import { useApplications, useCurrentDOM } from "../../hooks";
 import { AppSelector } from "../../pages/LandingPage";
-import { HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
+import { GitHubIcon, HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
 
 import style from "./topbar.module.css";
 
@@ -42,6 +42,9 @@ export default function Topbar() {
             <AppSelector />
         </div>
         <span className={style.filler} />
+        <a href="https://github.com/birjolaxew/manatee-inspector" target="_blank" className={style.button}>
+            <GitHubIcon />
+        </a>
         <Link to="/settings/" onClick={onSettingsClick} className={[style["button"], isSettings ? "active" : ""].join(" ")}>
             <SettingsIcon />
         </Link>
