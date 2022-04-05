@@ -144,6 +144,7 @@ export const useCurrentDOM = () => {
         setIsLoading(false);
         setPath(null);
         setDOM(null);
+        setError(null);
 
         // we use an async func to actually communicate with Manatee so we don't have to nest promise callbacks
         (async () => {

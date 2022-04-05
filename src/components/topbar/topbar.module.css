@@ -78,6 +78,7 @@
     padding: 2px 4px;
     width: max-content;
     max-width: 40ch;
+    z-index: 2;
 }
 
 .error::before {
