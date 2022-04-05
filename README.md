@@ -7,7 +7,7 @@ A custom implementation of a devtools-like DOM inspector for [Sirenia's Manatee 
 In order for the application to communicate with the local Manatee instance, it needs to know which ports to open a WebSocket connection to. Currently these ports can be found using the `ManateeDiscoverer.exe` application, found in `<ManateeInstallDir>\Tools\NativeHost\Discoverer\ManateeDiscoverer.exe`. The ports returned by this application must be given to the DOM inspector through the search parameters `manateePort` and `manateePortSecure` respectively. An example of how to do this is the following flow code:
 
 ```js
-var INSPECTOR_URL = "https://manateeinspector.jfagerberg.me";
+var INSPECTOR_URL = "https://manatee-inspector.jfagerberg.me";
 
 function openInChrome(url) {
   return Processes.spawn(
