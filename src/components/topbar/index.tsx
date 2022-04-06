@@ -3,7 +3,7 @@
 import React, { useCallback } from "react";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 
-import { useApplications, useCurrentDOM } from "../../hooks";
+import { useApplications, useCurrentDOM, usePorts } from "../../hooks";
 import { AppSelector } from "../../pages/LandingPage";
 import { GitHubIcon, HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
 
@@ -15,6 +15,7 @@ export default function Topbar() {
     const { active } = useApplications();
     const { useCachedUI, setUseCachedUI, collectTexts, setCollectTexts } = useCurrentDOM();
     const navigate = useNavigate();
+    const { port, securePort } = usePorts();
     const isSettings = !!useMatch("/settings");
 
     const onSettingsClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(e => {
@@ -23,32 +24,39 @@ export default function Topbar() {
         isSettings ? history.go(-1) : navigate("/settings/")
     }, [isSettings, navigate]);
 
-    return <div className={style.bar}>
-        <NodeSelectButton disabled={!active} />
-        <label>
-            <input type="checkbox" checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
-            useCachedUI
-        </label>
-        <label>
-            <input type="checkbox" checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
-            collectTexts
-        </label>
-        <Divider />
-        <Link to="/settings/" className={style["button"]}>
-            <PlusIcon />
-        </Link>
-        <div className={[style.item, style["text-item"]].join(" ")}>
-            Application:
-            <AppSelector />
+    return <>
+        <div className={style.bar}>
+            <NodeSelectButton disabled={!active} />
+            <label>
+                <input type="checkbox" checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
+                useCachedUI
+            </label>
+            <label>
+                <input type="checkbox" checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
+                collectTexts
+            </label>
+            <Divider />
+            <Link to="/settings/" className={style["button"]}>
+                <PlusIcon />
+            </Link>
+            <div className={[style.item, style["text-item"]].join(" ")}>
+                Application:
+                <AppSelector />
+            </div>
+            <span className={style.filler} />
+            <a href="https://github.com/birjolaxew/manatee-inspector" target="_blank" className={style.button}>
+                <GitHubIcon />
+            </a>
+            <Link to="/settings/" onClick={onSettingsClick} className={[style["button"], isSettings ? "active" : ""].join(" ")}>
+                <SettingsIcon />
+            </Link>
         </div>
-        <span className={style.filler} />
-        <a href="https://github.com/birjolaxew/manatee-inspector" target="_blank" className={style.button}>
-            <GitHubIcon />
-        </a>
-        <Link to="/settings/" onClick={onSettingsClick} className={[style["button"], isSettings ? "active" : ""].join(" ")}>
-            <SettingsIcon />
-        </Link>
-    </div>
+        {!port && !securePort
+            ? <div className={[style.bar, style["bar--warning"]].join(" ")}>
+                No ports for communicating with Manatee were given. The application likely won't work. See the README for instructions.
+            </div>
+            : null}
+    </>
 }
 
 type NodeSelectButtonProps = {

@@ -3,6 +3,8 @@
     --c-accent: rgb(26, 115, 232);
     --c-accent-faint: rgb(93, 146, 217);
     --c-error: rgb(217, 48, 37);
+    --c-warning: rgb(255, 164, 0);
+    --c-warning-bg: rgb(255, 229, 182);
     --c-black: rgb(32, 33, 36);
     --c-background: #fff;
     --c-background-0: rgb(248, 249, 249);

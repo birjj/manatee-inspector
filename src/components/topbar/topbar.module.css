@@ -89,3 +89,10 @@
     border-bottom: 4px solid var(--c-error);
     border-right: 4px solid transparent;
 }
+
+.bar--warning {
+    align-items: center;
+    padding: 0 1ch;
+    background: var(--c-warning-bg);
+    border-bottom-color: var(--c-warning);
+}
