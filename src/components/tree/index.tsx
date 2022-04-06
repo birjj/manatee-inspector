@@ -22,7 +22,6 @@ type TreeChildCategorizer<T, F> = (data: T) => {
 }[];
 
 enum TreeSelectState {
-    None,
     Opener,
     Closer
 }
@@ -45,7 +44,7 @@ export type TreeComponent<T> = React.ComponentType<TreeProps<T>>;
 const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpenerProps<DataType>>, Closer: React.ComponentType<TreeCloserProps<DataType>>, categorizer: TreeChildCategorizer<DataType, ChildProps>) => {
     const Tree = ({ data, open = false, selectable = false, selectedValue, inlineArrow = false, onSelect, ...props }: TreeProps<DataType>) => {
         const [isOpen, setOpen] = useState(open);
-        const [selected, setSelected] = useState(TreeSelectState.None);
+        const [selected, setSelected] = useState(TreeSelectState.Opener);
         const [childData, setChildData] = useState([] as ReturnType<typeof categorizer>);
         const isSelected = selectedValue && selectedValue === data;
 
