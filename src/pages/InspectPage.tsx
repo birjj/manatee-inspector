@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DOMTree from "../components/dom-tree";
+import ErrorBoundary from "../components/error-boundary";
 import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
@@ -28,16 +29,18 @@ export default InspectPage;
 const DOMTreeSection = ({ selected, onSelect }: { selected: DOMEntry | undefined, onSelect: (v: DOMEntry) => void }) => {
     const { isLoading, error, path, dom } = useCurrentDOM();
     return <div className={[style["tree-section"], dom ? "" : "center"].join(" ")}>
-        {dom
-            ? <DOMTree data={dom} open selectable selectedValue={selected} onSelect={onSelect} />
-            : <div className={style["tree-empty"]}>
-                {isLoading
-                    ? <p>Loading...</p>
-                    : <p>Pick an element <NodeSelectButton className={style["btn-select"]} showError={false} /> to get started</p>}
-                {error
-                    ? <p className={style.error}>{error}</p>
-                    : null}
-            </div>}
+        <ErrorBoundary>
+            {dom
+                ? <DOMTree data={dom} open selectable selectedValue={selected} onSelect={onSelect} />
+                : <div className={style["tree-empty"]}>
+                    {isLoading
+                        ? <p>Loading...</p>
+                        : <p>Pick an element <NodeSelectButton className={style["btn-select"]} showError={false} /> to get started</p>}
+                    {error
+                        ? <p className={style.error}>{error}</p>
+                        : null}
+                </div>}
+        </ErrorBoundary>
     </div>
 };
 
@@ -45,5 +48,7 @@ type DOMInspectorSectionProps = {
     data?: any;
 }
 const DOMInspectorSection = ({ data }: DOMInspectorSectionProps) => {
-    return <DOMInspector data={data} />;
+    return <ErrorBoundary>
+        <DOMInspector data={data} />
+    </ErrorBoundary>;
 }

@@ -17,6 +17,8 @@ export default function Topbar() {
     const navigate = useNavigate();
     const isSettings = !!useMatch("/settings");
 
+    throw new Error("Test");
+
     const onSettingsClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(e => {
         e.stopPropagation();
         e.preventDefault();
