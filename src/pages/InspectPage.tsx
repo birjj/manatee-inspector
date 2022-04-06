@@ -14,7 +14,7 @@ const InspectPage = () => {
     const { dom } = useCurrentDOM();
 
     useEffect(() => {
-        setSelected(undefined);
+        setSelected(dom || undefined);
     }, [dom]);
 
     return <div className={style.container}>
