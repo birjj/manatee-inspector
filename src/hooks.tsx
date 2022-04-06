@@ -164,7 +164,7 @@ export const useCurrentDOM = () => {
                 useCachedUI,
                 collectTexts
             };
-            const path = /`{[^}]+$`/.test(node.Path) ? node.Path + "}*" : node.Path;
+            const path = /{[^}]+$/.test(node.Path) ? node.Path + "}*" : node.Path;
             const code = `JSON.stringify((new Field(${JSON.stringify(path)})).inspect(${JSON.stringify(inspectOpts)}));`;
             const result = await runCode(activeApp.uuid, code);
             try {
