@@ -6,7 +6,8 @@ import treeFactory from "../tree";
 import style from "./value-tree.module.css";
 
 type ValueProps = {
-    data: any
+    data: any,
+    expanded?: boolean
 };
 
 /** Representation of literals (strings, numbers, booleans, null, undefined, ...) */
@@ -53,9 +54,9 @@ const ObjectChild = ({ data: [key, value] }: { data: [string, any] }) => {
     </div>;
 };
 
-const Value = ({ data }: ValueProps) => {
+const Value = ({ data, expanded = false }: ValueProps) => {
     if (data instanceof Object) {
-        return <ObjectValue data={data} inlineArrow={true} className={style["container"]} />
+        return <ObjectValue open={expanded} data={data} inlineArrow={true} className={style["container"]} />
     }
     return <LiteralValue data={data} />
 };
