@@ -6,7 +6,6 @@ export const getNodePath = (node: DOMEntry, rootPath: string = "") => {
         return (node as DOMEntryJava).accessibleName
             || (node as DOMEntryJava).name
             || (node as DOMEntryJava).simpleType
-            || (node as DOMEntryJava).shellType
             || node.type;
     }
     const walkBack = (current: DOMEntry, path: string[] = []): string[] => {
