@@ -19,7 +19,8 @@ export type DOMEntryJava = {
     matchThis: string,
     rows?: ({ rowIndex: string, rowCount: string, selected: boolean } & { [name: string]: string })[],
     columns?: { header: string, value: string, index: number }[],
-    tabs?: { [name: string]: DOMEntry }
+    tabs?: { [name: string]: DOMEntry },
+    parent?: DOMEntryJava // added by us
 };
 
 export type DOMEntryWeb = {
@@ -31,5 +32,6 @@ export type DOMEntryWeb = {
     "_aria-label": string;
     type: string;
     visible: boolean;
-    children: DOMEntryWeb[]
+    children: DOMEntryWeb[],
+    parent?: DOMEntryWeb // added by us
 };

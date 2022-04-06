@@ -159,6 +159,20 @@ button.primary:disabled {
     justify-content: center;
 }
 
+.bar {
+    display: flex;
+    min-height: 27px;
+    flex: 0 0 27px;
+    align-items: center;
+    width: 100%;
+    background-color: var(--c-background-1);
+    border-bottom: 1px solid var(--c-hairline);
+}
+
+.bar--text {
+    padding: 0 1ch;
+}
+
 #root {
     height: 100vh;
     display: flex;

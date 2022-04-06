@@ -4,21 +4,32 @@ import ErrorBoundary from "../components/error-boundary";
 import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
-import { useCurrentDOM } from "../hooks";
+import { useApplications, useCurrentDOM, useHighlightNode } from "../hooks";
+import { runCode } from "../manatee";
 import type { DOMEntry } from "../manatee/types";
+import { getNodePath } from "../utils";
 
 import style from "./InspectPage.module.css";
 
 const InspectPage = () => {
     const [selected, setSelected] = useState(undefined as DOMEntry | undefined);
-    const { dom } = useCurrentDOM();
+    const { active } = useApplications();
+    const { dom, path } = useCurrentDOM();
+    const highlightNode = useHighlightNode();
 
     useEffect(() => {
         setSelected(dom || undefined);
     }, [dom]);
+    const updateSelected = (val?: DOMEntry) => {
+        if (val && active) {
+            const nodePath = getNodePath(val, path || "");
+            highlightNode(active?.uuid, nodePath);
+        }
+        setSelected(val);
+    };
 
     return <div className={style.container}>
-        <DOMTreeSection selected={selected} onSelect={setSelected} />
+        <DOMTreeSection selected={selected} onSelect={updateSelected} />
         <Resizable dir="LEFT" className={style["inspector-section"]}>
             <DOMInspectorSection data={selected} />
         </Resizable>

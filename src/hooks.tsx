@@ -118,7 +118,17 @@ export const useCredentials = () => {
     }
 };
 
-/** SWR-like hook for selecting a DOM using Manatee */
+/** Walks through and sets the .parent on the DOM, so we can walk in both directions if we want to */
+function decorateDOM(dom: DOMEntry) {
+    function addParent(node: DOMEntry, parent?: DOMEntry) {
+        if (parent) { node.parent = parent; }
+        if (node.children) {
+            node.children.forEach(child => addParent(child, node));
+        }
+    }
+    addParent(dom);
+    return dom;
+}
 const { useGlobalState: useGlobalDOMState } = createGlobalState({
     isSelecting: false,
     isLoading: false,
@@ -128,6 +138,7 @@ const { useGlobalState: useGlobalDOMState } = createGlobalState({
     dom: null as DOMEntry | null,
     path: null as string | null
 });
+/** SWR-like hook for selecting a DOM using Manatee */
 export const useCurrentDOM = () => {
     const [isSelecting, setIsSelecting] = useGlobalDOMState("isSelecting");
     const [isLoading, setIsLoading] = useGlobalDOMState("isLoading");
@@ -157,14 +168,14 @@ export const useCurrentDOM = () => {
         // we use an async func to actually communicate with Manatee so we don't have to nest promise callbacks
         (async () => {
             const node = await selectNode(activeApp.uuid);
-            setPath(node.Path);
+            const path = /^{[^}]+$/.test(node.Path) ? node.Path + "}*" : node.Path;
+            setPath(path);
             setIsSelecting(false);
             setIsLoading(true);
             const inspectOpts = {
                 useCachedUI,
                 collectTexts
             };
-            const path = /{[^}]+$/.test(node.Path) ? node.Path + "}*" : node.Path;
             const code = `JSON.stringify((new Field(${JSON.stringify(path)})).inspect(${JSON.stringify(inspectOpts)}));`;
             const result = await runCode(activeApp.uuid, code);
             try {
@@ -173,7 +184,7 @@ export const useCurrentDOM = () => {
                 throw "Failed to parse response JSON: " + result;
             }
         })()
-            .then(data => setDOM(data))
+            .then((data: DOMEntry) => setDOM(decorateDOM(data)))
             .catch(e => {
                 setError(e);
                 setDOM(null);
@@ -199,3 +210,17 @@ export const useCurrentDOM = () => {
         reset
     };
 }
+
+let oldHighlightPath: string = "";
+export const useHighlightNode = () => {
+    const highlight = useCallback((appUuid: string, path: string) => {
+        let code = `(new Field(${JSON.stringify(path)})).highlightWithColor("red");`;
+        if (oldHighlightPath) {
+            code = `var lowlightField = new Field(${JSON.stringify(oldHighlightPath)}); if (lowlightField.exists()) { lowlightField.lowlight(); } ${code}`;
+        }
+        oldHighlightPath = path;
+        runCode(appUuid, code)
+            .catch(e => console.warn("Error while highlighting", appUuid, path, e));
+    }, []);
+    return highlight;
+};

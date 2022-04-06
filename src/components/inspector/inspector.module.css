@@ -1,5 +1,24 @@
 .container {
+    display: flex;
+    flex-direction: column;
     font-family: var(--font-monospace);
+}
+
+.selector-bar {
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+.selector {
+    appearance: none;
+    background: none !important;
+    border: none !important;
+    width: 100%;
+}
+
+.content {
+    padding: 1em;
+    word-break: break-all;
 }
 
 .prop {
