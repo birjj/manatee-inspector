@@ -31,7 +31,7 @@ const AppSelect = ({ className, onChange, value, disabled = false, hideUuid = fa
     return <div {...props} className={cName} ref={$container}>
         <div onClick={() => setOpen(!isOpen)} className={[style.input, disabled ? style.disabled : ""].join(" ")}>
             <span className={[style.label, !selected ? style.placeholder : ""].join(" ")}>
-                {selected ? selected.name : `Vælg fra ${applications.length} apps`}
+                {selected ? selected.name : `Select from ${applications.length} apps`}
             </span>
             <span className={style.arrow}>▶</span>
         </div>
