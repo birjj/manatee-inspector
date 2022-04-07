@@ -1,4 +1,5 @@
-import { RefObject, useCallback, useEffect, useState } from "react";
+import useResizeObserver from "@react-hook/resize-observer";
+import { RefObject, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { createGlobalState } from "react-hooks-global-state";
 import { useMatch, useNavigate } from "react-router-dom";
 import { runCode, selectNode } from "./manatee";
@@ -56,6 +57,16 @@ export const useLocalStorage = <T,>(key: string, initialValue: T): [T, (val: T) 
     useEventListener("storage", handleStorageChange);
 
     return [storedValue, setValue];
+};
+
+/** Observes the size of the reference element */
+export const useSize = (target: RefObject<HTMLElement>) => {
+    const [size, setSize] = useState(undefined as DOMRect | undefined);
+    useLayoutEffect(() => {
+        setSize(target.current?.getBoundingClientRect());
+    }, [target]);
+    useResizeObserver(target, entry => setSize(entry.contentRect));
+    return size;
 };
 
 /** Gets/sets the list of stored applications we can send messages to */

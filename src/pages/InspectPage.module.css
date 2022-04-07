@@ -4,16 +4,21 @@
     overflow: auto;
 }
 
+.grow {
+    flex-grow: 1;
+}
+
 .tree-section {
     flex-grow: 1;
     padding: .5em 0 .5em 1.5em;
     overflow: auto;
+    contain: strict;
 }
 
 .inspector-section {
     width: 384px;
-    flex-shrink: 0;
     overflow: auto;
+    contain: strict;
 }
 
 .tree-empty {

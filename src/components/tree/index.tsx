@@ -79,7 +79,9 @@ const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpene
                 {childData.length
                     ? <span className={style.arrow} onClick={toggleOpen}>▶</span>
                     : null}
-                <Opener data={data} closed={!isOpen} />
+                <div className={style["hover-adjacent"]}>
+                    <Opener data={data} closed={!isOpen} />
+                </div>
                 <span className={style.hover}></span>
             </div>
             {isOpen && childData.length
@@ -98,7 +100,9 @@ const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpene
                         })}
                     </div>
                     <div className={[style.line, style["line--closer"], isSelected && selected === TreeSelectState.Closer ? style.selected : ""].join(" ")} onClick={e => { e.stopPropagation(); doSelect(TreeSelectState.Closer); }}>
-                        <Closer data={data} />
+                        <div className={style["hover-adjacent"]}>
+                            <Closer data={data} />
+                        </div>
                         <span className={style.hover}></span>
                     </div>
                 </>

@@ -29,10 +29,12 @@ const InspectPage = () => {
     };
 
     return <div className={style.container}>
-        <DOMTreeSection selected={selected} onSelect={updateSelected} />
-        <Resizable dir="LEFT" className={style["inspector-section"]}>
-            <DOMInspectorSection data={selected} />
-        </Resizable>
+        <Resizable
+            left={<DOMTreeSection selected={selected} onSelect={updateSelected} />}
+            leftClass={style.grow}
+            right={<DOMInspectorSection data={selected} />}
+            rightClass={style["inspector-section"]}
+        />
     </div>;
 };
 export default InspectPage;

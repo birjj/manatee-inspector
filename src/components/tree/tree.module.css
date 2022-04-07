@@ -3,6 +3,7 @@
     line-height: 1.36;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     cursor: default;
 }
 
@@ -15,6 +16,8 @@
     transform: scale(.9) translateX(-75%) rotate(0deg);
     color: var(--c-text-secondary);
     user-select: none;
+    z-index: 1;
+    height: fit-content;
 }
 
 .tree.expanded>.line--opener>.arrow {
@@ -24,6 +27,8 @@
 .line {
     position: relative;
     min-height: 18px;
+    display: flex;
+    flex-direction: column;
 }
 
 .tree--inline-arrow>.line--opener {
@@ -42,8 +47,12 @@
     top: 0;
     bottom: 0;
     margin-left: -100em;
-    z-index: -1;
     opacity: 0;
+    z-index: 0;
+}
+
+.hover-adjacent {
+    z-index: 1;
 }
 
 .tree.selectable>.line:hover>.hover {

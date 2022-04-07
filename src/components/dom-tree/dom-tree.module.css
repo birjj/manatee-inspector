@@ -1,5 +1,6 @@
 .tag {
     color: var(--c-text-secondary);
+    word-break: break-all;
 }
 
 .name {

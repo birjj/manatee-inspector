@@ -1,29 +1,36 @@
 .container {
-    position: relative;
+    display: flex;
+    flex-basis: 100%;
+}
+
+.left,
+.right {
+    display: flex;
+}
+
+.left>*,
+.right>* {
+    width: 100%;
 }
 
 .border {
-    position: absolute;
-    left: -1px;
-    top: 0;
-    bottom: 0;
+    position: relative;
+    width: 1px;
+    margin-left: -1px;
+    z-index: 2;
 
     cursor: e-resize;
-    border-color: var(--c-hairline);
-    border-style: solid;
-    border-width: 0 1px;
+    background: var(--c-hairline);
 }
 
 .border:hover:not(.dragging) {
-    border-color: var(--c-accent);
-    border-width: 0 1px;
+    background: var(--c-accent);
     opacity: 0.75;
 }
 
 .border.dragging {
-    border-color: var(--c-accent);
-    border-width: 0 2px;
-    left: -2px;
+    background: var(--c-accent);
+    box-shadow: 1px 0 var(--c-accent);
 }
 
 .border::before {
