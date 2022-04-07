@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
+import AppSelect from "../components/app-select";
 import { AppIcon } from "../components/icons";
 import { useApplications, useCredentials, useCurrentDOM } from "../hooks";
 
@@ -30,8 +31,7 @@ const LandingPage = () => {
 };
 export default LandingPage;
 
-export const AppSelector = ({ className, disabled, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) => {
-    const { applications } = useApplications();
+export const AppSelector = (props: Omit<Parameters<typeof AppSelect>[0], "value" | "onChange">) => {
     const { username, password } = useCredentials();
     const { reset: resetDOM } = useCurrentDOM();
     const navigate = useNavigate();
@@ -43,10 +43,5 @@ export const AppSelector = ({ className, disabled, ...props }: React.SelectHTMLA
     }, [navigate, resetDOM]);
 
     const hasCredentials = username && password;
-    return <select {...props} disabled={disabled || !hasCredentials} style={{ marginLeft: "1ch", minWidth: "16ch", flexGrow: "1" }} value={appUuid || ""} onChange={e => selectApp((e.target as HTMLSelectElement).value)}>
-        <option value={""}></option>
-        {applications.map(({ uuid, name }) =>
-            <option key={uuid} value={uuid}>{name}</option>
-        )}
-    </select>
+    return <AppSelect {...props} disabled={!hasCredentials} value={appUuid || ""} onChange={selectApp} />
 };

@@ -96,3 +96,7 @@
     background: var(--c-warning-bg);
     border-bottom-color: var(--c-warning);
 }
+
+.app-selector {
+    margin-left: 1ch;
+}

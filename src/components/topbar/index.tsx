@@ -41,7 +41,7 @@ export default function Topbar() {
             </Link>
             <div className={[style.item, style["text-item"]].join(" ")}>
                 Application:
-                <AppSelector />
+                <AppSelector className={style["app-selector"]} hideUuid />
             </div>
             <span className={style.filler} />
             <a href="https://github.com/birjolaxew/manatee-inspector" target="_blank" className={style.button}>
