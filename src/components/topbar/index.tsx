@@ -28,11 +28,11 @@ export default function Topbar() {
         <div className={style.bar}>
             <NodeSelectButton disabled={!active} />
             <label>
-                <input type="checkbox" checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
+                <input type="checkbox" disabled={!active} checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
                 useCachedUI
             </label>
             <label>
-                <input type="checkbox" checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
+                <input type="checkbox" disabled={!active} checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
                 collectTexts
             </label>
             <Divider />
@@ -66,17 +66,19 @@ export const NodeSelectButton = ({ className, disabled, showError = true, ...pro
     const { active } = useApplications();
     const { isSelecting, selectNode, error } = useCurrentDOM();
 
-    return <button {...props} className={[
-        style.item,
-        style.button,
-        className,
-        isSelecting ? "active" : ""
-    ].join(" ")} disabled={disabled || !active} onClick={selectNode}>
-        <NodeSelectIcon />
+    return <div className={style["button-wrapper"]}>
+        <button {...props} className={[
+            style.item,
+            style.button,
+            className,
+            isSelecting ? "active" : ""
+        ].join(" ")} disabled={disabled || !active} onClick={selectNode}>
+            <NodeSelectIcon />
+        </button>
         {showError && error
             ? <div className={style.error}>
                 {error}
             </div>
             : null}
-    </button>;
+    </div>;
 }

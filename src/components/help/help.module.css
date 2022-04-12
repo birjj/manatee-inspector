@@ -8,6 +8,7 @@
     line-height: 1.5em;
     vertical-align: middle;
     user-select: none;
+    cursor: pointer;
 }
 
 .tooltip {

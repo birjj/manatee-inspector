@@ -41,6 +41,10 @@
     transform: scale(0.85) rotate(-90deg);
 }
 
+.open .input {
+    border-radius: 2px 2px 0 0;
+}
+
 .label {
     margin-right: 1ch;
 }
@@ -51,14 +55,15 @@
 
 .menu {
     position: absolute;
-    margin: 4px 0 0;
+    margin: 0;
     padding: 0;
     left: 0;
     min-width: 100%;
     top: 100%;
     background: var(--c-background);
-    border-radius: 2px;
+    border-radius: 0 0 2px 2px;
     border: 1px solid var(--c-hairline-1);
+    border-top: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2),
         0 2px 16px rgba(0, 0, 0, 0.05);
     z-index: 2;
