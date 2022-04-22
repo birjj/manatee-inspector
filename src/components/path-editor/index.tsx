@@ -11,9 +11,9 @@ function textFromEntry(entry: PathEntry) {
         return `{${(entry as any).title}}`;
     }
     return entry.text
-        || (entry as any).uniqueTokens?.[0]
-        || Object.values(entry).filter(v => typeof v === "string")[0]
-        || "";
+        || ((entry as any).uniqueTokens || []).filter((k: string) => (entry as any)[k])[0]
+        || Object.values(entry).filter(v => typeof v === "string" && v)[0]
+        || "<unknown>";
 }
 
 /** Combines a PathInfo and a written (possibly edited) path into a single PathInfo */

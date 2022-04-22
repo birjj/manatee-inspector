@@ -45,7 +45,6 @@ export const getPathAlternatives = (pathInfo: PathEntry[]) => {
     let allowWildcards = false;
     for (var i = pathInfo.length - 1; i >= 0; --i) {
         const uniqueKeys = getUniqueKeys(pathInfo[i]);
-        console.log("Looking at", pathInfo[i], uniqueKeys);
         // always include every token from last unique token and onwards
         if (uniqueKeys.length === 0 && !allowWildcards) {
             outp.forEach(list => list.push(pathInfo[i]));
