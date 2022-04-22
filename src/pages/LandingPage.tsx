@@ -34,8 +34,8 @@ export default LandingPage;
 export const AppSelector = (props: Omit<Parameters<typeof AppSelect>[0], "value" | "onChange">) => {
     const { username, password } = useCredentials();
     const { reset: resetDOM } = useCurrentDOM();
+    const { active } = useApplications();
     const navigate = useNavigate();
-    const appUuid = useMatch("/app/:appUuid")?.params?.appUuid;
 
     const selectApp = useCallback((uuid: string) => {
         resetDOM();
@@ -43,5 +43,5 @@ export const AppSelector = (props: Omit<Parameters<typeof AppSelect>[0], "value"
     }, [navigate, resetDOM]);
 
     const hasCredentials = username && password;
-    return <AppSelect {...props} disabled={!hasCredentials} value={appUuid || ""} onChange={selectApp} />
+    return <AppSelect {...props} disabled={!hasCredentials} value={active?.uuid || ""} onChange={selectApp} />
 };

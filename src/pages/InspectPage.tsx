@@ -5,7 +5,6 @@ import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
 import { useApplications, useCurrentDOM, useHighlightNode } from "../hooks";
-import { runCode } from "../manatee";
 import type { DOMEntry } from "../manatee/types";
 import { getNodePath } from "../utils";
 
@@ -47,8 +46,8 @@ const DOMTreeSection = ({ selected, onSelect }: { selected: DOMEntry | undefined
                 ? <DOMTree data={dom} open selectable selectedValue={selected} onSelect={onSelect} />
                 : <div className={style["tree-empty"]}>
                     {isLoading
-                        ? <p>Loading...</p>
-                        : <p>Pick an element <NodeSelectButton className={style["btn-select"]} showError={false} /> to get started</p>}
+                        ? <div>Loading...</div>
+                        : <div>Pick an element <NodeSelectButton className={style["btn-select"]} showError={false} /> to get started</div>}
                     {error
                         ? <p className={style.error}>{error}</p>
                         : null}

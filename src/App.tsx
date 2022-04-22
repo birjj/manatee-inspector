@@ -5,6 +5,7 @@ import Topbar from "./components/topbar";
 import { usePorts } from "./hooks";
 import InspectPage from "./pages/InspectPage";
 import LandingPage from "./pages/LandingPage";
+import SelectorPage from "./pages/SelectorPage";
 import SettingsPage from "./pages/SettingsPage";
 
 const SearchParamsInterceptor = () => {
@@ -36,6 +37,7 @@ function App() {
         <Routes>
             <Route path="/settings/" element={<SettingsPage />} />
             <Route path="/app/:appUuid" element={<InspectPage />} />
+            <Route path="/app/:appUuid/selector" element={<SelectorPage />} />
             <Route path="*" element={<LandingPage />} />
         </Routes>
     </>

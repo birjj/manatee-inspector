@@ -102,5 +102,37 @@
 }
 
 .app-selector {
-    margin-left: 1ch;
+    margin: 0 1ch;
+}
+
+.nav-link {
+    position: relative;
+    padding: 0 0.75ch;
+    margin: 0 0.25ch;
+    color: inherit;
+    text-decoration: none;
+}
+
+.nav-link.disabled {
+    cursor: default;
+    color: var(--c-text-secondary);
+}
+
+.nav-link::before {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--c-accent);
+    opacity: 0;
+}
+
+.nav-link:not(.disabled):hover::before {
+    opacity: 0.5;
+}
+
+.nav-link:not(.disabled):global(.active)::before {
+    opacity: 1;
 }

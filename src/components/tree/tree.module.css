@@ -31,7 +31,13 @@
     flex-direction: column;
 }
 
+.tree--inline-arrow {
+    display: contents;
+}
+
 .tree--inline-arrow>.line--opener {
+    display: inline-block;
+    padding-left: 1ch;
     margin-left: 0;
 }
 

@@ -1,6 +1,6 @@
 import React, { FormEvent, useCallback, useState } from "react";
 import Help from "../components/help";
-import { TrashIcon } from "../components/icons";
+import { ChevronLeft, TrashIcon } from "../components/icons";
 import { useApplications, useCredentials, usePorts } from "../hooks";
 
 import style from "./SettingsPage.module.css";
@@ -10,6 +10,9 @@ const SettingsPage = () => {
 
     return <div className={style.wrapper}>
         <div className={style.container}>
+            <button onClick={() => history.back()}>
+                <ChevronLeft /> Back
+            </button>
             <div className={style.section} id="credentials">
                 <h2>Credentials</h2>
                 <p>Credentials used to communicate with the Manatee instance. Must match those used in Cuesta.</p>
@@ -128,6 +131,8 @@ export const AddAppForm = ({ disabled = false }: { disabled?: boolean }) => {
         setUuid("");
     }, [addApplication, uuid, name]);
 
+    const isSubmitable = name && uuid;
+
     return <>
         <form className={style.row} onSubmit={onSubmit}>
             <h3>Add application:</h3><Help>Enter the UUID of the application you want to work on, as well as a human-friendly name.<br />The UUID must match the one from Cuesta.</Help>
@@ -159,7 +164,7 @@ export const AddAppForm = ({ disabled = false }: { disabled?: boolean }) => {
                     disabled={disabled}
                 />
             </label>
-            <button disabled={disabled}>Add</button>
+            <button disabled={disabled} className={isSubmitable ? "primary" : ""}>Add</button>
         </form>
         {error ? <div className={style.error}>{error}</div> : null}
     </>;

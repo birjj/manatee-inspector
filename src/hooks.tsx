@@ -1,5 +1,5 @@
 import useResizeObserver from "@react-hook/resize-observer";
-import { RefObject, useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { createGlobalState } from "react-hooks-global-state";
 import { useMatch, useNavigate } from "react-router-dom";
 import { runCode, selectNode } from "./manatee";
@@ -69,10 +69,24 @@ export const useSize = (target: RefObject<HTMLElement>) => {
     return size;
 };
 
+/** Attaches a mutation observer to the reference element */
+export const useMutationObserver = (target: RefObject<HTMLElement>, options: MutationObserverInit = {}, cb: MutationCallback) => {
+    const observer = useMemo(
+        () => new MutationObserver((rec, obs) => cb?.(rec, obs)),
+        [cb]
+    );
+
+    useEffect(() => {
+        if (!target.current) { return; }
+        observer.observe(target.current, options);
+        return () => observer.disconnect();
+    }, [target, observer, options]);
+};
+
 /** Gets/sets the list of stored applications we can send messages to */
 export const useApplications = () => {
     const [applications, setApplications] = useLocalStorage<{ uuid: string, name: string }[]>("applications", []);
-    const activeKey = useMatch("/app/:appUuid")?.params?.appUuid;
+    const activeKey = useMatch("/app/:appUuid/*")?.params?.appUuid;
     const navigate = useNavigate();
 
     return {
@@ -147,7 +161,8 @@ const { useGlobalState: useGlobalDOMState } = createGlobalState({
     collectTexts: false,
     error: null as string | null,
     dom: null as DOMEntry | null,
-    path: null as string | null
+    path: null as string | null,
+    pathInfo: [] as ({ [k: string]: string } & { uniqueTokens: string[] })[]
 });
 /** SWR-like hook for selecting a DOM using Manatee */
 export const useCurrentDOM = () => {
@@ -158,12 +173,14 @@ export const useCurrentDOM = () => {
     const [error, setError] = useGlobalDOMState("error");
     const [dom, setDOM] = useGlobalDOMState("dom");
     const [path, setPath] = useGlobalDOMState("path");
+    const [pathInfo, setPathInfo] = useGlobalDOMState("pathInfo");
     const { active: activeApp } = useApplications();
 
     const reset = useCallback(() => {
         setIsLoading(false);
         setIsSelecting(false);
         setPath(null);
+        setPathInfo([]);
         setDOM(null);
         setError(null);
     }, [setIsLoading, setIsSelecting, setPath, setDOM, setError]);
@@ -173,6 +190,7 @@ export const useCurrentDOM = () => {
         setIsSelecting(true);
         setIsLoading(false);
         setPath(null);
+        setPathInfo([]);
         setDOM(null);
         setError(null);
 
@@ -181,6 +199,7 @@ export const useCurrentDOM = () => {
             const node = await selectNode(activeApp.uuid);
             const path = /^{[^}]+$/.test(node.Path) ? node.Path + "}*" : node.Path;
             setPath(path);
+            setPathInfo(node.PathInfo);
             setIsSelecting(false);
             setIsLoading(true);
             const inspectOpts = {
@@ -200,12 +219,13 @@ export const useCurrentDOM = () => {
                 setError(e);
                 setDOM(null);
                 setPath(null);
+                setPathInfo([]);
             })
             .then(() => {
                 setIsLoading(false);
                 setIsSelecting(false);
             });
-    }, [activeApp, isSelecting, setIsSelecting, setError, setDOM, setPath]);
+    }, [activeApp, isSelecting, setIsSelecting, setError, setDOM, setPath, setPathInfo, useCachedUI, collectTexts]);
 
     return {
         isSelecting,
@@ -217,6 +237,7 @@ export const useCurrentDOM = () => {
         error,
         dom,
         path,
+        pathInfo,
         selectNode: doSelect,
         reset
     };

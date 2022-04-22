@@ -1,7 +1,7 @@
 /** @fileoverview The top-most bar of the application, containing the element picker amongst other things */
 
 import React, { useCallback } from "react";
-import { Link, useMatch, useNavigate } from "react-router-dom";
+import { Link, NavLink, useMatch, useNavigate } from "react-router-dom";
 
 import { useApplications, useCurrentDOM, usePorts } from "../../hooks";
 import { AppSelector } from "../../pages/LandingPage";
@@ -23,6 +23,9 @@ export default function Topbar() {
         e.preventDefault();
         isSettings ? history.go(-1) : navigate("/settings/")
     }, [isSettings, navigate]);
+    const onNavClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(e => {
+        if (!active) { e.preventDefault(); }
+    }, [active]);
 
     return <>
         <div className={style.bar}>
@@ -36,6 +39,11 @@ export default function Topbar() {
                 collectTexts
             </label>
             <Divider />
+            <NavLink to={`/app/${active?.uuid}/`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Inspect</NavLink>
+            <NavLink to={`/app/${active?.uuid}/selector`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Selector</NavLink>
+
+            <span className={style.filler} />
+
             <Link to="/settings/" className={style["button"]}>
                 <PlusIcon />
             </Link>
@@ -43,7 +51,7 @@ export default function Topbar() {
                 Application:
                 <AppSelector className={style["app-selector"]} hideUuid />
             </div>
-            <span className={style.filler} />
+            <Divider />
             <a href="https://github.com/birjolaxew/manatee-inspector" target="_blank" className={style.button}>
                 <GitHubIcon />
             </a>
