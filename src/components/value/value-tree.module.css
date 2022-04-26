@@ -1,5 +1,4 @@
 .container {
-    display: inline-block;
     padding-left: 1ch;
     vertical-align: top;
 }
@@ -10,5 +9,4 @@
 
 .key {
     color: var(--c-text-tag);
-    margin-left: -1ch;
 }

@@ -12,6 +12,7 @@
     --c-background-2: rgb(222, 225, 230);
     --c-hairline: rgb(202, 205, 209);
     --c-hairline-1: rgb(182, 185, 189);
+    --c-hairline-2: rgba(202, 205, 209, 0.5);
     --c-text-secondary: rgb(95, 99, 104);
     --c-text-tag: rgb(136, 18, 128);
     --c-text-attr: rgb(153, 69, 0);

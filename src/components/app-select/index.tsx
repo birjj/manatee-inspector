@@ -12,7 +12,7 @@ type AppSelectProps = {
 };
 const AppSelect = ({ className, onChange, value, disabled = false, hideUuid = false, ...props }: AppSelectProps & Partial<Omit<React.HTMLAttributes<HTMLDivElement>, keyof AppSelectProps>>) => {
     const [_isOpen, setOpen] = useState(false);
-    const { applications, active } = useApplications();
+    const { applications } = useApplications();
     const $container = useRef(null);
 
     useOutsideClick($container, () => setOpen(false));
