@@ -21,9 +21,9 @@ const InspectPage = () => {
         setSelected(dom || undefined);
     }, [dom]);
     const updateSelected = (val?: DOMEntry) => {
-        if (val && active) {
+        if (val) {
             const nodePath = getNodePath(val, path || "");
-            highlightNode(active?.uuid, nodePath);
+            highlightNode(nodePath);
         }
         setSelected(val);
     };

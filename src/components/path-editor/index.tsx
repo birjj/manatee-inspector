@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useMutationObserver } from "../../hooks";
-import { CopyIcon } from "../icons";
+import { useHighlightNode } from "../../stores/dom";
+import { CopyIcon, PaintIcon } from "../icons";
 
 import style from "./path-editor.module.css";
 
@@ -16,48 +16,6 @@ function textFromEntry(entry: PathEntry) {
         || "<unknown>";
 }
 
-/** Combines a PathInfo and a written (possibly edited) path into a single PathInfo */
-/*function parseEditablePath(path: string, info: PathEntry[]): PathEntry[] {
-    const outp: PathEntry[] = [];
-    const windowRegex = /^{([^}]+)}/;
-    if (windowRegex.test(path)) {
-        const windowText = windowRegex.exec(path)![1];
-        outp.push({ type: "window", title: windowText });
-        path = path.replace(windowRegex, "");
-    }
-
-    const entryStrings = path.split("/");
-    // try to match up each string with its corresponding PathEntry from the given PathInfo
-    let offset = info[0] && (info[0] as any).type === "window" ? 1 : 0;
-    for (var i = 0; i < entryStrings.length; ++i) {
-        const str = entryStrings[i];
-        if (str === "*") {
-            outp.push({ text: "*", hasInfo: false });
-            continue;
-        }
-        if (str === "**") {
-            outp.push({ text: "**", hasInfo: false });
-            const next = entryStrings[i + 1];
-            let extraOffset = 0;
-            for (var j = i + 1; j + offset < info.length; ++j) {
-                const targetInfo = info[j + offset];
-                if (!targetInfo) { break; }
-                if (Object.values(targetInfo).find(v => v === next)) {
-                    extraOffset = j - i;
-                    break;
-                }
-            }
-            if (!extraOffset) { extraOffset = entryStrings.length - i; }
-            offset += Math.max(0, extraOffset);
-            continue;
-        }
-        outp.push(info[i + offset]
-            ? { ...info[i + offset], text: str } as any
-            : { text: str, hasInfo: false });
-    }
-    return outp;
-}*/
-
 type PathEditorProps = {
     pathInfo: PathEntry[],
     editable?: boolean,
@@ -67,6 +25,9 @@ const PathEditor = ({ pathInfo, editable = false }: PathEditorProps) => {
     const tags: React.ReactNode[] = [];
     const [didCopy, setDidCopy] = useState(false);
     const didCopyTimeout = useRef(0);
+    const [didHighlight, setDidHighlight] = useState(false);
+    const didHighlightTimeout = useRef(0);
+    const highlightNode = useHighlightNode();
 
     pathInfo.forEach((entry, i) => {
         tags.push(
@@ -86,13 +47,30 @@ const PathEditor = ({ pathInfo, editable = false }: PathEditorProps) => {
         didCopyTimeout.current = setTimeout(() => setDidCopy(false), 500);
     }, [pathInfo, $container, didCopyTimeout, setDidCopy]);
 
+    const doHighlight = useCallback(() => {
+        if (!$container.current) { return; }
+        if (!pathInfo.length) { return; }
+        clearTimeout(didHighlightTimeout.current);
+        didHighlightTimeout.current = setTimeout(() => setDidHighlight(false), 500);
+        setDidHighlight(true);
+        const path = $container.current.textContent || "";
+        highlightNode(path);
+    }, [pathInfo, $container, didHighlightTimeout, setDidHighlight]);
+
     return <div className={style.container}>
         <div className={style["tag-container"]} ref={$container}>
             {tags}
         </div>
-        <button disabled={!pathInfo.length} className={[style["copy-button"], didCopy ? style["copy-button--copied"] : ""].join(" ")} onClick={doCopy}>
-            <CopyIcon />
-        </button>
+        <div className={style["button-container"]}>
+            <button disabled={!pathInfo.length} className={[style["icon-button"], didCopy ? style["icon-button--active"] : ""].join(" ")} onClick={doCopy}>
+                <CopyIcon />
+                <span className={style["icon-tooltip"]}>Copied</span>
+            </button>
+            <button disabled={!pathInfo.length} className={[style["icon-button"], didHighlight ? style["icon-button--active"] : ""].join(" ")} onClick={doHighlight}>
+                <PaintIcon />
+                <span className={style["icon-tooltip"]}>Highlighted</span>
+            </button>
+        </div>
     </div>
 };
 

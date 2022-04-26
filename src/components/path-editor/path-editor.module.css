@@ -55,17 +55,22 @@
     color: inherit;
 }
 
-.copy-button {
+.button-container {
+    margin-left: auto;
+}
+
+.icon-button {
     position: relative;
-    margin: 0 0 0 auto;
+    margin: 0;
     padding: 1ch 0.5ch;
     border-color: transparent !important;
-    transition: border-color linear .2s;
+    color: inherit;
+    transition: color linear .2s;
     box-shadow: none;
 }
 
-.copy-button::after {
-    content: "Copied";
+.icon-tooltip {
+    pointer-events: none;
     position: absolute;
     bottom: 100%;
     left: 50%;
@@ -78,11 +83,12 @@
     transition: transform linear .2s, opacity linear .2s;
 }
 
-.copy-button--copied {
+.icon-button--active {
     transition: none;
+    color: var(--c-accent);
 }
 
-.copy-button--copied::after {
+.icon-button--active .icon-tooltip {
     transform: translate(-50%, -2px);
     transition: none;
     opacity: 1;

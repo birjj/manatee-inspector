@@ -107,14 +107,19 @@ export const useCurrentDOM = () => {
 
 let oldHighlightPath: string = "";
 export const useHighlightNode = () => {
-    const highlight = useCallback((appUuid: string, path: string) => {
+    const { active: activeApp } = useApplications();
+    const highlight = useCallback((path: string) => {
+        if (!path) {
+            console.warn("Attempting to highlight empty path", activeApp?.uuid);
+            return;
+        }
         let code = `(new Field(${JSON.stringify(path)})).highlightWithColor("red");`;
         if (oldHighlightPath) {
             code = `var lowlightField = new Field(${JSON.stringify(oldHighlightPath)}); if (lowlightField.exists()) { lowlightField.lowlight(); } ${code}`;
         }
         oldHighlightPath = path;
-        runCode(appUuid, code)
-            .catch(e => console.warn("Error while highlighting", appUuid, path, e));
-    }, []);
+        runCode(activeApp?.uuid || "", code)
+            .catch(e => console.warn("Error while highlighting", activeApp?.uuid, path, e));
+    }, [activeApp?.uuid]);
     return highlight;
 };

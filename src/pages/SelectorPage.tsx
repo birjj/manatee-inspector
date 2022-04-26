@@ -18,8 +18,7 @@ type SelectorEntry = {
 };
 
 const SelectorPage = () => {
-    const { dom, path, pathInfo } = useCurrentDOM();
-    const highlightNode = useHighlightNode();
+    const { pathInfo } = useCurrentDOM();
     const [alternatives, setAlternatives] = useState([] as PathEntry[][]);
 
     useEffect(() => {

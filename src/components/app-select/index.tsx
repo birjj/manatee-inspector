@@ -15,6 +15,8 @@ const AppSelect = ({ className, onChange, value, disabled = false, hideUuid = fa
     const { applications } = useApplications();
     const $container = useRef(null);
 
+    const isDisabled = disabled || applications.length === 0;
+
     useOutsideClick($container, () => setOpen(false));
     const doSelect = (uuid: string) => {
         setOpen(false);
@@ -22,7 +24,7 @@ const AppSelect = ({ className, onChange, value, disabled = false, hideUuid = fa
     };
 
     const selected = applications.find(({ uuid }) => uuid === value);
-    const isOpen = _isOpen && !disabled;
+    const isOpen = _isOpen && !isDisabled;
 
     const cName = [
         className || "",
@@ -30,7 +32,7 @@ const AppSelect = ({ className, onChange, value, disabled = false, hideUuid = fa
         isOpen ? style.open : ""
     ].join(" ");
     return <div {...props} className={cName} ref={$container}>
-        <div onClick={() => setOpen(!isOpen)} className={[style.input, disabled ? style.disabled : ""].join(" ")}>
+        <div onClick={() => setOpen(!isOpen)} className={[style.input, isDisabled ? style.disabled : ""].join(" ")}>
             <span className={[style.label, !selected ? style.placeholder : ""].join(" ")}>
                 {selected ? selected.name : `Select from ${applications.length} apps`}
             </span>
