@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PathEditor, { PathEntry } from "../components/path-editor";
-import { useCurrentDOM, useHighlightNode } from "../hooks";
 import type { DOMEntry } from "../manatee/types";
+import { useCurrentDOM, useHighlightNode } from "../stores/dom";
 import { getPathAlternatives } from "../utils";
 
 import style from "./SelectorPage.module.css";

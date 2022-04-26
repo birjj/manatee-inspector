@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 
 import { Routes, Route, useSearchParams } from "react-router-dom";
 import Topbar from "./components/topbar";
-import { usePorts } from "./hooks";
 import InspectPage from "./pages/InspectPage";
 import LandingPage from "./pages/LandingPage";
 import SelectorPage from "./pages/SelectorPage";
 import SettingsPage from "./pages/SettingsPage";
+import { usePorts } from "./stores/settings";
 
 const SearchParamsInterceptor = () => {
     const [params, setSearchParams] = useSearchParams();

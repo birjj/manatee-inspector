@@ -4,8 +4,9 @@ import ErrorBoundary from "../components/error-boundary";
 import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
-import { useApplications, useCurrentDOM, useHighlightNode } from "../hooks";
 import type { DOMEntry } from "../manatee/types";
+import { useApplications } from "../stores/apps";
+import { useCurrentDOM, useHighlightNode } from "../stores/dom";
 import { getNodePath } from "../utils";
 
 import style from "./InspectPage.module.css";

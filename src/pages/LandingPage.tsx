@@ -2,7 +2,9 @@ import React, { useCallback } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import AppSelect from "../components/app-select";
 import { AppIcon } from "../components/icons";
-import { useApplications, useCredentials, useCurrentDOM } from "../hooks";
+import { useApplications } from "../stores/apps";
+import { useCurrentDOM } from "../stores/dom";
+import { useCredentials } from "../stores/settings";
 
 import style from "./LandingPage.module.css";
 import { AddAppForm, CredentialsForm } from "./SettingsPage";

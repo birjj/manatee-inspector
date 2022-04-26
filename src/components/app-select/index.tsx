@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
-import { useApplications, useOutsideClick } from "../../hooks";
+import { useOutsideClick } from "../../hooks";
+import { useApplications } from "../../stores/apps";
 
 import style from "./app-select.module.css";
 

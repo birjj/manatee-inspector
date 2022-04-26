@@ -1,8 +1,8 @@
 /** @fileoverview The inspector for the current element, displaying its properties */
 
 import React, { useEffect, useRef } from "react";
-import { useCurrentDOM } from "../../hooks";
 import type { DOMEntry } from "../../manatee/types";
+import { useCurrentDOM } from "../../stores/dom";
 import { getNodePath } from "../../utils";
 import Value from "../value";
 import style from "./inspector.module.css";

@@ -3,8 +3,10 @@
 import React, { useCallback } from "react";
 import { Link, NavLink, useMatch, useNavigate } from "react-router-dom";
 
-import { useApplications, useCurrentDOM, usePorts } from "../../hooks";
 import { AppSelector } from "../../pages/LandingPage";
+import { useApplications } from "../../stores/apps";
+import { useCurrentDOM } from "../../stores/dom";
+import { usePorts } from "../../stores/settings";
 import { GitHubIcon, HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
 
 import style from "./topbar.module.css";

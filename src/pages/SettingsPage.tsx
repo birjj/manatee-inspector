@@ -1,7 +1,8 @@
 import React, { FormEvent, useCallback, useState } from "react";
 import Help from "../components/help";
 import { ChevronLeft, TrashIcon } from "../components/icons";
-import { useApplications, useCredentials, usePorts } from "../hooks";
+import { useApplications } from "../stores/apps";
+import { useCredentials, usePorts } from "../stores/settings";
 
 import style from "./SettingsPage.module.css";
 
