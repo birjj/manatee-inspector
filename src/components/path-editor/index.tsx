@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useHighlightNode } from "../../stores/dom";
+import ActionButton from "../action-button";
 import { CopyIcon, PaintIcon } from "../icons";
 
 import style from "./path-editor.module.css";
@@ -23,10 +24,6 @@ type PathEditorProps = {
 const PathEditor = ({ pathInfo, editable = false }: PathEditorProps) => {
     const $container = useRef(null as HTMLDivElement | null);
     const tags: React.ReactNode[] = [];
-    const [didCopy, setDidCopy] = useState(false);
-    const didCopyTimeout = useRef(0);
-    const [didHighlight, setDidHighlight] = useState(false);
-    const didHighlightTimeout = useRef(0);
     const highlightNode = useHighlightNode();
 
     pathInfo.forEach((entry, i) => {
@@ -39,37 +36,31 @@ const PathEditor = ({ pathInfo, editable = false }: PathEditorProps) => {
     });
 
     const doCopy = useCallback(() => {
-        if (!$container.current) { return; }
-        if (!pathInfo.length) { return; }
-        clearTimeout(didCopyTimeout.current);
-        setDidCopy(true);
+        if (!$container.current) { return false; }
+        if (!pathInfo.length) { return false; }
         navigator.clipboard.writeText($container.current.textContent || "");
-        didCopyTimeout.current = setTimeout(() => setDidCopy(false), 500);
-    }, [pathInfo, $container, didCopyTimeout, setDidCopy]);
+        return true;
+    }, [pathInfo, $container]);
 
     const doHighlight = useCallback(() => {
-        if (!$container.current) { return; }
-        if (!pathInfo.length) { return; }
-        clearTimeout(didHighlightTimeout.current);
-        didHighlightTimeout.current = setTimeout(() => setDidHighlight(false), 500);
-        setDidHighlight(true);
+        if (!$container.current) { return false; }
+        if (!pathInfo.length) { return false; }
         const path = $container.current.textContent || "";
         highlightNode(path);
-    }, [pathInfo, $container, didHighlightTimeout, setDidHighlight]);
+        return true;
+    }, [pathInfo, $container]);
 
     return <div className={style.container}>
         <div className={style["tag-container"]} ref={$container}>
             {tags}
         </div>
         <div className={style["button-container"]}>
-            <button disabled={!pathInfo.length} className={[style["icon-button"], didCopy ? style["icon-button--active"] : ""].join(" ")} onClick={doCopy}>
+            <ActionButton disabled={!pathInfo.length} action={doCopy} activeText="Copied" tooltip="Copy">
                 <CopyIcon />
-                <span className={style["icon-tooltip"]}>Copied</span>
-            </button>
-            <button disabled={!pathInfo.length} className={[style["icon-button"], didHighlight ? style["icon-button--active"] : ""].join(" ")} onClick={doHighlight}>
+            </ActionButton>
+            <ActionButton disabled={!pathInfo.length} action={doHighlight} activeText="Highlighted" tooltip="Highlight">
                 <PaintIcon />
-                <span className={style["icon-tooltip"]}>Highlighted</span>
-            </button>
+            </ActionButton>
         </div>
     </div>
 };

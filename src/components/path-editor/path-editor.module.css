@@ -58,38 +58,3 @@
 .button-container {
     margin-left: auto;
 }
-
-.icon-button {
-    position: relative;
-    margin: 0;
-    padding: 1ch 0.5ch;
-    border-color: transparent !important;
-    color: inherit;
-    transition: color linear .2s;
-    box-shadow: none;
-}
-
-.icon-tooltip {
-    pointer-events: none;
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    background: var(--c-accent);
-    color: #fff;
-    padding: 2px 4px;
-    border-radius: 2px;
-    opacity: 0;
-    transition: transform linear .2s, opacity linear .2s;
-}
-
-.icon-button--active {
-    transition: none;
-    color: var(--c-accent);
-}
-
-.icon-button--active .icon-tooltip {
-    transform: translate(-50%, -2px);
-    transition: none;
-    opacity: 1;
-}
