@@ -30,7 +30,7 @@ export const selectNode = (appId: string): Promise<MonitorTarget> => {
     });
 };
 
-export const runCode = (appId: string, code: string): Promise<string> => {
+export const runCode = (appId: string, code: string, timeout = 30000): Promise<string> => {
     const { port, securePort } = getPorts();
     let credentials = window.localStorage.getItem("credentials") || "";
     if (credentials) {
@@ -38,8 +38,10 @@ export const runCode = (appId: string, code: string): Promise<string> => {
     }
 
     return new Promise((res, rej) => {
+        let finished = false;
         const socket = new DebugSocket(appId, code, credentials, port, securePort);
         socket.on("finished", (result) => {
+            finished = true;
             if ("result" in result) {
                 res(result.result.Value);
             } else {
@@ -48,10 +50,19 @@ export const runCode = (appId: string, code: string): Promise<string> => {
             socket.close();
         });
         socket.on("error", err => {
+            finished = true;
             rej(err);
         });
         socket.on("close", () => {
+            finished = true;
             rej();
         });
+
+        setTimeout(() => {
+            if (!finished) {
+                finished = true;
+                rej(`Timeout of ${(timeout / 1000).toFixed(2)}s for running code expired`);
+            }
+        }, timeout);
     });
 };

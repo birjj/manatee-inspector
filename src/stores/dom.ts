@@ -47,7 +47,7 @@ export const useCurrentDOM = () => {
         setError(null);
     }, [setIsLoading, setIsSelecting, setPath, setDOM, setError]);
 
-    const doSelect = useCallback(() => {
+    const doSelect = () => {
         if (!activeApp || isSelecting) { console.warn("Attempted to select while already selecting", { activeApp, isSelecting }); return; }
         setIsSelecting(true);
         setIsLoading(false);
@@ -70,14 +70,20 @@ export const useCurrentDOM = () => {
             };
             const code = `JSON.stringify((new Field(${JSON.stringify(path)})).inspect(${JSON.stringify(inspectOpts)}));`;
             const result = await runCode(activeApp.uuid, code);
+            console.log("Received result", { result });
             try {
                 return JSON.parse(result);
             } catch (e) {
                 throw "Failed to parse response JSON: " + result;
             }
         })()
-            .then((data: DOMEntry) => setDOM(decorateDOM(data)))
+            .then((data: DOMEntry) => {
+                const decorated = decorateDOM(data);
+                console.log("Setting DOM to", decorated);
+                setDOM(decorated);
+            })
             .catch(e => {
+                console.warn("Error in result", e);
                 setError(e);
                 setDOM(null);
                 setPath(null);
@@ -87,7 +93,7 @@ export const useCurrentDOM = () => {
                 setIsLoading(false);
                 setIsSelecting(false);
             });
-    }, [activeApp, isSelecting, setIsSelecting, setError, setDOM, setPath, setPathInfo, useCachedUI, collectTexts]);
+    };
 
     return {
         isSelecting,
