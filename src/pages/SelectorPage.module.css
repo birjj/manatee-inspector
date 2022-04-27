@@ -9,6 +9,7 @@
     width: fit-content;
     max-width: 960px;
     padding: 20px;
+    overflow-x: hidden;
 }
 
 .container h2 {

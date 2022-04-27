@@ -98,3 +98,7 @@
     margin-left: auto;
     color: var(--c-text-secondary);
 }
+
+.item--active small {
+    color: #fff;
+}
