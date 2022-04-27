@@ -14,7 +14,9 @@ type ResizableProps = {
 const Resizable = ({ left, leftClass, right, rightClass, className, style: styleProp, ...props }: ResizableProps & React.HTMLAttributes<HTMLDivElement>) => {
     const $container = useRef(null as HTMLDivElement | null);
     const $left = useRef(null as HTMLDivElement | null);
+    const [leftWidth, setLeftWidth] = useState(null as number | null);
     const $right = useRef(null as HTMLDivElement | null);
+    const [rightWidth, setRightWidth] = useState(null as number | null);
     const [dragging, setDragging] = useState(null as [number, number] | null);
     const ownWidth = useSize($container);
     const [leftPercentage, setLeftPercentage] = useState(-1);
@@ -26,9 +28,12 @@ const Resizable = ({ left, leftClass, right, rightClass, className, style: style
         const { clientX, clientY } = e;
         setDragging([clientX, clientY]);
         if ($left.current) {
-            setDragWidth($left.current.clientWidth);
+            const width = $left.current.clientWidth;
+            setDragWidth(width);
+            setLeftWidth(width);
+            setRightWidth($right.current?.clientWidth || null);
         }
-    }, [$left, setDragging]);
+    }, [$left, $right, setDragging, setLeftWidth, setRightWidth]);
     const updateDrag = useCallback((e: MouseEvent) => {
         if (dragging === null) { return; }
         e.preventDefault();
@@ -51,13 +56,22 @@ const Resizable = ({ left, leftClass, right, rightClass, className, style: style
     useEventListener("mouseup", endDrag);
 
     // return the element with the appropriate size
-    return <div {...props} className={[style.container, className || ""].join(" ")} style={styleProp} ref={$container}>
+    const cName = [
+        style.container,
+        dragging ? style["container--dragging"] : "",
+        className || ""
+    ].join(" ");
+    return <div {...props} className={cName} style={styleProp} ref={$container}>
         <div className={[style.left, leftClass || ""].join(" ")} ref={$left} style={{ width: leftPercentage !== -1 ? `${leftPercentage * 100}%` : undefined }}>
-            {dragging ? null : left}
+            <div className={style["reflow-blocker"]} style={{ width: dragging ? `${leftWidth}px` : "" }}>
+                {left}
+            </div>
         </div>
         <span className={[style.border, !!dragging ? style.dragging : ""].join(" ")} onMouseDown={startDrag} />
         <div className={[style.right, rightClass || ""].join(" ")} ref={$right} style={{ width: leftPercentage !== -1 ? `${(1 - leftPercentage) * 100}%` : undefined }}>
-            {dragging ? null : right}
+            <div className={style["reflow-blocker"]} style={{ width: dragging ? `${rightWidth}px` : "" }}>
+                {right}
+            </div>
         </div>
     </div>;
 };

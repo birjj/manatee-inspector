@@ -6,11 +6,7 @@
 .left,
 .right {
     display: flex;
-}
-
-.left>*,
-.right>* {
-    width: 100%;
+    background: #fff;
 }
 
 .border {
@@ -40,4 +36,23 @@
     bottom: 0;
     left: -4px;
     width: 8px;
+}
+
+.reflow-blocker {
+    display: flex;
+    flex-grow: 1;
+}
+
+.reflow-blocker>* {
+    width: 100%;
+}
+
+.container--dragging .reflow-blocker {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.container--dragging .left,
+.container--dragging .right {
+    overflow-x: hidden;
 }
