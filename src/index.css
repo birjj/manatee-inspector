@@ -3,6 +3,8 @@
     --c-accent: rgb(26, 115, 232);
     --c-accent-faint: rgb(93, 146, 217);
     --c-error: rgb(217, 48, 37);
+    --c-background-error: rgb(255, 240, 240);
+    --c-hairline-error: rgb(255, 214, 214);
     --c-warning: rgb(255, 164, 0);
     --c-warning-bg: rgb(255, 229, 182);
     --c-black: rgb(32, 33, 36);
@@ -13,6 +15,7 @@
     --c-hairline: rgb(202, 205, 209);
     --c-hairline-1: rgb(182, 185, 189);
     --c-hairline-2: rgba(202, 205, 209, 0.5);
+    --c-text-selection: rgb(56, 121, 217, 0.3);
     --c-text-secondary: rgb(95, 99, 104);
     --c-text-tag: rgb(136, 18, 128);
     --c-text-attr: rgb(153, 69, 0);
@@ -43,6 +46,14 @@ h3 {
     display: inline-block;
     font-size: inherit;
     margin: 0 1ch 0 0;
+}
+
+kbd {
+    background: var(--c-background-1);
+    border: 1px solid var(--c-hairline);
+    border-bottom-width: 2px;
+    padding: 0 2px;
+    border-radius: 2px;
 }
 
 /* Tables */

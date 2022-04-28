@@ -43,6 +43,7 @@ export default function Topbar() {
             <Divider />
             <NavLink to={`/app/${active?.uuid}/`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Inspect</NavLink>
             <NavLink to={`/app/${active?.uuid}/selector`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Selector</NavLink>
+            <NavLink to={`/app/${active?.uuid}/console`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Console</NavLink>
 
             <span className={style.filler} />
 

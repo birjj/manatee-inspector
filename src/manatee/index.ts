@@ -44,8 +44,15 @@ export const runCode = (appId: string, code: string, timeout = 30000): Promise<s
             finished = true;
             if ("result" in result) {
                 res(result.result.Value);
-            } else {
+            } else if ("error" in result) {
                 rej(result.error.Value);
+            } else {
+                // extract a formatted JSON object from Manatee's response of format { k1: { Value: v1, Order: <timestamp> }, k2: { Value: v2, Order: <timestamp> } }
+                const outp: { [k: string]: any } = {};
+                for (let k in result) {
+                    outp[k] = result[k].Value;
+                }
+                res(JSON.stringify(outp));
             }
             socket.close();
         });

@@ -10,3 +10,8 @@
 .key {
     color: var(--c-text-tag);
 }
+
+.value--undefined,
+.value--null {
+    color: var(--c-text-secondary);
+}

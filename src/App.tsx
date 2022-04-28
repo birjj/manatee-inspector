@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import { Routes, Route, useSearchParams } from "react-router-dom";
 import Topbar from "./components/topbar";
+import ConsolePage from "./pages/ConsolePage";
 import InspectPage from "./pages/InspectPage";
 import LandingPage from "./pages/LandingPage";
 import SelectorPage from "./pages/SelectorPage";
@@ -38,6 +39,7 @@ function App() {
             <Route path="/settings/" element={<SettingsPage />} />
             <Route path="/app/:appUuid" element={<InspectPage />} />
             <Route path="/app/:appUuid/selector" element={<SelectorPage />} />
+            <Route path="/app/:appUuid/console" element={<ConsolePage />} />
             <Route path="*" element={<LandingPage />} />
         </Routes>
     </>

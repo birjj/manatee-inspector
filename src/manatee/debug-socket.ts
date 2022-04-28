@@ -24,6 +24,9 @@ type DebugResult =
             Order: number,
             Value: "false" | "true"
         }
+    }
+    | {
+        [k: string]: { Value: any, Order: number }
     };
 type DebugMessage =
     | { Action: "finished", Decision: "accept", Reason: string, Result: DebugResult }

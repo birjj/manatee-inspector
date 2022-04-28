@@ -13,7 +13,9 @@ type ValueProps = {
 /** Representation of literals (strings, numbers, booleans, null, undefined, ...) */
 const LiteralValue = ({ data }: ValueProps) => {
     return <span className={style[`value--${typeof data}`]}>
-        {JSON.stringify(data)}
+        {data === undefined
+            ? "undefined"
+            : JSON.stringify(data)}
     </span>;
 };
 
