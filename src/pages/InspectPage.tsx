@@ -30,10 +30,15 @@ const InspectPage = () => {
 
     return <div className={style.container}>
         <Resizable
-            left={<DOMTreeSection selected={selected} onSelect={updateSelected} />}
-            leftClass={style.grow}
-            right={<DOMInspectorSection data={selected} />}
-            rightClass={style["inspector-section"]}
+            direction="horizontal"
+            children={[
+                <DOMTreeSection selected={selected} onSelect={updateSelected} />,
+                <DOMInspectorSection data={selected} />
+            ]}
+            childClasses={[
+                style.grow,
+                style["inspector-section"]
+            ]}
         />
     </div>;
 };

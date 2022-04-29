@@ -5,6 +5,18 @@
     overflow: auto;
 }
 
+.history-section {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    overflow: auto;
+}
+
+.prompt-section {
+    height: 50%;
+    overflow: auto;
+}
+
 .history {
     display: flex;
     flex-direction: column-reverse;
@@ -142,9 +154,57 @@
 
 .prompt {
     display: flex;
-    height: 50%;
+    flex-direction: column;
+}
+
+.prompt-header {
+    display: flex;
+    flex: 0 0 27px;
+    width: 100%;
+    align-items: center;
+    background: var(--c-background-1);
+    border-bottom: 1px solid var(--c-hairline);
+}
+
+.bar-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    background: var(--c-background-1);
+    box-shadow: none;
+}
+
+.bar-button>svg {
+    fill: currentColor;
+    height: 16px;
+    width: auto;
+}
+
+.bar-button:hover:not(:disabled) {
+    background: var(--c-background-2);
+}
+
+.bar-button:global(.active) {
+    color: var(--c-accent);
+}
+
+.bar-button:disabled {
+    opacity: .5;
+    cursor: initial;
+}
+
+.prompt-content {
+    display: flex;
+    flex-grow: 1;
     flex-shrink: 0;
-    border-top: 1px solid var(--c-hairline);
 }
 
 .prompt-sidebar {
@@ -171,8 +231,9 @@
 }
 
 .button-submit {
-    width: 100%;
-    justify-content: center;
+    margin-left: auto;
+    padding: 0 6px;
+    border-radius: 2px;
 }
 
 .button-submit[disabled] {

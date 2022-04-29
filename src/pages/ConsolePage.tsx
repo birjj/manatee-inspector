@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
-import CodeMirror from "@uiw/react-codemirror";
-import { ChevronLeft, ResponseIcon } from "../components/icons";
+import { ChevronLeft, ClearIcon, ResponseIcon } from "../components/icons";
 
 import style from "./ConsolePage.module.css";
 import TextEditor from "../components/text-editor";
@@ -8,6 +7,7 @@ import { runCode } from "../manatee";
 import { useApplications } from "../stores/apps";
 import { useLocalStorage } from "../hooks";
 import Value from "../components/value";
+import Resizable from "../components/resizable";
 
 type HistoryEntry = {
     error: boolean,
@@ -27,6 +27,9 @@ const ConsolePage = () => {
             message
         ].slice(-100));
     }, [setHistory, history]);
+    const clearHistory = useCallback(() => {
+        setHistory([]);
+    }, [setHistory]);
 
     const submitCode = useCallback(async () => {
         if (isLoading || !promptCode) { return; }
@@ -42,36 +45,54 @@ const ConsolePage = () => {
     }, [addToHistory, active, isLoading, promptCode, setIsLoading]);
 
     return <div className={style.wrapper}>
-        <div className={style.history}>
-            <div className={style["history-list"]}>
-                {history.map((entry, i) => <HistoryEntry key={i} entry={entry} />)}
-            </div>
-        </div>
-        <div className={style.prompt}>
-            <div className={style["prompt-sidebar"]}>
-                <ChevronLeft className={style["prompt-chevron"]} />
-            </div>
-            <div className={style["prompt-input"]}>
-                <TextEditor
-                    value={promptCode}
-                    onChange={val => setPromptCode(val)}
-                    onSubmit={submitCode}
-                />
-            </div>
-        </div>
-        <div className={style.footer}>
-            <button
-                onClick={submitCode}
-                disabled={isLoading || !promptCode}
-                className={[
-                    style["button-submit"],
-                    promptCode ? style["button-submit--active"] : ""
-                ].join(" ")}
-            >
-                {isLoading ? <span className={style.loader} /> : null}
-                Run code (<kbd>Shift</kbd>+<kbd>Enter</kbd>)
-            </button>
-        </div>
+        <Resizable
+            direction="vertical"
+            children={[
+                <div className={style.history}>
+                    <div className={style["history-list"]}>
+                        {history.map((entry, i) => <HistoryEntry key={i} entry={entry} />)}
+                    </div>
+                </div>,
+                <div className={style.prompt}>
+                    <div className={style["prompt-header"]}>
+                        <button className={[
+                            style["bar-button"]
+                        ].join(" ")} onClick={clearHistory}>
+                            <ClearIcon />
+                        </button>
+                        <button
+                            onClick={submitCode}
+                            disabled={isLoading || !promptCode}
+                            className={[
+                                style["bar-button"],
+                                style["button-submit"],
+                                promptCode ? style["button-submit--active"] : "",
+                                promptCode ? "primary" : "",
+                            ].join(" ")}
+                        >
+                            {isLoading ? <span className={style.loader} /> : null}
+                            Run code (<kbd>Shift</kbd>+<kbd>Enter</kbd>)
+                        </button>
+                    </div>
+                    <div className={style["prompt-content"]}>
+                        <div className={style["prompt-sidebar"]}>
+                            <ChevronLeft className={style["prompt-chevron"]} />
+                        </div>
+                        <div className={style["prompt-input"]}>
+                            <TextEditor
+                                value={promptCode}
+                                onChange={val => setPromptCode(val)}
+                                onSubmit={submitCode}
+                            />
+                        </div>
+                    </div>
+                </div>
+            ]}
+            childClasses={[
+                style["history-section"],
+                style["prompt-section"]
+            ]}
+        />
     </div>;
 };
 export default ConsolePage;
