@@ -41,6 +41,14 @@
     padding: 4px 0;
     border-bottom: 1px solid var(--c-hairline-2);
     font-family: var(--font-monospace);
+
+    --c-entry-background: #fff;
+    --c-entry-border: var(--c-hairline);
+    border-top: 1px solid var(--c-entry-border);
+    border-bottom: 1px solid var(--c-entry-border);
+    margin-bottom: -1px;
+    margin-top: -1px;
+    background: var(--c-entry-background);
 }
 
 .entry:first-child {
@@ -53,10 +61,8 @@
 }
 
 .entry--request {
-    background: rgb(236, 241, 248);
-    margin-top: -1px;
-    border-top: 1px solid;
-    border-color: rgb(204, 222, 245);
+    --c-entry-background: rgb(236, 241, 248);
+    --c-entry-border: rgb(204, 222, 245);
 }
 
 .entry--request .entry__content::before,
@@ -80,10 +86,8 @@
 
 .entry--error {
     color: var(--c-error);
-    background: var(--c-background-error);
-    margin-top: -1px;
-    border-bottom: 1px solid var(--c-hairline-error);
-    border-top: 1px solid var(--c-hairline-error);
+    --c-entry-background: var(--c-background-error);
+    --c-entry-border: var(--c-hairline-error);
 }
 
 .entry__content>pre {
@@ -100,6 +104,40 @@
 .entry__icon>svg {
     height: 8px;
     width: auto;
+}
+
+.entry--expandable {
+    position: relative;
+}
+
+.entry--expandable:not(.entry--expanded) {
+    max-height: 32px;
+    overflow-y: hidden;
+}
+
+.entry--expandable:not(.entry--expanded)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 32px;
+    background: linear-gradient(0deg, var(--c-entry-background), transparent);
+}
+
+.entry__expand-toggler {
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9;
+}
+
+.entry--expanded .entry__expand-toggler {
+    right: initial;
+    width: 20px;
 }
 
 .prompt {

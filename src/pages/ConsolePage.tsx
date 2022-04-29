@@ -77,6 +77,8 @@ const ConsolePage = () => {
 export default ConsolePage;
 
 const HistoryEntry = ({ entry }: { entry: HistoryEntry }) => {
+    const [requestExpanded, setRequestExpanded] = useState(false);
+
     let respValue: any = entry.response;
     if (entry.response === "undefined") {
         respValue = undefined;
@@ -86,13 +88,14 @@ const HistoryEntry = ({ entry }: { entry: HistoryEntry }) => {
         } catch (e) { }
     }
     return <>
-        <div className={[style.entry, style["entry--request"]].join(" ")}>
+        <div className={[style.entry, style["entry--request"], style["entry--expandable"], requestExpanded ? style["entry--expanded"] : ""].join(" ")}>
             <div className={style["entry__icon"]}>
                 <ResponseIcon style={{ transform: "rotate(180deg)" }} />
             </div>
             <div className={style["entry__content"]}>
                 <TextEditor value={entry.request} onChange={() => { }} readOnly />
             </div>
+            <div className={style["entry__expand-toggler"]} onClick={() => setRequestExpanded(!requestExpanded)} />
         </div>
         <div className={[style.entry, entry.error ? style["entry--error"] : "", style["entry--response"]].join(" ")}>
             <div className={style["entry__icon"]}>
