@@ -25,11 +25,9 @@ type DebugResult =
             Value: "false" | "true"
         }
     }
-    | {
-        [k: string]: { Value: any, Order: number }
-    };
+    | { [k: string]: { Value: any, Order: number } };
 type DebugMessage =
-    | { Action: "finished", Decision: "accept", Reason: string, Result: DebugResult }
+    | { Action: "finished", Decision: "accept" | "decline", Reason: string, Result: DebugResult }
     | { Error: any, ErrorCode: number };
 
 export default class DebugSocket {
@@ -87,6 +85,9 @@ export default class DebugSocket {
 
         switch (data.Action) {
             case "finished":
+                if (data.Decision === "decline") {
+                    return this.emit("error", data.Reason || "Code declined by Manatee");
+                }
                 this.emit("finished", data.Result);
                 return;
         }
