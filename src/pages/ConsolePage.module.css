@@ -72,9 +72,10 @@
     margin-bottom: -1px;
 }
 
-.entry--request {
+.entry--response {
     --c-entry-background: rgb(236, 241, 248);
     --c-entry-border: rgb(204, 222, 245);
+    z-index: 1;
 }
 
 .entry--request .entry__content::before,
@@ -97,6 +98,7 @@
 }
 
 .entry--error {
+    z-index: 1;
     color: var(--c-error);
     --c-entry-background: var(--c-background-error);
     --c-entry-border: var(--c-hairline-error);
