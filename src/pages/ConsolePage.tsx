@@ -9,6 +9,7 @@ import Value from "../components/value";
 import Resizable from "../components/resizable";
 import useConsoleStore, { HistoryEntry } from "../stores/console";
 import shallow from "zustand/shallow";
+import Bar, { Filler, TextButton } from "../components/bar";
 
 const ConsolePage = () => {
     const { isLoading, runCode, clearHistory, prompt } = useConsoleStore(state => ({ isLoading: state.isLoading, runCode: state.runCode, clearHistory: state.clearHistory, prompt: state.prompt }), shallow);
@@ -22,26 +23,22 @@ const ConsolePage = () => {
                     <ConsoleHistory />
                 </div>,
                 <div className={style.prompt}>
-                    <div className={style["prompt-header"]}>
-                        <button className={[
-                            style["bar-button"]
-                        ].join(" ")} onClick={clearHistory}>
-                            <ClearIcon />
-                        </button>
+                    <Bar className={style["prompt-header"]}>
+                        <TextButton onClick={clearHistory}>
+                            <ClearIcon style={{ height: "14px" }} />
+                        </TextButton>
+                        <Filler />
                         <button
                             onClick={() => runCode(active?.uuid || "", prompt)}
                             disabled={isLoading || !prompt}
                             className={[
-                                style["bar-button"],
-                                style["button-submit"],
-                                prompt ? style["button-submit--active"] : "",
                                 prompt ? "primary" : "",
                             ].join(" ")}
                         >
                             {isLoading ? <span className={style.loader} /> : null}
                             Run code (<kbd>Shift</kbd>+<kbd>Enter</kbd>)
                         </button>
-                    </div>
+                    </Bar>
                     <ConsolePrompt />
                 </div>
             ]}

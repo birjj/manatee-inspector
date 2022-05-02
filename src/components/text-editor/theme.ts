@@ -41,5 +41,9 @@ export default EditorView.theme({
 
     ".cm-placeholder": {
         color: "var(--c-text-secondary)"
+    },
+
+    ".cm-lineWrapping": {
+        wordBreak: "break-all"
     }
 });

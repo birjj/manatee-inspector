@@ -1,76 +1,18 @@
-.bar {
-    display: flex;
-    flex: 0 0 27px;
-    width: 100%;
-    background-color: var(--c-background-1);
-    border-bottom: 1px solid var(--c-hairline);
-}
-
-.bar>label {
-    margin-right: 1ch;
-    display: flex;
-    align-items: center;
-}
-
 .item {
-    height: 26px;
     display: flex;
     align-items: center;
-}
-
-.divider {
-    background-color: var(--c-hairline);
-    width: 1px;
-    margin: 5px 4px;
-    height: 16px;
-}
-
-.filler {
-    flex-grow: 1;
 }
 
 .button-wrapper {
     position: relative;
     display: inline-block;
+    height: 26px;
+    max-height: 100%;
+    vertical-align: middle;
 }
 
-.button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    cursor: pointer;
-    border: none;
-    border-radius: 0;
-    background: none;
-    color: inherit;
-    margin: 0;
-    padding: 0;
-    background: var(--c-background-1);
-    box-shadow: none;
-}
-
-.button>svg {
-    fill: currentColor;
-    height: 16px;
-    width: auto;
-}
-
-.button:hover:not(:disabled) {
-    background: var(--c-background-2);
-}
-
-.button:global(.active) {
-    color: var(--c-accent);
-}
-
-.button:disabled {
-    opacity: .5;
-    cursor: initial;
-}
-
-.bar select {
-    padding: 0;
+.button-wrapper>* {
+    height: 100%;
 }
 
 .error {
@@ -92,13 +34,6 @@
     top: -4px;
     border-bottom: 4px solid var(--c-error);
     border-right: 4px solid transparent;
-}
-
-.bar--warning {
-    align-items: center;
-    padding: 0 1ch;
-    background: var(--c-warning-bg);
-    border-bottom-color: var(--c-warning);
 }
 
 .app-selector {

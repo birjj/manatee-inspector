@@ -137,7 +137,7 @@ button {
     font-weight: 500;
     font-size: 12px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 3px;
     outline: none;
 }
 
@@ -160,7 +160,7 @@ button:disabled {
 button.primary {
     background: var(--c-accent);
     color: var(--c-background);
-    border: none;
+    border-color: var(--c-accent);
 }
 
 button.primary:disabled {

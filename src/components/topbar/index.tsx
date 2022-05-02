@@ -7,11 +7,11 @@ import { AppSelector } from "../../pages/LandingPage";
 import { useApplications } from "../../stores/apps";
 import { useCurrentDOM } from "../../stores/dom";
 import { usePorts } from "../../stores/settings";
+import Bar, { Divider, Filler, TextButton } from "../bar";
 import { GitHubIcon, HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
 
 import style from "./topbar.module.css";
-
-const Divider = () => <div className={style.divider} />;
+import barStyle from "../bar/bar.module.css";
 
 export default function Topbar() {
     const { active } = useApplications();
@@ -30,7 +30,7 @@ export default function Topbar() {
     }, [active]);
 
     return <>
-        <div className={style.bar}>
+        <Bar>
             <NodeSelectButton disabled={!active} />
             <label>
                 <input type="checkbox" disabled={!active} checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
@@ -45,9 +45,9 @@ export default function Topbar() {
             <NavLink to={`/app/${active?.uuid}/selector`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Selector</NavLink>
             <NavLink to={`/app/${active?.uuid}/console`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Console</NavLink>
 
-            <span className={style.filler} />
+            <Filler />
 
-            <Link to="/settings/" className={style["button"]}>
+            <Link to="/settings/" className={barStyle["text-button"]}>
                 <PlusIcon />
             </Link>
             <div className={[style.item, style["text-item"]].join(" ")}>
@@ -55,17 +55,17 @@ export default function Topbar() {
                 <AppSelector className={style["app-selector"]} hideUuid />
             </div>
             <Divider />
-            <a href="https://github.com/birjolaxew/manatee-inspector" target="_blank" className={style.button}>
+            <a href="https://github.com/birjolaxew/manatee-inspector" target="_blank" className={barStyle["text-button"]}>
                 <GitHubIcon />
             </a>
-            <Link to="/settings/" onClick={onSettingsClick} className={[style["button"], isSettings ? "active" : ""].join(" ")}>
+            <Link to="/settings/" onClick={onSettingsClick} className={[barStyle["text-button"], isSettings ? "active" : ""].join(" ")}>
                 <SettingsIcon />
             </Link>
-        </div>
+        </Bar>
         {!port && !securePort
-            ? <div className={[style.bar, style["bar--warning"]].join(" ")}>
+            ? <Bar warning>
                 No ports for communicating with Manatee were given. The application likely won't work. See the README for instructions.
-            </div>
+            </Bar>
             : null}
     </>
 }
@@ -78,14 +78,14 @@ export const NodeSelectButton = ({ className, disabled, showError = true, ...pro
     const { isSelecting, selectNode, error } = useCurrentDOM();
 
     return <div className={style["button-wrapper"]}>
-        <button {...props} className={[
+        <TextButton {...props} className={[
             style.item,
             style.button,
             className,
             isSelecting ? "active" : ""
         ].join(" ")} disabled={disabled || !active} onClick={selectNode}>
             <NodeSelectIcon />
-        </button>
+        </TextButton>
         {showError && error
             ? <div className={style.error}>
                 {error}
