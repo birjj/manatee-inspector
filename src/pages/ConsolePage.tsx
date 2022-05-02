@@ -1,55 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import { ChevronLeft, ClearIcon, ResponseIcon } from "../components/icons";
 
 import style from "./ConsolePage.module.css";
 import TextEditor from "../components/text-editor";
-import { runCode } from "../manatee";
 import { useApplications } from "../stores/apps";
-import { useLocalStorage } from "../hooks";
 import Value from "../components/value";
 import Resizable from "../components/resizable";
-
-type HistoryEntry = {
-    error: boolean,
-    request: string,
-    response: string
-};
+import useConsoleStore, { HistoryEntry } from "../stores/console";
+import shallow from "zustand/shallow";
 
 const ConsolePage = () => {
-    const [history, setHistory] = useLocalStorage<HistoryEntry[]>("console-history", []);
-    const [promptCode, setPromptCode] = useLocalStorage("console-prompt", "");
-    const [isLoading, setIsLoading] = useState(false);
+    const { isLoading, runCode, clearHistory, prompt } = useConsoleStore(state => ({ isLoading: state.isLoading, runCode: state.runCode, clearHistory: state.clearHistory, prompt: state.prompt }), shallow);
     const { active } = useApplications();
-
-    const addToHistory = useCallback((message: HistoryEntry) => {
-        setHistory([
-            ...history,
-            message
-        ].slice(-100));
-    }, [setHistory, history]);
-    const clearHistory = useCallback(() => {
-        setHistory([]);
-    }, [setHistory]);
-
-    const submitCode = useCallback(async () => {
-        if (isLoading || !promptCode) { return; }
-        const code = promptCode;
-        setIsLoading(true);
-        try {
-            const response = await runCode(active?.uuid || "", `JSON.stringify((function(){${promptCode}})())`);
-            addToHistory({ error: false, request: code, response });
-        } catch (e) {
-            addToHistory({ error: true, request: code, response: "" + e });
-        }
-        setIsLoading(false);
-    }, [addToHistory, active, isLoading, promptCode, setIsLoading]);
 
     return <div className={style.wrapper}>
         <Resizable
             direction="vertical"
             children={[
                 <div className={style.history}>
-                    <ConsoleHistory history={history} />
+                    <ConsoleHistory />
                 </div>,
                 <div className={style.prompt}>
                     <div className={style["prompt-header"]}>
@@ -59,20 +29,20 @@ const ConsolePage = () => {
                             <ClearIcon />
                         </button>
                         <button
-                            onClick={submitCode}
-                            disabled={isLoading || !promptCode}
+                            onClick={() => runCode(active?.uuid || "", prompt)}
+                            disabled={isLoading || !prompt}
                             className={[
                                 style["bar-button"],
                                 style["button-submit"],
-                                promptCode ? style["button-submit--active"] : "",
-                                promptCode ? "primary" : "",
+                                prompt ? style["button-submit--active"] : "",
+                                prompt ? "primary" : "",
                             ].join(" ")}
                         >
                             {isLoading ? <span className={style.loader} /> : null}
                             Run code (<kbd>Shift</kbd>+<kbd>Enter</kbd>)
                         </button>
                     </div>
-                    <ConsolePrompt value={promptCode} onChange={setPromptCode} onSubmit={submitCode} />
+                    <ConsolePrompt />
                 </div>
             ]}
             childClasses={[
@@ -84,28 +54,25 @@ const ConsolePage = () => {
 };
 export default ConsolePage;
 
-const ConsolePrompt = ({ value, onChange, onSubmit }: { value: string, onChange: (v: string) => void, onSubmit: (v: string) => void }) => {
+const ConsolePrompt = () => {
+    const { prompt, setPrompt, runCode } = useConsoleStore(state => ({ runCode: state.runCode, prompt: state.prompt, setPrompt: state.setPrompt }), shallow);
+    const { active } = useApplications();
     return <div className={style["prompt-content"]}>
         <div className={style["prompt-sidebar"]}>
             <ChevronLeft className={style["prompt-chevron"]} />
         </div>
         <div className={style["prompt-input"]}>
             <TextEditor
-                value={value}
-                onChange={onChange}
-                onSubmit={onSubmit}
+                value={prompt}
+                onChange={setPrompt}
+                onSubmit={() => runCode(active?.uuid || "", prompt)}
             />
         </div>
     </div>;
 };
 
-const ConsoleHistory = React.memo(({ history }: { history: HistoryEntry[] }) => {
-    const oldHist = useRef(null as any);
-    useEffect(() => {
-        console.log("Got new history", history, oldHist.current);
-        oldHist.current = history;
-    }, [history]);
-    console.log("Rendering history", history);
+const ConsoleHistory = React.memo(() => {
+    const history = useConsoleStore(state => state.history);
 
     return <div className={style["history-list"]}>
         {history.map((entry, i) => <HistoryEntry key={i} entry={entry} />)}
@@ -123,6 +90,15 @@ const HistoryEntry = React.memo(({ entry }: { entry: HistoryEntry }) => {
             respValue = JSON.parse(entry.response);
         } catch (e) { }
     }
+
+    let $content: React.ReactNode = null;
+    if (entry.loading) {
+        $content = <span className={style.loader} />;
+    } else if (entry.error) {
+        $content = <pre>{respValue}</pre>;
+    } else {
+        $content = <Value data={respValue} expanded />;
+    }
     return <>
         <div className={[style.entry, style["entry--request"], style["entry--expandable"], requestExpanded ? style["entry--expanded"] : ""].join(" ")}>
             <div className={style["entry__icon"]}>
@@ -138,9 +114,7 @@ const HistoryEntry = React.memo(({ entry }: { entry: HistoryEntry }) => {
                 <ResponseIcon />
             </div>
             <div className={style["entry__content"]}>
-                {entry.error
-                    ? <pre>{respValue}</pre>
-                    : <Value data={respValue} expanded />}
+                {$content}
             </div>
         </div>
     </>
