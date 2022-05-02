@@ -34,7 +34,7 @@ export type TreeProps<T> = {
     selectedValue?: T,
     inlineArrow?: boolean,
     onSelect?: (value: T) => void
-} & Omit<React.HTMLProps<HTMLDivElement>, "data" | "selected" | "onSelect">;
+} & Omit<React.HTMLProps<HTMLDivElement>, "data" | "selected" | "onSelect" | "ref">;
 export type TreeComponent<T> = React.ComponentType<TreeProps<T>>;
 
 /**
@@ -109,6 +109,6 @@ const treeFactory = <DataType, ChildProps>(Opener: React.ComponentType<TreeOpene
                 : null}
         </div>;
     };
-    return Tree;
+    return React.memo(Tree);
 };
 export default treeFactory;

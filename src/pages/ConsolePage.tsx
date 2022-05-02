@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ClearIcon, ResponseIcon } from "../components/icons";
 
 import style from "./ConsolePage.module.css";
@@ -49,9 +49,7 @@ const ConsolePage = () => {
             direction="vertical"
             children={[
                 <div className={style.history}>
-                    <div className={style["history-list"]}>
-                        {history.map((entry, i) => <HistoryEntry key={i} entry={entry} />)}
-                    </div>
+                    <ConsoleHistory history={history} />
                 </div>,
                 <div className={style.prompt}>
                     <div className={style["prompt-header"]}>
@@ -74,18 +72,7 @@ const ConsolePage = () => {
                             Run code (<kbd>Shift</kbd>+<kbd>Enter</kbd>)
                         </button>
                     </div>
-                    <div className={style["prompt-content"]}>
-                        <div className={style["prompt-sidebar"]}>
-                            <ChevronLeft className={style["prompt-chevron"]} />
-                        </div>
-                        <div className={style["prompt-input"]}>
-                            <TextEditor
-                                value={promptCode}
-                                onChange={val => setPromptCode(val)}
-                                onSubmit={submitCode}
-                            />
-                        </div>
-                    </div>
+                    <ConsolePrompt value={promptCode} onChange={setPromptCode} onSubmit={submitCode} />
                 </div>
             ]}
             childClasses={[
@@ -97,7 +84,35 @@ const ConsolePage = () => {
 };
 export default ConsolePage;
 
-const HistoryEntry = ({ entry }: { entry: HistoryEntry }) => {
+const ConsolePrompt = ({ value, onChange, onSubmit }: { value: string, onChange: (v: string) => void, onSubmit: (v: string) => void }) => {
+    return <div className={style["prompt-content"]}>
+        <div className={style["prompt-sidebar"]}>
+            <ChevronLeft className={style["prompt-chevron"]} />
+        </div>
+        <div className={style["prompt-input"]}>
+            <TextEditor
+                value={value}
+                onChange={onChange}
+                onSubmit={onSubmit}
+            />
+        </div>
+    </div>;
+};
+
+const ConsoleHistory = React.memo(({ history }: { history: HistoryEntry[] }) => {
+    const oldHist = useRef(null as any);
+    useEffect(() => {
+        console.log("Got new history", history, oldHist.current);
+        oldHist.current = history;
+    }, [history]);
+    console.log("Rendering history", history);
+
+    return <div className={style["history-list"]}>
+        {history.map((entry, i) => <HistoryEntry key={i} entry={entry} />)}
+    </div>;
+});
+
+const HistoryEntry = React.memo(({ entry }: { entry: HistoryEntry }) => {
     const [requestExpanded, setRequestExpanded] = useState(false);
 
     let respValue: any = entry.response;
@@ -129,4 +144,4 @@ const HistoryEntry = ({ entry }: { entry: HistoryEntry }) => {
             </div>
         </div>
     </>
-}
+});

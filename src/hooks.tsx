@@ -48,8 +48,9 @@ export const useLocalStorage = <T,>(key: string, initialValue: T): [T, (val: T) 
         }
     }, [key]);
 
-    const handleStorageChange = useCallback(() => {
-        setStoredValue(getValueFromStorage())
+    const handleStorageChange = useCallback((e: StorageEvent) => {
+        if (e.key && e.key !== key) { return; }
+        setStoredValue(getValueFromStorage());
     }, [getValueFromStorage, setStoredValue]);
 
     useEventListener("storage", handleStorageChange);
