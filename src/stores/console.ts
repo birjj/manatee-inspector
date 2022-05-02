@@ -38,7 +38,7 @@ const useConsoleStore = create<{
                 history: [...history, entry],
                 promptHistory: code === promptHistory[promptHistory.length - 1]
                     ? promptHistory
-                    : [...promptHistory, code]
+                    : [...promptHistory, code].slice(-100)
             });
             // then run the code in Manatee and update the store with the result
             try {
