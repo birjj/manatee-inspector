@@ -209,7 +209,7 @@
 .prompt-content {
     display: flex;
     flex-grow: 1;
-    flex-shrink: 0;
+    overflow-y: auto;
 }
 
 .prompt-sidebar {
