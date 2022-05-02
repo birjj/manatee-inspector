@@ -106,9 +106,12 @@
 
 .entry__content>pre {
     margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
 }
 
 .entry__icon {
+    flex-shrink: 0;
     width: 24px;
     text-align: center;
     color: var(--c-text-secondary);
