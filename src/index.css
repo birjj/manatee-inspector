@@ -21,6 +21,10 @@
     --c-text-attr: rgb(153, 69, 0);
     --c-text-val: rgb(26, 26, 166);
     --c-text-prop: rgb(200, 0, 0);
+    --c-text-string: rgb(170, 17, 17);
+    --c-text-number: rgb(50, 0, 255);
+    --c-text-keyword: var(--c-text-val);
+    --c-text-comment: rgb(0, 117, 0);
     --c-hover-bg: rgba(56, 121, 217, 0.1);
     --c-selected-bg: rgb(207, 232, 252);
 }

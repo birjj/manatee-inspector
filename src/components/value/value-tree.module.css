@@ -9,9 +9,22 @@
 
 .key {
     color: var(--c-text-tag);
+    font-weight: bold;
 }
 
 .value--undefined,
 .value--null {
     color: var(--c-text-secondary);
+}
+
+.value--boolean {
+    color: var(--c-text-keyword);
+}
+
+.value--number {
+    color: var(--c-text-number);
+}
+
+.value--string {
+    color: var(--c-text-string);
 }

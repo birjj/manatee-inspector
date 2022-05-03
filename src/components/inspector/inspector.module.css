@@ -26,5 +26,6 @@
 }
 
 .name {
-    color: var(--c-text-prop);
+    color: var(--c-text-tag);
+    font-weight: bold;
 }
