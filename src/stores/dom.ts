@@ -23,6 +23,7 @@ const useDOMStore = create<{
     selectOptions: { useCachedUI: boolean, collectTexts: boolean },
     setSelectOptions: (opts: { useCachedUI?: boolean, collectTexts?: boolean }) => void,
     error: string | null,
+    clearError: () => void,
     dom: DOMEntry | null,
     path: string | null,
     pathInfo: ({ [k: string]: string } & { uniqueTokens: string[] })[],
@@ -38,6 +39,7 @@ const useDOMStore = create<{
         };
     }),
     error: null,
+    clearError: () => set({ error: null }),
     dom: null,
     path: null,
     pathInfo: [],

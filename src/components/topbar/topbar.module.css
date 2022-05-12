@@ -25,6 +25,10 @@
     width: max-content;
     max-width: 40ch;
     z-index: 2;
+    height: auto;
+    white-space: break-spaces;
+    word-break: break-word;
+    cursor: pointer;
 }
 
 .error::before {

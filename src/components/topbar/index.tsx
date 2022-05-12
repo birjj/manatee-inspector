@@ -76,7 +76,7 @@ type NodeSelectButtonProps = {
 };
 export const NodeSelectButton = ({ className, disabled, showError = true, ...props }: NodeSelectButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     const active = useApplications(state => state.active);
-    const { isSelecting, selectNode, error } = useDOMStore(state => ({ isSelecting: state.isSelecting, selectNode: state.select, error: state.error }), shallow);
+    const { isSelecting, selectNode, error, clearError } = useDOMStore(state => ({ isSelecting: state.isSelecting, selectNode: state.select, error: state.error, clearError: state.clearError }), shallow);
 
     return <div className={style["button-wrapper"]}>
         <TextButton {...props} className={[
@@ -88,7 +88,7 @@ export const NodeSelectButton = ({ className, disabled, showError = true, ...pro
             <NodeSelectIcon />
         </TextButton>
         {showError && error
-            ? <div className={style.error}>
+            ? <div className={style.error} onClick={clearError}>
                 {error}
             </div>
             : null}
