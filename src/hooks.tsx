@@ -1,8 +1,5 @@
 import useResizeObserver from "@react-hook/resize-observer";
 import { RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { createGlobalState } from "react-hooks-global-state";
-import { runCode, selectNode } from "./manatee";
-import type { DOMEntry } from "./manatee/types";
 
 /** Attaches an event listener to window. TODO: extend to support  */
 export function useEventListener<K extends keyof WindowEventMap>(event: K, handler: (event: WindowEventMap[K]) => void): void;
