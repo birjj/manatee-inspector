@@ -1,9 +1,23 @@
 # Manatee DOM Inspector
 
-A custom implementation of a devtools-like DOM inspector for [Sirenia's Manatee RPA application](https://www.sirenia.eu/).  
-Useful for when you need a closer look at how Manatee sees the application, but don't want to trawl through kilobytes of JSON data. The displayed data is the output of running `.inspect()` on the field the user selects, and can optionally use the `useCachedUI` or `collectTexts` options.
+A custom implementation of a *Chrome devtools*-like inspector for [Sirenia's Manatee RPA application](https://www.sirenia.eu/).  
+Useful for when you need a closer look at how Manatee sees the application, or need a debugger capable of remembering code and displaying complex objects.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/4542461/161786510-8f4f14eb-9ca1-4d81-974c-e9e84b15ddc3.png" width="596" /></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/4542461/168109902-7348f712-f109-424c-9516-6ee380e4bddc.png" /></p>
+
+Currently consists of 3 pages:
+
+### Inspect
+
+Shows a tree view of a selected field. The displayed is the output of running `.inspect()` on the field the user selects, and can optionally use the `useCachedUI` or `collectTexts` options. Any element in the tree can be selected to see its properties.
+
+### Selector
+
+An attempt at a UI for choosing the most appropriate selcetor for the chosen field. In development, currently on limited use.
+
+### Console
+
+A debugger capable of running arbitrary code in Manatee and displaying the returned data. Compared to the built-in debugger this saves you from running `JSON.stringify()` on the data you want to debug, and remembers the entered code across restarts.
 
 ## Usage
 
