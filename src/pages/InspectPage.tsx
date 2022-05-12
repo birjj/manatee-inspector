@@ -5,7 +5,6 @@ import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
 import type { DOMEntry } from "../manatee/types";
-import { useApplications } from "../stores/apps";
 import { useCurrentDOM, useHighlightNode } from "../stores/dom";
 import { getNodePath } from "../utils";
 
@@ -13,7 +12,6 @@ import style from "./InspectPage.module.css";
 
 const InspectPage = () => {
     const [selected, setSelected] = useState(undefined as DOMEntry | undefined);
-    const { active } = useApplications();
     const { dom, path } = useCurrentDOM();
     const highlightNode = useHighlightNode();
 

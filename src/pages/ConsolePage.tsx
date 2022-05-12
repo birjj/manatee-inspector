@@ -4,7 +4,7 @@ import { ChevronLeft, ClearIcon, ResponseIcon } from "../components/icons";
 
 import style from "./ConsolePage.module.css";
 import TextEditor from "../components/text-editor";
-import { useApplications } from "../stores/apps";
+import useApplications from "../stores/apps";
 import Value from "../components/value";
 import Resizable from "../components/resizable";
 import useConsoleStore, { HistoryEntry } from "../stores/console";
@@ -13,7 +13,7 @@ import Bar, { Filler, TextButton } from "../components/bar";
 
 const ConsolePage = () => {
     const { isLoading, runCode, clearHistory, prompt } = useConsoleStore(state => ({ isLoading: state.isLoading, runCode: state.runCode, clearHistory: state.clearHistory, prompt: state.prompt }), shallow);
-    const { active } = useApplications();
+    const activeApp = useApplications(state => state.active);
 
     return <div className={style.wrapper}>
         <Resizable
@@ -29,7 +29,7 @@ const ConsolePage = () => {
                         </TextButton>
                         <Filler />
                         <button
-                            onClick={() => runCode(active?.uuid || "", prompt)}
+                            onClick={() => runCode(activeApp?.uuid || "", prompt)}
                             disabled={isLoading || !prompt}
                             className={[
                                 prompt ? "primary" : "",
@@ -53,7 +53,7 @@ export default ConsolePage;
 
 const ConsolePrompt = () => {
     const { prompt, setPrompt, runCode } = useConsoleStore(state => ({ runCode: state.runCode, prompt: state.prompt, setPrompt: state.setPrompt }), shallow);
-    const { active } = useApplications();
+    const activeApp = useApplications(state => state.active);
     return <div className={style["prompt-content"]}>
         <div className={style["prompt-sidebar"]}>
             <ChevronLeft className={style["prompt-chevron"]} />
@@ -62,7 +62,7 @@ const ConsolePrompt = () => {
             <TextEditor
                 value={prompt}
                 onChange={setPrompt}
-                onSubmit={() => runCode(active?.uuid || "", prompt)}
+                onSubmit={() => runCode(activeApp?.uuid || "", prompt)}
             />
         </div>
     </div>;

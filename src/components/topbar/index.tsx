@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { Link, NavLink, useMatch, useNavigate } from "react-router-dom";
 
 import { AppSelector } from "../../pages/LandingPage";
-import { useApplications } from "../../stores/apps";
+import useApplications from "../../stores/apps";
 import { useCurrentDOM } from "../../stores/dom";
 import { usePorts } from "../../stores/settings";
 import Bar, { Divider, Filler, TextButton } from "../bar";
@@ -14,7 +14,7 @@ import style from "./topbar.module.css";
 import barStyle from "../bar/bar.module.css";
 
 export default function Topbar() {
-    const { active } = useApplications();
+    const activeApp = useApplications(state => state.active);
     const { useCachedUI, setUseCachedUI, collectTexts, setCollectTexts } = useCurrentDOM();
     const navigate = useNavigate();
     const { port, securePort } = usePorts();
@@ -26,24 +26,24 @@ export default function Topbar() {
         isSettings ? history.go(-1) : navigate("/settings/")
     }, [isSettings, navigate]);
     const onNavClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(e => {
-        if (!active) { e.preventDefault(); }
-    }, [active]);
+        if (!activeApp) { e.preventDefault(); }
+    }, [activeApp]);
 
     return <>
         <Bar>
-            <NodeSelectButton disabled={!active} />
+            <NodeSelectButton disabled={!activeApp} />
             <label>
-                <input type="checkbox" disabled={!active} checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
+                <input type="checkbox" disabled={!activeApp} checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
                 useCachedUI
             </label>
             <label>
-                <input type="checkbox" disabled={!active} checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
+                <input type="checkbox" disabled={!activeApp} checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
                 collectTexts
             </label>
             <Divider />
-            <NavLink to={`/app/${active?.uuid}/`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Inspect</NavLink>
-            <NavLink to={`/app/${active?.uuid}/selector`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Selector</NavLink>
-            <NavLink to={`/app/${active?.uuid}/console`} className={[style.item, style["nav-link"], active ? "" : style.disabled].join(" ")} onClick={onNavClick}>Console</NavLink>
+            <NavLink to={`/app/${activeApp?.uuid}/`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Inspect</NavLink>
+            <NavLink to={`/app/${activeApp?.uuid}/selector`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Selector</NavLink>
+            <NavLink to={`/app/${activeApp?.uuid}/console`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Console</NavLink>
 
             <Filler />
 

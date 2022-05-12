@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 
-import { Routes, Route, useSearchParams } from "react-router-dom";
+import { Routes, Route, useSearchParams, useMatch, useNavigate } from "react-router-dom";
 import Topbar from "./components/topbar";
 import ConsolePage from "./pages/ConsolePage";
 import InspectPage from "./pages/InspectPage";
 import LandingPage from "./pages/LandingPage";
 import SelectorPage from "./pages/SelectorPage";
 import SettingsPage from "./pages/SettingsPage";
+import useAppsStore from "./stores/apps";
 import { usePorts } from "./stores/settings";
 
 const SearchParamsInterceptor = () => {
@@ -31,10 +32,32 @@ const SearchParamsInterceptor = () => {
     return null;
 };
 
+/** Responsible for updating state when URI changes, and updating URI when state changes */
+const UriParamsInterceptor = () => {
+    const { uuid } = useMatch("/app/:uuid")?.params || {};
+    const navigate = useNavigate();
+    const setActiveApp = useAppsStore(state => state.setActive);
+    const activeApp = useAppsStore(state => state.active);
+
+    useEffect(() => {
+        if (!uuid) { return; }
+        setActiveApp(uuid);
+    }, [uuid, setActiveApp]);
+
+    useEffect(() => {
+        navigate(activeApp ?
+            `/app/${activeApp.uuid}/`
+            : "/");
+    }, [activeApp?.uuid]);
+
+    return null;
+};
+
 function App() {
     return <>
         <Topbar />
         <SearchParamsInterceptor />
+        <UriParamsInterceptor />
         <Routes>
             <Route path="/settings/" element={<SettingsPage />} />
             <Route path="/app/:appUuid" element={<InspectPage />} />

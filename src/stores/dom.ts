@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { createGlobalState } from "react-hooks-global-state";
 import { runCode, selectNode } from "../manatee";
-import { useApplications } from "./apps";
+import useApplications from "./apps";
 
 import type { DOMEntry } from "../manatee/types";
 
@@ -36,7 +36,7 @@ export const useCurrentDOM = () => {
     const [dom, setDOM] = useGlobalDOMState("dom");
     const [path, setPath] = useGlobalDOMState("path");
     const [pathInfo, setPathInfo] = useGlobalDOMState("pathInfo");
-    const { active: activeApp } = useApplications();
+    const activeApp = useApplications(state => state.active);
 
     const reset = useCallback(() => {
         setIsLoading(false);

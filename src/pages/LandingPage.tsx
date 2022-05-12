@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
+import shallow from "zustand/shallow";
 import AppSelect from "../components/app-select";
 import { AppIcon } from "../components/icons";
-import { useApplications } from "../stores/apps";
+import useApplications from "../stores/apps";
 import { useCurrentDOM } from "../stores/dom";
 import { useCredentials } from "../stores/settings";
 
@@ -35,15 +36,12 @@ export default LandingPage;
 
 export const AppSelector = (props: Omit<Parameters<typeof AppSelect>[0], "value" | "onChange">) => {
     const { username, password } = useCredentials();
-    const { reset: resetDOM } = useCurrentDOM();
-    const { active } = useApplications();
-    const navigate = useNavigate();
+    const { activeApp, setActive } = useApplications(state => ({ activeApp: state.active, setActive: state.setActive }), shallow);
 
     const selectApp = useCallback((uuid: string) => {
-        resetDOM();
-        navigate(uuid ? `/app/${uuid}/` : "");
-    }, [navigate, resetDOM]);
+        setActive(uuid);
+    }, [setActive]);
 
     const hasCredentials = username && password;
-    return <AppSelect {...props} disabled={!hasCredentials} value={active?.uuid || ""} onChange={selectApp} />
+    return <AppSelect {...props} disabled={!hasCredentials} value={activeApp?.uuid || ""} onChange={selectApp} />
 };

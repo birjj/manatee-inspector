@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useOutsideClick } from "../../hooks";
-import { useApplications } from "../../stores/apps";
+import useApplications from "../../stores/apps";
 
 import style from "./app-select.module.css";
 
@@ -12,7 +12,7 @@ type AppSelectProps = {
 };
 const AppSelect = ({ className, onChange, value, disabled = false, hideUuid = false, ...props }: AppSelectProps & Partial<Omit<React.HTMLAttributes<HTMLDivElement>, keyof AppSelectProps>>) => {
     const [_isOpen, setOpen] = useState(false);
-    const { applications } = useApplications();
+    const applications = useApplications(state => state.applications);
     const $container = useRef(null);
 
     const isDisabled = disabled || applications.length === 0;

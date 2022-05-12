@@ -1,7 +1,8 @@
 import React, { FormEvent, useCallback, useState } from "react";
+import shallow from "zustand/shallow";
 import Help from "../components/help";
 import { ChevronLeft, TrashIcon } from "../components/icons";
-import { useApplications } from "../stores/apps";
+import useApplications from "../stores/apps";
 import { useCredentials, usePorts } from "../stores/settings";
 
 import style from "./SettingsPage.module.css";
@@ -38,7 +39,7 @@ const SettingsPage = () => {
 export default SettingsPage;
 
 const AppList = () => {
-    const { applications, removeApplication } = useApplications();
+    const { applications, removeApplication } = useApplications(state => ({ applications: state.applications, removeApplication: state.removeApplication }), shallow);
 
     return <table>
         <colgroup>
@@ -114,7 +115,7 @@ export const CredentialsForm = (props: React.HTMLProps<HTMLDivElement>) => {
 };
 
 export const AddAppForm = ({ disabled = false }: { disabled?: boolean }) => {
-    const { addApplication } = useApplications();
+    const addApplication = useApplications(state => state.addApplication);
     const [uuid, setUuid] = useState("");
     const [name, setName] = useState("");
     const [error, setError] = useState("");
