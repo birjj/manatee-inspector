@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { createGlobalState } from "react-hooks-global-state";
+import create from "zustand";
 import { runCode, selectNode } from "../manatee";
 import useApplications from "./apps";
 
@@ -16,100 +16,88 @@ function decorateDOM(dom: DOMEntry) {
     addParent(dom);
     return dom;
 }
-const { useGlobalState: useGlobalDOMState } = createGlobalState({
+
+const useDOMStore = create<{
+    isSelecting: boolean,
+    isLoading: boolean,
+    selectOptions: { useCachedUI: boolean, collectTexts: boolean },
+    setSelectOptions: (opts: { useCachedUI?: boolean, collectTexts?: boolean }) => void,
+    error: string | null,
+    dom: DOMEntry | null,
+    path: string | null,
+    pathInfo: ({ [k: string]: string } & { uniqueTokens: string[] })[],
+    reset: () => void,
+    select: (app: string) => Promise<void>
+}>((set, get) => ({
     isSelecting: false,
     isLoading: false,
-    useCachedUI: false,
-    collectTexts: false,
-    error: null as string | null,
-    dom: null as DOMEntry | null,
-    path: null as string | null,
-    pathInfo: [] as ({ [k: string]: string } & { uniqueTokens: string[] })[]
-});
-/** SWR-like hook for selecting a DOM using Manatee */
-export const useCurrentDOM = () => {
-    const [isSelecting, setIsSelecting] = useGlobalDOMState("isSelecting");
-    const [isLoading, setIsLoading] = useGlobalDOMState("isLoading");
-    const [useCachedUI, setUseCachedUI] = useGlobalDOMState("useCachedUI");
-    const [collectTexts, setCollectTexts] = useGlobalDOMState("collectTexts");
-    const [error, setError] = useGlobalDOMState("error");
-    const [dom, setDOM] = useGlobalDOMState("dom");
-    const [path, setPath] = useGlobalDOMState("path");
-    const [pathInfo, setPathInfo] = useGlobalDOMState("pathInfo");
-    const activeApp = useApplications(state => state.active);
+    selectOptions: { useCachedUI: false, collectTexts: false },
+    setSelectOptions: (opts) => set(state => {
+        return {
+            selectOptions: { ...state.selectOptions, ...opts }
+        };
+    }),
+    error: null,
+    dom: null,
+    path: null,
+    pathInfo: [],
+    reset: () => set({
+        isLoading: false,
+        isSelecting: false,
+        path: null,
+        pathInfo: [],
+        dom: null,
+        error: null
+    }),
+    select: async (app) => {
+        // reset our state first
+        set({
+            isSelecting: true,
+            isLoading: false,
+            path: null,
+            pathInfo: [],
+            dom: null,
+            error: null
+        });
 
-    const reset = useCallback(() => {
-        setIsLoading(false);
-        setIsSelecting(false);
-        setPath(null);
-        setPathInfo([]);
-        setDOM(null);
-        setError(null);
-    }, [setIsLoading, setIsSelecting, setPath, setDOM, setError]);
-
-    const doSelect = () => {
-        if (!activeApp || isSelecting) { console.warn("Attempted to select while already selecting", { activeApp, isSelecting }); return; }
-        setIsSelecting(true);
-        setIsLoading(false);
-        setPath(null);
-        setPathInfo([]);
-        setDOM(null);
-        setError(null);
-
-        // we use an async func to actually communicate with Manatee so we don't have to nest promise callbacks
-        (async () => {
-            const node = await selectNode(activeApp.uuid);
+        try {
+            const node = await selectNode(app);
             const path = /^{[^}]+$/.test(node.Path) ? node.Path + "}*" : node.Path;
-            setPath(path);
-            setPathInfo(node.PathInfo);
-            setIsSelecting(false);
-            setIsLoading(true);
-            const inspectOpts = {
-                useCachedUI,
-                collectTexts
-            };
-            const code = `JSON.stringify((new Field(${JSON.stringify(path)})).inspect(${JSON.stringify(inspectOpts)}));`;
-            const result = await runCode(activeApp.uuid, code);
-            console.log("Received result", { result });
-            try {
-                return JSON.parse(result);
-            } catch (e) {
-                throw "Failed to parse response JSON: " + result;
-            }
-        })()
-            .then((data: DOMEntry) => {
-                const decorated = decorateDOM(data);
-                console.log("Setting DOM to", decorated);
-                setDOM(decorated);
-            })
-            .catch(e => {
-                console.warn("Error in result", e);
-                setError(e);
-                setDOM(null);
-                setPath(null);
-                setPathInfo([]);
-            })
-            .then(() => {
-                setIsLoading(false);
-                setIsSelecting(false);
-            });
-    };
 
-    return {
-        isSelecting,
-        isLoading,
-        collectTexts,
-        setCollectTexts,
-        useCachedUI,
-        setUseCachedUI,
-        error,
-        dom,
-        path,
-        pathInfo,
-        selectNode: doSelect,
-        reset
-    };
-}
+            set({
+                path,
+                pathInfo: node.PathInfo,
+                isSelecting: false,
+                isLoading: true
+            });
+
+            const inspectOpts = get().selectOptions;
+            const code = `JSON.stringify((new Field(${JSON.stringify(path)})).inspect(${JSON.stringify(inspectOpts)}));`;
+            const result = await runCode(app, code);
+            let data: DOMEntry;
+            try {
+                data = JSON.parse(result);
+            } catch (e) {
+                throw new Error("Failed to parse response JSON: " + result);
+            }
+            data = decorateDOM(data);
+            set({ dom: data });
+        } catch (e) {
+            console.warn("Error in result", e);
+            set({
+                error: "" + e,
+                dom: null,
+                path: null,
+                pathInfo: []
+            });
+        }
+        set({
+            isLoading: false,
+            isSelecting: false
+        });
+    }
+}));
+export default useDOMStore;
 
 let oldHighlightPath: string = "";
 export const useHighlightNode = () => {

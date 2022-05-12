@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PathEditor, { PathEntry } from "../components/path-editor";
 import type { DOMEntry } from "../manatee/types";
-import { useCurrentDOM, useHighlightNode } from "../stores/dom";
+import useDOMStore, { useHighlightNode } from "../stores/dom";
 import { getPathAlternatives } from "../utils";
 
 import style from "./SelectorPage.module.css";
@@ -18,7 +18,7 @@ type SelectorEntry = {
 };
 
 const SelectorPage = () => {
-    const { pathInfo } = useCurrentDOM();
+    const pathInfo = useDOMStore(state => state.pathInfo);
     const [alternatives, setAlternatives] = useState([] as PathEntry[][]);
 
     useEffect(() => {

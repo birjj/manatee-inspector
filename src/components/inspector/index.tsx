@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import type { DOMEntry } from "../../manatee/types";
-import { useCurrentDOM } from "../../stores/dom";
+import useDOMStore from "../../stores/dom";
 import { getNodePath } from "../../utils";
 import Value from "../value";
 import style from "./inspector.module.css";
@@ -11,7 +11,7 @@ type DOMInspectorProps = {
     data: { [k: string]: any }
 };
 const DOMInspector = ({ data: _data }: DOMInspectorProps) => {
-    const { path } = useCurrentDOM();
+    const path = useDOMStore(state => state.path);
     const { children, parent, ...data } = _data || {};
     const $path = useRef(null as HTMLInputElement | null);
 

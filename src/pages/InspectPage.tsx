@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
+import shallow from "zustand/shallow";
 import DOMTree from "../components/dom-tree";
 import ErrorBoundary from "../components/error-boundary";
 import DOMInspector from "../components/inspector";
 import Resizable from "../components/resizable";
 import { NodeSelectButton } from "../components/topbar";
 import type { DOMEntry } from "../manatee/types";
-import { useCurrentDOM, useHighlightNode } from "../stores/dom";
+import useDOMStore, { useHighlightNode } from "../stores/dom";
 import { getNodePath } from "../utils";
 
 import style from "./InspectPage.module.css";
 
 const InspectPage = () => {
     const [selected, setSelected] = useState(undefined as DOMEntry | undefined);
-    const { dom, path } = useCurrentDOM();
+    const { dom, path } = useDOMStore(state => ({ dom: state.dom, path: state.path }), shallow);
     const highlightNode = useHighlightNode();
 
     useEffect(() => {
@@ -43,7 +44,8 @@ const InspectPage = () => {
 export default InspectPage;
 
 const DOMTreeSection = ({ selected, onSelect }: { selected: DOMEntry | undefined, onSelect: (v: DOMEntry) => void }) => {
-    const { isLoading, error, path, dom } = useCurrentDOM();
+    const { isLoading, error, dom } = useDOMStore(state => ({ isLoading: state.isLoading, error: state.error, dom: state.dom }), shallow);
+
     return <div className={[style["tree-section"], dom ? "" : "center"].join(" ")}>
         <ErrorBoundary>
             {dom

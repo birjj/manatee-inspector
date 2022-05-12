@@ -4,7 +4,6 @@ import shallow from "zustand/shallow";
 import AppSelect from "../components/app-select";
 import { AppIcon } from "../components/icons";
 import useApplications from "../stores/apps";
-import { useCurrentDOM } from "../stores/dom";
 import { useCredentials } from "../stores/settings";
 
 import style from "./LandingPage.module.css";

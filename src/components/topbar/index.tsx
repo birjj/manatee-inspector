@@ -5,17 +5,18 @@ import { Link, NavLink, useMatch, useNavigate } from "react-router-dom";
 
 import { AppSelector } from "../../pages/LandingPage";
 import useApplications from "../../stores/apps";
-import { useCurrentDOM } from "../../stores/dom";
+import useDOMStore from "../../stores/dom";
 import { usePorts } from "../../stores/settings";
 import Bar, { Divider, Filler, TextButton } from "../bar";
 import { GitHubIcon, HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
 
 import style from "./topbar.module.css";
 import barStyle from "../bar/bar.module.css";
+import shallow from "zustand/shallow";
 
 export default function Topbar() {
     const activeApp = useApplications(state => state.active);
-    const { useCachedUI, setUseCachedUI, collectTexts, setCollectTexts } = useCurrentDOM();
+    const { selectOptions, setSelectOptions } = useDOMStore(state => ({ selectOptions: state.selectOptions, setSelectOptions: state.setSelectOptions }), shallow);
     const navigate = useNavigate();
     const { port, securePort } = usePorts();
     const isSettings = !!useMatch("/settings");
@@ -33,11 +34,11 @@ export default function Topbar() {
         <Bar>
             <NodeSelectButton disabled={!activeApp} />
             <label>
-                <input type="checkbox" disabled={!activeApp} checked={useCachedUI} onChange={e => setUseCachedUI(e.target.checked)} />
+                <input type="checkbox" disabled={!activeApp} checked={selectOptions.useCachedUI} onChange={e => setSelectOptions({ useCachedUI: e.target.checked })} />
                 useCachedUI
             </label>
             <label>
-                <input type="checkbox" disabled={!activeApp} checked={collectTexts} onChange={e => setCollectTexts(e.target.checked)} />
+                <input type="checkbox" disabled={!activeApp} checked={selectOptions.collectTexts} onChange={e => setSelectOptions({ collectTexts: e.target.checked })} />
                 collectTexts
             </label>
             <Divider />
@@ -74,8 +75,8 @@ type NodeSelectButtonProps = {
     showError?: boolean;
 };
 export const NodeSelectButton = ({ className, disabled, showError = true, ...props }: NodeSelectButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-    const { active } = useApplications();
-    const { isSelecting, selectNode, error } = useCurrentDOM();
+    const active = useApplications(state => state.active);
+    const { isSelecting, selectNode, error } = useDOMStore(state => ({ isSelecting: state.isSelecting, selectNode: state.select, error: state.error }), shallow);
 
     return <div className={style["button-wrapper"]}>
         <TextButton {...props} className={[
@@ -83,7 +84,7 @@ export const NodeSelectButton = ({ className, disabled, showError = true, ...pro
             style.button,
             className,
             isSelecting ? "active" : ""
-        ].join(" ")} disabled={disabled || !active} onClick={selectNode}>
+        ].join(" ")} disabled={disabled || !active} onClick={() => selectNode(active?.uuid || "")}>
             <NodeSelectIcon />
         </TextButton>
         {showError && error

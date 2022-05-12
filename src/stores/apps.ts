@@ -37,7 +37,6 @@ const useAppsStore = create<{
             if (uuid === state.active?.uuid) {
                 return {};
             }
-
             const app = state.applications.find(app => app.uuid === uuid);
             if (!app) {
                 throw new Error(`Couldn't find app with uuid ${uuid}`);
