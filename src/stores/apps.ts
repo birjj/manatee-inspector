@@ -1,5 +1,7 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
+import useDOMStore from "./dom";
+import useConsoleStore from "./console";
 
 type Application = { uuid: string, name: string };
 const useAppsStore = create<{
@@ -41,6 +43,9 @@ const useAppsStore = create<{
             if (!app) {
                 throw new Error(`Couldn't find app with uuid ${uuid}`);
             }
+
+            useDOMStore.getState().reset();
+            useConsoleStore.getState().clearHistory();
             return { active: app };
         })
     }),
