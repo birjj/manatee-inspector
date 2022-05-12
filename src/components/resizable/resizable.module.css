@@ -3,8 +3,13 @@
     flex-basis: 100%;
 }
 
+.container--horizontal {
+    overflow-x: hidden;
+}
+
 .container--vertical {
     flex-direction: column;
+    overflow-y: hidden;
 }
 
 .left,
