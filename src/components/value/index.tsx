@@ -56,7 +56,7 @@ const ObjectChild = ({ data: [key, value] }: { data: [string, any] }) => {
     </div>;
 };
 
-const Value = ({ data, expanded = false }: ValueProps) => {
+const Value = ({ data, expanded = true }: ValueProps) => {
     if (data instanceof Object) {
         return <ObjectValue open={expanded} data={data} inlineArrow={true} className={style["container"]} />
     }
