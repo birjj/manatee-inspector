@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { ChevronLeft, ClearIcon, ResponseIcon } from "../components/icons";
 
@@ -19,9 +19,7 @@ const ConsolePage = () => {
         <Resizable
             direction="vertical"
             children={[
-                <div className={style.history}>
-                    <ConsoleHistory />
-                </div>,
+                <ConsoleHistory />,
                 <div className={style.prompt}>
                     <Bar className={style["prompt-header"]}>
                         <TextButton onClick={clearHistory}>
@@ -70,9 +68,23 @@ const ConsolePrompt = () => {
 
 const ConsoleHistory = React.memo(() => {
     const history = useConsoleStore(state => state.history);
+    const $history = useRef<HTMLDivElement | null>(null);
 
-    return <div className={style["history-list"]}>
-        {history.map((entry, i) => <HistoryEntry key={i} entry={entry} />)}
+    useLayoutEffect(() => {
+        const timer = setTimeout(() => {
+            if (!$history.current) { return; }
+            $history.current.scrollTo({
+                top: Infinity,
+                behavior: "auto"
+            });
+        }, 250);
+        return () => clearTimeout(timer);
+    }, [history]);
+
+    return <div className={style.history} ref={$history}>
+        <div className={style["history-list"]}>
+            {history.map((entry, i) => <HistoryEntry key={i} entry={entry} />)}
+        </div>
     </div>;
 });
 
