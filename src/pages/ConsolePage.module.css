@@ -216,11 +216,9 @@
     padding: 4px;
 }
 
-.prompt-chevron {
-    height: 12px;
-    width: auto;
-    transform: rotate(180deg);
-    color: var(--c-accent);
+.prompt :global(.cm-theme),
+.prompt :global(.cm-editor) {
+    height: 100%;
 }
 
 .prompt-input {

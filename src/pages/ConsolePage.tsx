@@ -53,9 +53,6 @@ const ConsolePrompt = () => {
     const { prompt, setPrompt, runCode } = useConsoleStore(state => ({ runCode: state.runCode, prompt: state.prompt, setPrompt: state.setPrompt }), shallow);
     const activeApp = useApplications(state => state.active);
     return <div className={style["prompt-content"]}>
-        <div className={style["prompt-sidebar"]}>
-            <ChevronLeft className={style["prompt-chevron"]} />
-        </div>
         <div className={style["prompt-input"]}>
             <TextEditor
                 value={prompt}

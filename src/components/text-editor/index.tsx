@@ -1,5 +1,5 @@
 import CodeMirror, { EditorView, Extension } from "@uiw/react-codemirror";
-import { keymap, highlightSpecialChars, drawSelection, dropCursor, highlightActiveLineGutter } from "@codemirror/view";
+import { keymap, highlightSpecialChars, drawSelection, dropCursor, lineNumbers, highlightActiveLineGutter } from "@codemirror/view";
 import { defaultHighlightStyle, syntaxHighlighting, indentOnInput, bracketMatching } from "@codemirror/language";
 import { defaultKeymap, history, historyKeymap, insertNewlineAndIndent } from "@codemirror/commands";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
@@ -39,6 +39,7 @@ const TextEditor = ({ value, onChange, onSubmit, readOnly }: TextEditorProps) =>
             dropCursor(),
             readOnly ? null : bracketMatching(),
             closeBrackets(),
+            lineNumbers(),
             EditorView.lineWrapping,
             //autocompletion(),
             keymap.of([
