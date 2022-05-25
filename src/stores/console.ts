@@ -42,7 +42,7 @@ const useConsoleStore = create<{
             });
             // then run the code in Manatee and update the store with the result
             try {
-                const response = await runCode(appUuid, `JSON.stringify((function(){${code}})())`);
+                const response = await runCode(appUuid, `JSON.stringify((function(){\n${code}\n})())`);
                 entry.response = response;
             } catch (e) {
                 entry.response = "" + e;
