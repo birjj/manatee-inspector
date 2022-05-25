@@ -39,7 +39,7 @@ const TextEditor = ({ value, onChange, onSubmit, readOnly }: TextEditorProps) =>
             dropCursor(),
             readOnly ? null : bracketMatching(),
             closeBrackets(),
-            lineNumbers(),
+            readOnly ? null : lineNumbers(),
             EditorView.lineWrapping,
             //autocompletion(),
             keymap.of([
