@@ -8,7 +8,7 @@ const useAppsStore = create<{
     applications: Application[],
     addApplication: (uuid: string, name: string) => void,
     removeApplication: (uuid: string) => void,
-    active: Application | null,
+    active: Application | null | undefined,
     setActive: (uuid: string | null) => void,
 }, any>(persist(
     set => ({
@@ -31,7 +31,7 @@ const useAppsStore = create<{
                 active: uuid === state.active?.uuid ? null : state.active
             };
         }),
-        active: null,
+        active: undefined,
         setActive: (uuid) => set(state => {
             if (uuid === null) {
                 return { active: null };

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
-import { Routes, Route, useSearchParams, useMatch, useNavigate } from "react-router-dom";
+import { Routes, Route, useSearchParams, useMatch, useNavigate, useParams } from "react-router-dom";
 import Topbar from "./components/topbar";
 import ConsolePage from "./pages/ConsolePage";
 import InspectPage from "./pages/InspectPage";
@@ -34,7 +34,8 @@ const SearchParamsInterceptor = () => {
 
 /** Responsible for updating state when URI changes, and updating URI when state changes */
 const UriParamsInterceptor = () => {
-    const { uuid } = useMatch("/app/:uuid")?.params || {};
+    const uriMatch = useMatch({ path: "/app/:uuid/", end: false });
+    const { uuid } = uriMatch?.params || {};
     const navigate = useNavigate();
     const setActiveApp = useAppsStore(state => state.setActive);
     const activeApp = useAppsStore(state => state.active);
@@ -45,6 +46,8 @@ const UriParamsInterceptor = () => {
     }, [uuid, setActiveApp]);
 
     useEffect(() => {
+        if (activeApp === undefined) { return; }
+        if (activeApp?.uuid === uuid) { return; }
         navigate(activeApp ?
             `/app/${activeApp.uuid}/`
             : "/");
