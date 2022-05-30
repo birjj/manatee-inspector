@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { useMatch, useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
 import AppSelect from "../components/app-select";
 import { AppIcon } from "../components/icons";
@@ -35,10 +34,11 @@ export default LandingPage;
 
 export const AppSelector = (props: Omit<Parameters<typeof AppSelect>[0], "value" | "onChange">) => {
     const { username, password } = useCredentials();
-    const { activeApp, setActive } = useApplications(state => ({ activeApp: state.active, setActive: state.setActive }), shallow);
+    const { activeApp, setActive, setPage } = useApplications(state => ({ activeApp: state.active, setActive: state.setActive, setPage: state.setPage }), shallow);
 
     const selectApp = useCallback((uuid: string) => {
         setActive(uuid);
+        setPage("inspect");
     }, [setActive]);
 
     const hasCredentials = username && password;

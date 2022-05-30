@@ -1,7 +1,7 @@
 /** @fileoverview The top-most bar of the application, containing the element picker amongst other things */
 
 import React, { useCallback } from "react";
-import { Link, NavLink, useMatch, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { AppSelector } from "../../pages/LandingPage";
 import useApplications from "../../stores/apps";
@@ -16,16 +16,17 @@ import shallow from "zustand/shallow";
 
 export default function Topbar() {
     const activeApp = useApplications(state => state.active);
+    const page = useApplications(state => state.page);
+    const setPage = useApplications(state => state.setPage);
     const { selectOptions, setSelectOptions } = useDOMStore(state => ({ selectOptions: state.selectOptions, setSelectOptions: state.setSelectOptions }), shallow);
-    const navigate = useNavigate();
     const { port, securePort } = usePorts();
-    const isSettings = !!useMatch("/settings");
+    const isSettings = page === "settings";
 
     const onSettingsClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(e => {
         e.stopPropagation();
         e.preventDefault();
-        isSettings ? history.go(-1) : navigate("/settings/")
-    }, [isSettings, navigate]);
+        isSettings ? history.go(-1) : setPage("settings");
+    }, [isSettings, setPage]);
     const onNavClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(e => {
         if (!activeApp) { e.preventDefault(); }
     }, [activeApp]);
@@ -42,13 +43,13 @@ export default function Topbar() {
                 collectTexts
             </label>
             <Divider />
-            <NavLink to={`/app/${activeApp?.uuid}/`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Inspect</NavLink>
-            <NavLink to={`/app/${activeApp?.uuid}/selector`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Selector</NavLink>
-            <NavLink to={`/app/${activeApp?.uuid}/console`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Console</NavLink>
+            <NavLink to={`/app/${activeApp?.uuid}/inspect/`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Inspect</NavLink>
+            <NavLink to={`/app/${activeApp?.uuid}/selector/`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Selector</NavLink>
+            <NavLink to={`/app/${activeApp?.uuid}/console/`} className={[style.item, style["nav-link"], activeApp ? "" : style.disabled].join(" ")} onClick={onNavClick}>Console</NavLink>
 
             <Filler />
 
-            <Link to="/settings/" className={barStyle["text-button"]}>
+            <Link to={`/app/${activeApp?.uuid}/settings/`} className={barStyle["text-button"]}>
                 <PlusIcon />
             </Link>
             <div className={[style.item, style["text-item"]].join(" ")}>

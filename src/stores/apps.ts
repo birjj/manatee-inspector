@@ -4,12 +4,15 @@ import useDOMStore from "./dom";
 import useConsoleStore from "./console";
 
 type Application = { uuid: string, name: string };
+type Page = "inspect" | "selector" | "console" | "settings";
 const useAppsStore = create<{
     applications: Application[],
     addApplication: (uuid: string, name: string) => void,
     removeApplication: (uuid: string) => void,
     active: Application | null | undefined,
     setActive: (uuid: string | null) => void,
+    page: Page,
+    setPage: (page: Page) => void,
 }, any>(persist(
     set => ({
         applications: [],
@@ -47,6 +50,13 @@ const useAppsStore = create<{
             useDOMStore.getState().reset();
             useConsoleStore.getState().clearHistory();
             return { active: app };
+        }),
+        page: "inspect",
+        setPage: (page) => set(state => {
+            if (page === state.page) {
+                return {};
+            }
+            return { page };
         })
     }),
     {

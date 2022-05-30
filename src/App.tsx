@@ -34,24 +34,33 @@ const SearchParamsInterceptor = () => {
 
 /** Responsible for updating state when URI changes, and updating URI when state changes */
 const UriParamsInterceptor = () => {
-    const uriMatch = useMatch({ path: "/app/:uuid/", end: false });
-    const { uuid } = uriMatch?.params || {};
+    const uuidMatch = useMatch({ path: "/app/:uuid/", end: false });
+    const pathMatch = useMatch({ path: "/app/:uuid/:path" });
+    const { uuid } = uuidMatch?.params || {};
+    const path = pathMatch?.params?.path || "inspect";
     const navigate = useNavigate();
     const setActiveApp = useAppsStore(state => state.setActive);
     const activeApp = useAppsStore(state => state.active);
+    const setActivePath = useAppsStore(state => state.setPage);
+    const activePath = useAppsStore(state => state.page);
 
     useEffect(() => {
         if (!uuid) { return; }
         setActiveApp(uuid);
     }, [uuid, setActiveApp]);
+    useEffect(() => {
+        console.log("Setting path to", path);
+        setActivePath(path as any);
+    }, [path, setActivePath]);
 
     useEffect(() => {
         if (activeApp === undefined) { return; }
-        if (activeApp?.uuid === uuid) { return; }
+        if (activeApp?.uuid === uuid && path === activePath) { return; }
+        console.log("Navigating to", activeApp?.uuid, activePath);
         navigate(activeApp ?
-            `/app/${activeApp.uuid}/`
+            `/app/${activeApp.uuid}/${activePath}/`
             : "/");
-    }, [activeApp?.uuid]);
+    }, [activeApp?.uuid, activePath]);
 
     return null;
 };
@@ -62,8 +71,8 @@ function App() {
         <SearchParamsInterceptor />
         <UriParamsInterceptor />
         <Routes>
-            <Route path="/settings/" element={<SettingsPage />} />
-            <Route path="/app/:appUuid" element={<InspectPage />} />
+            <Route path="/app/:appUuid/settings" element={<SettingsPage />} />
+            <Route path="/app/:appUuid/inspect" element={<InspectPage />} />
             <Route path="/app/:appUuid/selector" element={<SelectorPage />} />
             <Route path="/app/:appUuid/console" element={<ConsolePage />} />
             <Route path="*" element={<LandingPage />} />

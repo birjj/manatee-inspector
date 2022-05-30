@@ -92,11 +92,12 @@ const useDOMStore = create<{
                 path: null,
                 pathInfo: []
             });
+        } finally {
+            set({
+                isLoading: false,
+                isSelecting: false
+            });
         }
-        set({
-            isLoading: false,
-            isSelecting: false
-        });
     }
 }));
 export default useDOMStore;
