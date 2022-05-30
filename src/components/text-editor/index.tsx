@@ -4,7 +4,7 @@ import { defaultHighlightStyle, syntaxHighlighting, indentOnInput, bracketMatchi
 import { defaultKeymap, history, historyKeymap, insertNewlineAndIndent } from "@codemirror/commands";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 import theme from "./theme";
 import { javascript } from "@codemirror/lang-javascript";
@@ -16,7 +16,36 @@ type TextEditorProps = {
     readOnly?: boolean,
 };
 const TextEditor = ({ value, onChange, onSubmit, readOnly }: TextEditorProps) => {
-
+    const extensions = useRef([
+        highlightSpecialChars(),
+        highlightSelectionMatches(),
+        history(),
+        readOnly ? null : drawSelection(),
+        indentOnInput(),
+        syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+        dropCursor(),
+        readOnly ? null : bracketMatching(),
+        closeBrackets(),
+        readOnly ? null : lineNumbers(),
+        EditorView.lineWrapping,
+        //autocompletion(),
+        keymap.of([
+            {
+                key: "Enter",
+                run: insertNewlineAndIndent,
+                shift: (): boolean => {
+                    handleSubmit();
+                    return true;
+                }
+            },
+            ...closeBracketsKeymap,
+            ...defaultKeymap,
+            ...searchKeymap,
+            ...historyKeymap
+            //...completionKeymap
+        ]),
+        javascript({ jsx: false, typescript: false })
+    ].filter(v => v) as Extension[]);
     const handleSubmit = useCallback(() => {
         if (onSubmit) {
             onSubmit(value);
@@ -29,36 +58,7 @@ const TextEditor = ({ value, onChange, onSubmit, readOnly }: TextEditorProps) =>
         onChange={onChange}
         autoFocus
         theme={theme}
-        extensions={[
-            highlightSpecialChars(),
-            highlightSelectionMatches(),
-            history(),
-            readOnly ? null : drawSelection(),
-            indentOnInput(),
-            syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
-            dropCursor(),
-            readOnly ? null : bracketMatching(),
-            closeBrackets(),
-            readOnly ? null : lineNumbers(),
-            EditorView.lineWrapping,
-            //autocompletion(),
-            keymap.of([
-                {
-                    key: "Enter",
-                    run: insertNewlineAndIndent,
-                    shift: (): boolean => {
-                        handleSubmit();
-                        return true;
-                    }
-                },
-                ...closeBracketsKeymap,
-                ...defaultKeymap,
-                ...searchKeymap,
-                ...historyKeymap
-                //...completionKeymap
-            ]),
-            javascript({ jsx: false, typescript: false })
-        ].filter(v => v) as Extension[]}
+        extensions={extensions.current}
         basicSetup={false}
         placeholder="Enter code..."
     />;
