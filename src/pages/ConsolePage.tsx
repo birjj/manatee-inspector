@@ -91,10 +91,6 @@ const HistoryEntry = React.memo(({ entry }: { entry: HistoryEntry }) => {
     let respValue: any = entry.response;
     if (entry.response === "undefined") {
         respValue = undefined;
-    } else {
-        try {
-            respValue = JSON.parse(entry.response);
-        } catch (e) { }
     }
 
     let $content: React.ReactNode = null;
