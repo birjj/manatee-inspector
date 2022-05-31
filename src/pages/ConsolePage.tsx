@@ -16,10 +16,9 @@ const ConsolePage = () => {
     const prompt = useConsoleStore(state => state.prompt);
     const activeApp = useApplications(state => state.active);
 
-    const execute = () => {
-        console.log("Running code", prompt, "in", activeApp?.uuid);
-        runCode(activeApp?.uuid || "", prompt);
-    };
+    const execute = useCallback((code: string) => {
+        runCode(activeApp?.uuid || "", code);
+    }, [activeApp?.uuid]);
 
     return <div className={style.wrapper}>
         <Resizable
@@ -33,7 +32,7 @@ const ConsolePage = () => {
                         </TextButton>
                         <Filler />
                         <button
-                            onClick={execute}
+                            onClick={() => execute(prompt)}
                             disabled={isLoading || !prompt}
                             className={[
                                 prompt ? "primary" : "",
@@ -55,7 +54,7 @@ const ConsolePage = () => {
 };
 export default ConsolePage;
 
-const ConsolePrompt = ({ execute }: { execute: () => void }) => {
+const ConsolePrompt = ({ execute }: { execute: (code: string) => void }) => {
     const { prompt, setPrompt } = useConsoleStore(state => ({ runCode: state.runCode, prompt: state.prompt, setPrompt: state.setPrompt }), shallow);
     return <div className={style["prompt-content"]}>
         <div className={style["prompt-input"]}>
