@@ -15,6 +15,11 @@ const ConsolePage = () => {
     const { isLoading, runCode, clearHistory, prompt } = useConsoleStore(state => ({ isLoading: state.isLoading, runCode: state.runCode, clearHistory: state.clearHistory, prompt: state.prompt }), shallow);
     const activeApp = useApplications(state => state.active);
 
+    const execute = useCallback(() => {
+        console.log("Running code", prompt, "in", activeApp?.uuid);
+        runCode(activeApp?.uuid || "", prompt);
+    }, [activeApp?.uuid, prompt]);
+
     return <div className={style.wrapper}>
         <Resizable
             direction="vertical"
@@ -27,7 +32,7 @@ const ConsolePage = () => {
                         </TextButton>
                         <Filler />
                         <button
-                            onClick={() => runCode(activeApp?.uuid || "", prompt)}
+                            onClick={execute}
                             disabled={isLoading || !prompt}
                             className={[
                                 prompt ? "primary" : "",
@@ -37,7 +42,7 @@ const ConsolePage = () => {
                             Run code (<kbd>Shift</kbd>+<kbd>Enter</kbd>)
                         </button>
                     </Bar>
-                    <ConsolePrompt />
+                    <ConsolePrompt execute={execute} />
                 </div>
             ]}
             childClasses={[
@@ -49,13 +54,8 @@ const ConsolePage = () => {
 };
 export default ConsolePage;
 
-const ConsolePrompt = () => {
-    const { prompt, setPrompt, runCode } = useConsoleStore(state => ({ runCode: state.runCode, prompt: state.prompt, setPrompt: state.setPrompt }), shallow);
-    const activeApp = useApplications(state => state.active);
-    const execute = useCallback(() => {
-        console.log("Running code", prompt, "in", activeApp?.uuid);
-        runCode(activeApp?.uuid || "", prompt);
-    }, [activeApp?.uuid, prompt]);
+const ConsolePrompt = ({ execute }: { execute: () => void }) => {
+    const { prompt, setPrompt } = useConsoleStore(state => ({ runCode: state.runCode, prompt: state.prompt, setPrompt: state.setPrompt }), shallow);
     return <div className={style["prompt-content"]}>
         <div className={style["prompt-input"]}>
             <TextEditor
