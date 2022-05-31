@@ -12,13 +12,14 @@ import shallow from "zustand/shallow";
 import Bar, { Filler, TextButton } from "../components/bar";
 
 const ConsolePage = () => {
-    const { isLoading, runCode, clearHistory, prompt } = useConsoleStore(state => ({ isLoading: state.isLoading, runCode: state.runCode, clearHistory: state.clearHistory, prompt: state.prompt }), shallow);
+    const { isLoading, runCode, clearHistory } = useConsoleStore(state => ({ isLoading: state.isLoading, runCode: state.runCode, clearHistory: state.clearHistory }), shallow);
+    const prompt = useConsoleStore(state => state.prompt);
     const activeApp = useApplications(state => state.active);
 
-    const execute = useCallback(() => {
+    const execute = () => {
         console.log("Running code", prompt, "in", activeApp?.uuid);
         runCode(activeApp?.uuid || "", prompt);
-    }, [activeApp?.uuid, prompt]);
+    };
 
     return <div className={style.wrapper}>
         <Resizable
