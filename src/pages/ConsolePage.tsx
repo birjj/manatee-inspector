@@ -52,12 +52,16 @@ export default ConsolePage;
 const ConsolePrompt = () => {
     const { prompt, setPrompt, runCode } = useConsoleStore(state => ({ runCode: state.runCode, prompt: state.prompt, setPrompt: state.setPrompt }), shallow);
     const activeApp = useApplications(state => state.active);
+    const execute = useCallback(() => {
+        console.log("Running code", prompt, "in", activeApp?.uuid);
+        runCode(activeApp?.uuid || "", prompt);
+    }, [activeApp?.uuid, prompt]);
     return <div className={style["prompt-content"]}>
         <div className={style["prompt-input"]}>
             <TextEditor
                 value={prompt}
                 onChange={setPrompt}
-                onSubmit={() => runCode(activeApp?.uuid || "", prompt)}
+                onSubmit={execute}
             />
         </div>
     </div>;
