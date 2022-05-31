@@ -17,11 +17,17 @@ function decorateDOM(dom: DOMEntry) {
     return dom;
 }
 
+function timeout(delay: number) {
+    return new Promise(res => {
+        setTimeout(res, delay);
+    });
+}
+
 const useDOMStore = create<{
     isSelecting: boolean,
     isLoading: boolean,
-    selectOptions: { useCachedUI: boolean, collectTexts: boolean },
-    setSelectOptions: (opts: { useCachedUI?: boolean, collectTexts?: boolean }) => void,
+    selectOptions: { useCachedUI: boolean, collectTexts: boolean, delay: number },
+    setSelectOptions: (opts: { useCachedUI?: boolean, collectTexts?: boolean, delay?: number }) => void,
     error: string | null,
     clearError: () => void,
     dom: DOMEntry | null,
@@ -32,7 +38,7 @@ const useDOMStore = create<{
 }>((set, get) => ({
     isSelecting: false,
     isLoading: false,
-    selectOptions: { useCachedUI: false, collectTexts: false },
+    selectOptions: { useCachedUI: false, collectTexts: false, delay: 0 },
     setSelectOptions: (opts) => set(state => {
         return {
             selectOptions: { ...state.selectOptions, ...opts }
@@ -63,6 +69,10 @@ const useDOMStore = create<{
         });
 
         try {
+            const { delay, ...inspectOpts } = get().selectOptions;
+            if (delay) {
+                await timeout(delay);
+            }
             const node = await selectNode(app);
             const path = /^{[^}]+$/.test(node.Path) ? node.Path + "}*" : node.Path;
 
@@ -73,7 +83,6 @@ const useDOMStore = create<{
                 isLoading: true
             });
 
-            const inspectOpts = get().selectOptions;
             const code = `JSON.stringify((new Field(${JSON.stringify(path)})).inspect(${JSON.stringify(inspectOpts)}));`;
             const result = await runCode(app, code);
             let data: DOMEntry;

@@ -1,6 +1,6 @@
 /** @fileoverview The top-most bar of the application, containing the element picker amongst other things */
 
-import React, { useCallback } from "react";
+import React, { MouseEventHandler, useCallback, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import { AppSelector } from "../../pages/LandingPage";
@@ -13,6 +13,7 @@ import { GitHubIcon, HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "..
 import style from "./topbar.module.css";
 import barStyle from "../bar/bar.module.css";
 import shallow from "zustand/shallow";
+import { useOutsideClick } from "../../hooks";
 
 export default function Topbar() {
     const activeApp = useApplications(state => state.active);
@@ -78,16 +79,39 @@ type NodeSelectButtonProps = {
 export const NodeSelectButton = ({ className, disabled, showError = true, ...props }: NodeSelectButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     const active = useApplications(state => state.active);
     const { isSelecting, selectNode, error, clearError } = useDOMStore(state => ({ isSelecting: state.isSelecting, selectNode: state.select, error: state.error, clearError: state.clearError }), shallow);
+    const { selectOptions, setSelectOptions } = useDOMStore(state => ({ selectOptions: state.selectOptions, setSelectOptions: state.setSelectOptions }), shallow);
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    const doSelect: MouseEventHandler<HTMLButtonElement> = (e) => {
+        if (isSelecting) { return; }
+        if (e.shiftKey) { // shift-clicking should just show the dropdown
+            setShowDropdown(!showDropdown);
+            return;
+        }
+        selectNode(active?.uuid || "");
+    };
+
+    const $dropdown = useRef<HTMLDivElement | null>(null);
+    useOutsideClick($dropdown, () => {
+        setShowDropdown(false);
+    });
 
     return <div className={style["button-wrapper"]}>
         <TextButton {...props} className={[
             style.item,
             style.button,
             className,
-            isSelecting ? "active" : ""
-        ].join(" ")} disabled={disabled || !active} onClick={() => selectNode(active?.uuid || "")}>
+            isSelecting ? "active" : "",
+            style["select-button"],
+            selectOptions.delay ? style.delayed : ""
+        ].join(" ")} disabled={disabled || !active} onClick={doSelect}>
             <NodeSelectIcon />
         </TextButton>
+        {showDropdown && !(showError && error)
+            ? <div className={style.dropdown} ref={$dropdown}>
+                Delay: <input type="number" value={selectOptions.delay || 0} step={100} min={0} max={10000} onChange={e => setSelectOptions({ delay: e.target.valueAsNumber })} />ms
+            </div>
+            : null}
         {showError && error
             ? <div className={style.error} onClick={clearError}>
                 {error}

@@ -15,11 +15,38 @@
     height: 100%;
 }
 
+.select-button {
+    position: relative;
+}
+
+.select-button.delayed::after {
+    content: "";
+    position: absolute;
+    left: calc(50% - 6px);
+    top: calc(50% - 6px);
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--c-accent);
+    border: 2px solid var(--c-background-1);
+}
+
+.dropdown {
+    --background-color: var(--c-accent);
+}
+
 .error {
+    --background-color: var(--c-error);
+    cursor: pointer;
+}
+
+.error,
+.dropdown {
     position: absolute;
     left: 50%;
     top: calc(100% + 8px);
-    background: var(--c-error);
+    background: var(--background-color);
     color: var(--c-background);
     padding: 2px 4px;
     width: max-content;
@@ -28,16 +55,26 @@
     height: auto;
     white-space: break-spaces;
     word-break: break-word;
-    cursor: pointer;
 }
 
-.error::before {
+.error::before,
+.dropdown::before {
     content: "";
     position: absolute;
     left: 0;
     top: -4px;
-    border-bottom: 4px solid var(--c-error);
+    border-bottom: 4px solid var(--background-color);
     border-right: 4px solid transparent;
+}
+
+.dropdown input {
+    width: 6ch;
+    -moz-appearance: textfield;
+}
+
+.dropdown input::-webkit-outer-spin-button,
+.dropdown input::-webkit-inner-spin-button {
+    display: none;
 }
 
 .app-selector {
