@@ -28,3 +28,24 @@
 .value--string {
     color: var(--c-text-string);
 }
+
+.value--date {
+    font-style: italic;
+}
+
+.date-tag {
+    color: var(--c-text-tag);
+}
+
+.function-tag {
+    color: var(--c-text-keyword);
+}
+
+.function-body {
+    display: contents;
+    margin: 0;
+}
+
+.faint {
+    color: var(--c-text-secondary);
+}

@@ -7,7 +7,9 @@ function encodeCode(code: string) {
         ${code}
     })(), function replacer(key,val){
         // handle dates (these are given to replacer as strings, since that's the output of Date's .toJSON)
-        if (this[key] instanceof Date) { return { ___type: "date", value: +this[key] }; }
+        if (this[key] instanceof Date) {
+            return { ___type: "date", value: isNaN(this[key]) ? "NaN" : +this[key] };
+        }
         // all other non-objects are just passed directly
         if (!(val instanceof Object)) { return val; }
         // functions are treated specially
@@ -27,7 +29,10 @@ function decodeResponse(response: string) {
             if (!(val instanceof Object) || !val.___type) { return val; }
             switch (val.___type) {
                 case "date":
-                    return new Date(val.value);
+                    return new Date(
+                        val.value === "NaN"
+                            ? NaN
+                            : val.value);
                 case "function":
                     return val; // TODO: add support for displaying functions in pretty format
                 default:

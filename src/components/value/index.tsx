@@ -56,10 +56,41 @@ const ObjectChild = ({ data: [key, value] }: { data: [string, any] }) => {
     </div>;
 };
 
+/** Representation of date instances */
+interface DateValueProps extends ValueProps { data: Date };
+const DateValue = ({ data }: DateValueProps) => {
+    const dateStr = isNaN(+data) ? "Invalid date" : data.toISOString();
+    return <span className={style[`value--date`]}>
+        <span className={style["date-tag"]}>Date</span>
+        <span className={style["faint"]} >(</span>
+        {dateStr}
+        <span className={style["faint"]} >)</span>
+    </span>;
+};
+
+/** Representation of function instances */
+interface FunctionValueProps extends ValueProps { data: { ___type: "function", value: string } };
+const FunctionValue = ({ data }: FunctionValueProps) => {
+    return <span className={style[`value--function`]}>
+        <span className={style["function-tag"]}>ƒ </span>
+        <pre className={style["function-body"]}>
+            {data.value
+                .replace(/^function\s*/, "")
+                .replace(/\n+/g, "\n")}
+        </pre>
+    </span>;
+};
+
 const Value = ({ data, expanded = true }: ValueProps) => {
-    if (data instanceof Object) {
-        return <ObjectValue open={expanded} data={data} inlineArrow={true} className={style["container"]} />
+    if (data instanceof Date) {
+        return <DateValue data={data} />;
     }
-    return <LiteralValue data={data} />
+    if (data instanceof Object) {
+        if (data.___type === "function") {
+            return <FunctionValue data={data} />;
+        }
+        return <ObjectValue open={expanded} data={data} inlineArrow={true} className={style["container"]} />;
+    }
+    return <LiteralValue data={data} />;
 };
 export default Value;
