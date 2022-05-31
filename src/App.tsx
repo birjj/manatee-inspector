@@ -46,6 +46,7 @@ const UriParamsInterceptor = () => {
 
     useEffect(() => {
         if (!uuid) { return; }
+        console.log("Setting app to", uuid);
         setActiveApp(uuid);
     }, [uuid, setActiveApp]);
     useEffect(() => {

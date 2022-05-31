@@ -37,9 +37,10 @@ export const AppSelector = (props: Omit<Parameters<typeof AppSelect>[0], "value"
     const { activeApp, setActive, setPage } = useApplications(state => ({ activeApp: state.active, setActive: state.setActive, setPage: state.setPage }), shallow);
 
     const selectApp = useCallback((uuid: string) => {
+        console.log("AppSelector", uuid);
         setActive(uuid);
         setPage("inspect");
-    }, [setActive]);
+    }, [setActive, setPage]);
 
     const hasCredentials = username && password;
     return <AppSelect {...props} disabled={!hasCredentials} value={activeApp?.uuid || ""} onChange={selectApp} />
