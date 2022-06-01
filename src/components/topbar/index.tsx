@@ -109,7 +109,7 @@ export const NodeSelectButton = ({ className, disabled, showError = true, ...pro
         </TextButton>
         {showDropdown && !(showError && error)
             ? <div className={style.dropdown} ref={$dropdown}>
-                Delay: <input type="number" value={selectOptions.delay || 0} step={100} min={0} max={10000} onChange={e => setSelectOptions({ delay: e.target.valueAsNumber })} />ms
+                Delay: <input autoFocus type="number" value={selectOptions.delay || ""} step={100} min={0} max={10000} onChange={e => setSelectOptions({ delay: e.target.valueAsNumber || 0 })} />ms
             </div>
             : null}
         {showError && error
