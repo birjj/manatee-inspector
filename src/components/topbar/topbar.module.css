@@ -19,19 +19,6 @@
     position: relative;
 }
 
-.select-button.delayed::after {
-    content: "";
-    position: absolute;
-    left: calc(50% - 6px);
-    top: calc(50% - 6px);
-    transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: var(--c-accent);
-    border: 2px solid var(--c-background-1);
-}
-
 .dropdown {
     --background-color: var(--c-accent);
 }

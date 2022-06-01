@@ -8,7 +8,7 @@ import useApplications from "../../stores/apps";
 import useDOMStore from "../../stores/dom";
 import { usePorts } from "../../stores/settings";
 import Bar, { Divider, Filler, TextButton } from "../bar";
-import { GitHubIcon, HomeIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
+import { GitHubIcon, HomeIcon, NodeSelectDelayedIcon, NodeSelectIcon, PlusIcon, SettingsIcon } from "../icons";
 
 import style from "./topbar.module.css";
 import barStyle from "../bar/bar.module.css";
@@ -102,10 +102,11 @@ export const NodeSelectButton = ({ className, disabled, showError = true, ...pro
             style.button,
             className,
             isSelecting ? "active" : "",
-            style["select-button"],
-            selectOptions.delay ? style.delayed : ""
+            style["select-button"]
         ].join(" ")} disabled={disabled || !active} onClick={doSelect}>
-            <NodeSelectIcon />
+            {selectOptions.delay
+                ? <NodeSelectDelayedIcon />
+                : <NodeSelectIcon />}
         </TextButton>
         {showDropdown && !(showError && error)
             ? <div className={style.dropdown} ref={$dropdown}>
