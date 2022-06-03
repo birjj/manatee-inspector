@@ -100,7 +100,9 @@ const useDOMStore = create<{
             data = decorateDOM(data);
             if (node.WindowPlacement && "bounds" in data) {
                 const [x, y, w, h] = node.WindowPlacement.split(", ").map(v => +v);
-                if (!data.bounds.includes(`[x=${x},y=${y},width=${w},height=${h}]`)) {
+                // there appears to be a bug giving wrong .WindowPlacement when .bounds.x is negative
+                if (!/\[x=\-\d/.test(data.bounds) && !data.bounds.includes(`[x=${x},y=${y},width=${w},height=${h}]`)) {
+                    console.warn("Bounds mismatch, got", data.bounds, "expected", node.WindowPlacement);
                     set({ warning: "The selector given by Manatee doesn't target the field you clicked. The displayed data might not be correct." });
                 }
             }
