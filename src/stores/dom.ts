@@ -30,6 +30,8 @@ const useDOMStore = create<{
     setSelectOptions: (opts: { useCachedUI?: boolean, collectTexts?: boolean, delay?: number }) => void,
     error: string | null,
     clearError: () => void,
+    warning: string | null,
+    clearWarning: () => void,
     dom: DOMEntry | null,
     path: string | null,
     pathInfo: ({ [k: string]: string } & { uniqueTokens: string[] })[],
@@ -46,6 +48,8 @@ const useDOMStore = create<{
     }),
     error: null,
     clearError: () => set({ error: null }),
+    warning: null,
+    clearWarning: () => set({ warning: null }),
     dom: null,
     path: null,
     pathInfo: [],
@@ -55,7 +59,8 @@ const useDOMStore = create<{
         path: null,
         pathInfo: [],
         dom: null,
-        error: null
+        error: null,
+        warning: null,
     }),
     select: async (app) => {
         // reset our state first
@@ -65,7 +70,8 @@ const useDOMStore = create<{
             path: null,
             pathInfo: [],
             dom: null,
-            error: null
+            error: null,
+            warning: null
         });
 
         try {
@@ -92,6 +98,12 @@ const useDOMStore = create<{
                 throw new Error("Failed to parse response JSON: " + result);
             }
             data = decorateDOM(data);
+            if (node.WindowPlacement && "bounds" in data) {
+                const [x, y, w, h] = node.WindowPlacement.split(", ").map(v => +v);
+                if (!data.bounds.includes(`[x=${x},y=${y},width=${w},height=${h}]`)) {
+                    set({ warning: "The selector given by Manatee doesn't target the field you clicked. The displayed data might not be correct." });
+                }
+            }
             set({ dom: data });
         } catch (e) {
             console.warn("Error in result", e);

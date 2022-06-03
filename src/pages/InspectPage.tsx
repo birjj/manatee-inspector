@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import shallow from "zustand/shallow";
+import Bar from "../components/bar";
 import DOMTree from "../components/dom-tree";
 import ErrorBoundary from "../components/error-boundary";
 import DOMInspector from "../components/inspector";
@@ -13,7 +14,7 @@ import style from "./InspectPage.module.css";
 
 const InspectPage = () => {
     const [selected, setSelected] = useState(undefined as DOMEntry | undefined);
-    const { dom, path } = useDOMStore(state => ({ dom: state.dom, path: state.path }), shallow);
+    const { dom, path, warning } = useDOMStore(state => ({ dom: state.dom, path: state.path, warning: state.warning }), shallow);
     const highlightNode = useHighlightNode();
 
     useEffect(() => {
@@ -27,19 +28,22 @@ const InspectPage = () => {
         setSelected(val);
     };
 
-    return <div className={style.container}>
-        <Resizable
-            direction="horizontal"
-            children={[
-                <DOMTreeSection selected={selected} onSelect={updateSelected} />,
-                <DOMInspectorSection data={selected} />
-            ]}
-            childClasses={[
-                style.grow,
-                style["inspector-section"]
-            ]}
-        />
-    </div>;
+    return <>
+        {warning ? <Bar warning>{warning}</Bar> : null}
+        <div className={style.container}>
+            <Resizable
+                direction="horizontal"
+                children={[
+                    <DOMTreeSection selected={selected} onSelect={updateSelected} />,
+                    <DOMInspectorSection data={selected} />
+                ]}
+                childClasses={[
+                    style.grow,
+                    style["inspector-section"]
+                ]}
+            />
+        </div>
+    </>;
 };
 export default InspectPage;
 
