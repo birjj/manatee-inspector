@@ -112,8 +112,10 @@ select:hover:not(:disabled) {
 }
 
 input:active:not(:disabled),
+input:focus:not(:disabled),
 input:focus,
 select:active:not(:disabled),
+select:focus:not(:disabled),
 select:focus {
   border-color: var(--c-accent);
 }
