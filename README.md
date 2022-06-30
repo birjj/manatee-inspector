@@ -1,6 +1,6 @@
 # Manatee DOM Inspector
 
-A custom implementation of a *Chrome devtools*-like inspector for [Sirenia's Manatee RPA application](https://www.sirenia.eu/).  
+A custom implementation of a _Chrome devtools_-like inspector for [Sirenia's Manatee RPA application](https://www.sirenia.eu/).  
 Useful for when you need a closer look at how Manatee sees the application, or need a debugger capable of remembering code and displaying complex objects.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/4542461/168109902-7348f712-f109-424c-9516-6ee380e4bddc.png" /></p>
@@ -31,20 +31,19 @@ var INSPECTOR_URL = "https://manatee-inspector.jfagerberg.me";
 function openInChrome(url) {
   return Processes.spawn(
     "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-    [
-      "--new-window",
-      "--app="+JSON.stringify(url)
-    ].join(" ")
+    ["--new-window", "--app=" + JSON.stringify(url)].join(" ")
   );
 }
 
 function getManateePorts() {
   // NOTE: you should replace this path with whatever path your ManateeDiscoverer.exe is located at
-  var p = Processes.spawn("C:\\Program Files (x86)\\Sirenia\\Manatee\\prod-rsd+epjsyd\\Tools\\NativeHost\\Discoverer\\ManateeDiscoverer.exe");
-  p.stdin("\x1f\x00\x00\x00"+JSON.stringify({data:{message:"port"}}));
+  var p = Processes.spawn(
+    "C:\\Program Files (x86)\\Sirenia\\Manatee\\prod-rsd+epjsyd\\Tools\\NativeHost\\Discoverer\\ManateeDiscoverer.exe"
+  );
+  p.stdin("\x1f\x00\x00\x00" + JSON.stringify({ data: { message: "port" } }));
   var outp = null;
-  p.stdout(1).then(function(line){
-    outp = ""+line;
+  p.stdout(1).then(function (line) {
+    outp = "" + line;
     p.kill();
   });
   p.wait(500);
@@ -53,14 +52,20 @@ function getManateePorts() {
   try {
     data = JSON.parse(outp);
   } catch (e) {
-    throw new Error("Failed to parse JSON from ManateeDiscoverer: "+outp);
+    throw new Error("Failed to parse JSON from ManateeDiscoverer: " + outp);
   }
   return data.data;
 }
 
 function run() {
   var ports = getManateePorts();
-  openInChrome(INSPECTOR_URL+"?manateePort="+ports.port+"&manateePortSecure="+ports.securePort);
+  openInChrome(
+    INSPECTOR_URL +
+      "?manateePort=" +
+      ports.port +
+      "&manateePortSecure=" +
+      ports.securePort
+  );
 }
 
 run();

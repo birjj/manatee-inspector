@@ -1,51 +1,51 @@
 .container {
-    padding-left: 1ch;
-    vertical-align: top;
+  padding-left: 1ch;
+  vertical-align: top;
 }
 
 .empty {
-    margin-left: -1ch;
+  margin-left: -1ch;
 }
 
 .key {
-    color: var(--c-text-tag);
-    font-weight: bold;
+  color: var(--c-text-tag);
+  font-weight: bold;
 }
 
 .value--undefined,
 .value--null {
-    color: var(--c-text-secondary);
+  color: var(--c-text-secondary);
 }
 
 .value--boolean {
-    color: var(--c-text-keyword);
+  color: var(--c-text-keyword);
 }
 
 .value--number {
-    color: var(--c-text-number);
+  color: var(--c-text-number);
 }
 
 .value--string {
-    color: var(--c-text-string);
+  color: var(--c-text-string);
 }
 
 .value--date {
-    font-style: italic;
+  font-style: italic;
 }
 
 .date-tag {
-    color: var(--c-text-tag);
+  color: var(--c-text-tag);
 }
 
 .function-tag {
-    color: var(--c-text-keyword);
+  color: var(--c-text-keyword);
 }
 
 .function-body {
-    display: contents;
-    margin: 0;
+  display: contents;
+  margin: 0;
 }
 
 .faint {
-    color: var(--c-text-secondary);
+  color: var(--c-text-secondary);
 }

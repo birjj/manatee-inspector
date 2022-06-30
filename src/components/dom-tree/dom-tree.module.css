@@ -1,20 +1,20 @@
 .tag {
-    color: var(--c-text-secondary);
-    word-break: break-all;
+  color: var(--c-text-secondary);
+  word-break: break-all;
 }
 
 .name {
-    color: var(--c-text-tag);
+  color: var(--c-text-tag);
 }
 
 .attr {
-    padding-left: 1ch;
+  padding-left: 1ch;
 }
 
 .attr__name {
-    color: var(--c-text-attr);
+  color: var(--c-text-attr);
 }
 
 .attr__val {
-    color: var(--c-text-val);
+  color: var(--c-text-val);
 }

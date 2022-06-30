@@ -1,46 +1,46 @@
 .button {
-    position: relative;
-    margin: 0;
-    padding: 1ch 0.5ch;
-    border-color: transparent !important;
-    color: inherit;
-    transition: color linear .2s;
-    box-shadow: none;
+  position: relative;
+  margin: 0;
+  padding: 1ch 0.5ch;
+  border-color: transparent !important;
+  color: inherit;
+  transition: color linear 0.2s;
+  box-shadow: none;
 }
 
 .tooltip,
 .tooltip--active {
-    pointer-events: none;
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    background: var(--c-accent);
-    color: #fff;
-    padding: 2px 4px;
-    border-radius: 2px;
-    opacity: 0;
-    transition: transform linear .2s, opacity linear .2s;
+  pointer-events: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: var(--c-accent);
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 2px;
+  opacity: 0;
+  transition: transform linear 0.2s, opacity linear 0.2s;
 }
 
 .tooltip {
-    background: var(--c-text-secondary);
+  background: var(--c-text-secondary);
 }
 
 .button:hover .tooltip {
-    opacity: 1;
-    transform: translate(-50%, -2px);
-    opacity: 1;
-    transition: opacity linear .2s .5s;
+  opacity: 1;
+  transform: translate(-50%, -2px);
+  opacity: 1;
+  transition: opacity linear 0.2s 0.5s;
 }
 
 .button--active {
-    transition: none;
-    color: var(--c-accent);
+  transition: none;
+  color: var(--c-accent);
 }
 
 .button--active .tooltip--active {
-    transform: translate(-50%, -2px);
-    transition: none;
-    opacity: 1;
+  transform: translate(-50%, -2px);
+  transition: none;
+  opacity: 1;
 }

@@ -1,40 +1,40 @@
 .container {
-    flex-grow: 1;
-    display: flex;
-    overflow: auto;
+  flex-grow: 1;
+  display: flex;
+  overflow: auto;
 }
 
 .grow {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .tree-section {
-    flex-grow: 1;
-    padding: .5em 0 .5em 1.5em;
-    overflow: auto;
-    contain: strict;
+  flex-grow: 1;
+  padding: 0.5em 0 0.5em 1.5em;
+  overflow: auto;
+  contain: strict;
 }
 
 .inspector-section {
-    width: 384px;
-    overflow: auto;
-    contain: strict;
+  width: 384px;
+  overflow: auto;
+  contain: strict;
 }
 
 .tree-empty {
-    font-size: 13px;
-    color: var(--c-text-secondary);
-    text-align: center;
+  font-size: 13px;
+  color: var(--c-text-secondary);
+  text-align: center;
 }
 
 .btn-select {
-    border: 1px solid var(--c-hairline);
-    display: inline-flex;
-    margin: 0 1ch;
-    vertical-align: middle;
+  border: 1px solid var(--c-hairline);
+  display: inline-flex;
+  margin: 0 1ch;
+  vertical-align: middle;
 }
 
 .error {
-    color: var(--c-error);
-    font-weight: bold;
+  color: var(--c-error);
+  font-weight: bold;
 }

@@ -1,101 +1,101 @@
 .item {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .button-wrapper {
-    position: relative;
-    display: inline-block;
-    height: 26px;
-    max-height: 100%;
-    vertical-align: middle;
+  position: relative;
+  display: inline-block;
+  height: 26px;
+  max-height: 100%;
+  vertical-align: middle;
 }
 
-.button-wrapper>* {
-    height: 100%;
+.button-wrapper > * {
+  height: 100%;
 }
 
 .select-button {
-    position: relative;
+  position: relative;
 }
 
 .dropdown {
-    --background-color: var(--c-accent);
+  --background-color: var(--c-accent);
 }
 
 .error {
-    --background-color: var(--c-error);
-    cursor: pointer;
+  --background-color: var(--c-error);
+  cursor: pointer;
 }
 
 .error,
 .dropdown {
-    position: absolute;
-    left: 50%;
-    top: calc(100% + 8px);
-    background: var(--background-color);
-    color: var(--c-background);
-    padding: 2px 4px;
-    width: max-content;
-    max-width: 40ch;
-    z-index: 2;
-    height: auto;
-    white-space: break-spaces;
-    word-break: break-word;
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  background: var(--background-color);
+  color: var(--c-background);
+  padding: 2px 4px;
+  width: max-content;
+  max-width: 40ch;
+  z-index: 2;
+  height: auto;
+  white-space: break-spaces;
+  word-break: break-word;
 }
 
 .error::before,
 .dropdown::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: -4px;
-    border-bottom: 4px solid var(--background-color);
-    border-right: 4px solid transparent;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px;
+  border-bottom: 4px solid var(--background-color);
+  border-right: 4px solid transparent;
 }
 
 .dropdown input {
-    width: 6ch;
-    -moz-appearance: textfield;
+  width: 6ch;
+  -moz-appearance: textfield;
 }
 
 .dropdown input::-webkit-outer-spin-button,
 .dropdown input::-webkit-inner-spin-button {
-    display: none;
+  display: none;
 }
 
 .app-selector {
-    margin: 0 1ch;
+  margin: 0 1ch;
 }
 
 .nav-link {
-    position: relative;
-    padding: 0 0.75ch;
-    margin: 0 0.25ch;
-    color: inherit;
-    text-decoration: none;
+  position: relative;
+  padding: 0 0.75ch;
+  margin: 0 0.25ch;
+  color: inherit;
+  text-decoration: none;
 }
 
 .nav-link.disabled {
-    cursor: default;
-    color: var(--c-text-secondary);
+  cursor: default;
+  color: var(--c-text-secondary);
 }
 
 .nav-link::before {
-    position: absolute;
-    content: "";
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--c-accent);
-    opacity: 0;
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--c-accent);
+  opacity: 0;
 }
 
 .nav-link:not(.disabled):hover::before {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .nav-link:not(.disabled):global(.active)::before {
-    opacity: 1;
+  opacity: 1;
 }

@@ -8,18 +8,18 @@ import "./index.css";
 import * as Manatee from "./manatee";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ErrorBoundary>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </ErrorBoundary>
-    </React.StrictMode>,
-    document.getElementById("root"),
+  <React.StrictMode>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ErrorBoundary>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 (window as any).manatee = Manatee;
 
 if (import.meta.hot) {
-    import.meta.hot.accept();
+  import.meta.hot.accept();
 }

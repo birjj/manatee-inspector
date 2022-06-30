@@ -1,0 +1,6 @@
+*.log
+
+# various application folders
+node_modules
+build
+.vite

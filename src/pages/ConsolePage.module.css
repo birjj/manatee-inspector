@@ -1,272 +1,272 @@
 .wrapper {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 
 .history-section {
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0;
-    overflow: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  overflow: auto;
 }
 
 .prompt-section {
-    height: 50%;
-    overflow: auto;
+  height: 50%;
+  overflow: auto;
 }
 
 .history {
-    display: flex;
-    flex-direction: column-reverse;
-    flex-grow: 1;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .history-list {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .history-list:not(:empty) {
-    margin-bottom: -1px;
+  margin-bottom: -1px;
 }
 
 .history-list:empty {
-    background: var(--c-background-0);
-    justify-content: center;
-    align-items: center;
+  background: var(--c-background-0);
+  justify-content: center;
+  align-items: center;
 }
 
 .history-list:empty::before {
-    content: "No history to show";
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--c-text-secondary);
-    opacity: 0.25;
+  content: "No history to show";
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--c-text-secondary);
+  opacity: 0.25;
 }
 
 .entry {
-    display: flex;
-    padding: 4px 0;
-    border-bottom: 1px solid var(--c-hairline-2);
-    font-family: var(--font-monospace);
+  display: flex;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--c-hairline-2);
+  font-family: var(--font-monospace);
 
-    --c-entry-background: #fff;
-    --c-entry-border: var(--c-hairline);
-    border-top: 1px solid var(--c-entry-border);
-    border-bottom: 1px solid var(--c-entry-border);
-    margin-bottom: -1px;
-    margin-top: -1px;
-    background: var(--c-entry-background);
+  --c-entry-background: #fff;
+  --c-entry-border: var(--c-hairline);
+  border-top: 1px solid var(--c-entry-border);
+  border-bottom: 1px solid var(--c-entry-border);
+  margin-bottom: -1px;
+  margin-top: -1px;
+  background: var(--c-entry-background);
 }
 
 .entry:first-child {
-    border-top: none;
-    margin-top: 0;
+  border-top: none;
+  margin-top: 0;
 }
 
 .entry:last-child {
-    margin-bottom: -1px;
+  margin-bottom: -1px;
 }
 
 .entry--response {
-    --c-entry-background: rgb(236, 241, 248);
-    --c-entry-border: rgb(204, 222, 245);
-    z-index: 1;
+  --c-entry-background: rgb(236, 241, 248);
+  --c-entry-border: rgb(204, 222, 245);
+  z-index: 1;
 }
 
 .entry--request .entry__content::before,
 .entry--request .entry__content::after {
-    content: "(function(){";
-    color: var(--c-text-secondary);
-    opacity: 0.5;
+  content: "(function(){";
+  color: var(--c-text-secondary);
+  opacity: 0.5;
 }
 
 .entry--request .entry__content::after {
-    content: "})()";
+  content: "})()";
 }
 
 .entry--request :global(.cm-content) {
-    padding: 0;
+  padding: 0;
 }
 
 .entry--request :global(.cm-line) {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 .entry--error {
-    z-index: 1;
-    color: var(--c-error);
-    --c-entry-background: var(--c-background-error);
-    --c-entry-border: var(--c-hairline-error);
+  z-index: 1;
+  color: var(--c-error);
+  --c-entry-background: var(--c-background-error);
+  --c-entry-border: var(--c-hairline-error);
 }
 
-.entry__content>pre {
-    margin: 0;
-    white-space: pre-wrap;
-    word-break: break-all;
+.entry__content > pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .entry__icon {
-    flex-shrink: 0;
-    width: 24px;
-    text-align: center;
-    color: var(--c-text-secondary);
-    opacity: 0.55;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+  color: var(--c-text-secondary);
+  opacity: 0.55;
 }
 
-.entry__icon>svg {
-    height: 8px;
-    width: auto;
+.entry__icon > svg {
+  height: 8px;
+  width: auto;
 }
 
 .entry--expandable {
-    position: relative;
+  position: relative;
 }
 
 .entry--expandable:not(.entry--expanded) {
-    max-height: 32px;
-    overflow-y: hidden;
+  max-height: 32px;
+  overflow-y: hidden;
 }
 
 .entry--expandable:not(.entry--expanded)::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 32px;
-    background: linear-gradient(0deg, var(--c-entry-background), transparent);
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32px;
+  background: linear-gradient(0deg, var(--c-entry-background), transparent);
 }
 
 .entry__expand-toggler {
-    cursor: pointer;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 9;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 9;
 }
 
 .entry--expanded .entry__expand-toggler {
-    right: initial;
-    width: 20px;
+  right: initial;
+  width: 20px;
 }
 
 .prompt {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .prompt-header {
-    display: flex;
-    flex: 0 0 27px;
-    width: 100%;
-    align-items: center;
-    background: var(--c-background-1);
-    border-bottom: 1px solid var(--c-hairline);
+  display: flex;
+  flex: 0 0 27px;
+  width: 100%;
+  align-items: center;
+  background: var(--c-background-1);
+  border-bottom: 1px solid var(--c-hairline);
 }
 
 .bar-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    cursor: pointer;
-    border: none;
-    border-radius: 0;
-    background: none;
-    color: inherit;
-    margin: 0;
-    padding: 0;
-    background: var(--c-background-1);
-    box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  background: var(--c-background-1);
+  box-shadow: none;
 }
 
-.bar-button>svg {
-    fill: currentColor;
-    height: 16px;
-    width: auto;
+.bar-button > svg {
+  fill: currentColor;
+  height: 16px;
+  width: auto;
 }
 
 .bar-button:hover:not(:disabled) {
-    background: var(--c-background-2);
+  background: var(--c-background-2);
 }
 
 .bar-button:global(.active) {
-    color: var(--c-accent);
+  color: var(--c-accent);
 }
 
 .bar-button:disabled {
-    opacity: .5;
-    cursor: initial;
+  opacity: 0.5;
+  cursor: initial;
 }
 
 .prompt-content {
-    display: flex;
-    flex-grow: 1;
-    overflow-y: auto;
+  display: flex;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .prompt-sidebar {
-    padding: 4px;
+  padding: 4px;
 }
 
 .prompt :global(.cm-theme),
 .prompt :global(.cm-editor) {
-    height: 100%;
+  height: 100%;
 }
 
 .prompt-input {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .footer {
-    padding: 2px 4px;
-    background: var(--c-background-1);
-    border-top: 1px solid var(--c-hairline);
-    display: flex;
-    justify-content: stretch;
+  padding: 2px 4px;
+  background: var(--c-background-1);
+  border-top: 1px solid var(--c-hairline);
+  display: flex;
+  justify-content: stretch;
 }
 
 .button-submit {
-    margin-left: auto;
-    padding: 0 6px;
-    border-radius: 2px;
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 2px;
 }
 
 .button-submit[disabled] {
-    color: var(--c-text-secondary);
-    border-color: var(--c-text-secondary);
+  color: var(--c-text-secondary);
+  border-color: var(--c-text-secondary);
 }
 
 .button-submit--active {
-    border-color: var(--c-accent);
-    color: var(--c-accent);
+  border-color: var(--c-accent);
+  color: var(--c-accent);
 }
 
 .loader {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    margin-right: 1ch;
-    display: inline-block;
-    border-radius: 999px;
-    border: 2px solid var(--c-accent);
-    border-top-color: transparent;
-    animation: loader-rotate .5s linear infinite;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  margin-right: 1ch;
+  display: inline-block;
+  border-radius: 999px;
+  border: 2px solid var(--c-accent);
+  border-top-color: transparent;
+  animation: loader-rotate 0.5s linear infinite;
 }
 
 @keyframes loader-rotate {
-    0% {
-        transform: rotate(0deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }

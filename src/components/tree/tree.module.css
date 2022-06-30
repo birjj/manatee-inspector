@@ -1,72 +1,72 @@
 .tree {
-    font-family: var(--font-monospace);
-    line-height: 1.36;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    cursor: default;
+  font-family: var(--font-monospace);
+  line-height: 1.36;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  cursor: default;
 }
 
 .arrow {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    padding: 0 4px;
-    margin: 0 -4px;
-    transform: scale(.9) translateX(-75%) rotate(0deg);
-    color: var(--c-text-secondary);
-    user-select: none;
-    z-index: 1;
-    height: fit-content;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0 4px;
+  margin: 0 -4px;
+  transform: scale(0.9) translateX(-75%) rotate(0deg);
+  color: var(--c-text-secondary);
+  user-select: none;
+  z-index: 1;
+  height: fit-content;
 }
 
-.tree.expanded>.line--opener>.arrow {
-    transform: scale(.9) translateX(-75%) rotate(90deg);
+.tree.expanded > .line--opener > .arrow {
+  transform: scale(0.9) translateX(-75%) rotate(90deg);
 }
 
 .line {
-    position: relative;
-    min-height: 18px;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  min-height: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
 .tree--inline-arrow {
-    display: contents;
+  display: contents;
 }
 
-.tree--inline-arrow>.line--opener {
-    display: inline-block;
-    padding-left: 1.25ch;
-    margin-left: 0;
+.tree--inline-arrow > .line--opener {
+  display: inline-block;
+  padding-left: 1.25ch;
+  margin-left: 0;
 }
 
 .line--children {
-    padding-left: 1.25em;
-    border-left: 1px dotted var(--c-hairline-2);
+  padding-left: 1.25em;
+  border-left: 1px dotted var(--c-hairline-2);
 }
 
 .hover {
-    background: var(--c-hover-bg);
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin-left: -100em;
-    opacity: 0;
-    z-index: 0;
+  background: var(--c-hover-bg);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin-left: -100em;
+  opacity: 0;
+  z-index: 0;
 }
 
 .hover-adjacent {
-    z-index: 1;
+  z-index: 1;
 }
 
-.tree.selectable>.line:hover>.hover {
-    opacity: 1;
+.tree.selectable > .line:hover > .hover {
+  opacity: 1;
 }
 
-.line.selected>.hover {
-    background: var(--c-selected-bg);
-    opacity: 1;
+.line.selected > .hover {
+  background: var(--c-selected-bg);
+  opacity: 1;
 }

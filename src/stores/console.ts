@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { runCode } from "../manatee";
 
 function encodeCode(code: string) {
-    return `JSON.stringify((function(){
+  return `JSON.stringify((function(){
         ${code}
     })(), function replacer(key,val){
         // handle dates (these are given to replacer as strings, since that's the output of Date's .toJSON)
@@ -24,87 +24,100 @@ function encodeCode(code: string) {
     })`;
 }
 function decodeResponse(response: string) {
-    try {
-        return JSON.parse(response, (key, val) => {
-            if (!(val instanceof Object) || !val.___type) { return val; }
-            switch (val.___type) {
-                case "date":
-                    return new Date(
-                        val.value === "NaN"
-                            ? NaN
-                            : val.value);
-                case "function":
-                    return val; // TODO: add support for displaying functions in pretty format
-                default:
-                    return val;
-            }
-        });
-    } catch (e) { return response; }
+  try {
+    return JSON.parse(response, (key, val) => {
+      if (!(val instanceof Object) || !val.___type) {
+        return val;
+      }
+      switch (val.___type) {
+        case "date":
+          return new Date(val.value === "NaN" ? NaN : val.value);
+        case "function":
+          return val; // TODO: add support for displaying functions in pretty format
+        default:
+          return val;
+      }
+    });
+  } catch (e) {
+    return response;
+  }
 }
 
 export type HistoryEntry = {
-    error: boolean,
-    loading: boolean,
-    request: string,
-    response: any
+  error: boolean;
+  loading: boolean;
+  request: string;
+  response: any;
 };
-const useConsoleStore = create<{
-    isLoading: boolean,
-    history: HistoryEntry[],
-    runCode: (appUuid: string, code: string) => void,
-    clearHistory: () => void,
-    prompt: string,
-    setPrompt: (value: string) => void,
-    promptHistory: string[]
-}, any>(persist(
+const useConsoleStore = create<
+  {
+    isLoading: boolean;
+    history: HistoryEntry[];
+    runCode: (appUuid: string, code: string) => void;
+    clearHistory: () => void;
+    prompt: string;
+    setPrompt: (value: string) => void;
+    promptHistory: string[];
+  },
+  any
+>(
+  persist(
     (set, get) => ({
-        isLoading: false,
-        history: [],
-        runCode: async (appUuid, code) => {
-            const { isLoading, history, promptHistory } = get();
-            if (isLoading || !code) {
-                console.warn("Attempted to run code while already loading", { isLoading, code });
-                return;
-            }
-            const entry: HistoryEntry = {
-                error: false,
-                loading: true,
-                request: code,
-                response: ""
-            };
-            // store our initial state in the store
-            set({
-                isLoading: true,
-                history: [...history, entry],
-                promptHistory: code === promptHistory[promptHistory.length - 1]
-                    ? promptHistory
-                    : [...promptHistory, code].slice(-100)
-            });
-            // then run the code in Manatee and update the store with the result
-            try {
-                const response = await runCode(appUuid, encodeCode(code));
-                entry.response = decodeResponse(response);
-            } catch (e) {
-                entry.response = "" + e;
-                entry.error = true;
-            }
-            entry.loading = false;
-            const newHistory = get().history.map(
-                v => v === entry ? { ...entry } : v
-            );
-            set({
-                isLoading: false,
-                history: newHistory
-            });
-        },
-        clearHistory: () => set(() => ({ history: [] })),
-        prompt: "",
-        setPrompt: (code: string) => set({ prompt: code }),
-        promptHistory: []
+      isLoading: false,
+      history: [],
+      runCode: async (appUuid, code) => {
+        const { isLoading, history, promptHistory } = get();
+        if (isLoading || !code) {
+          console.warn("Attempted to run code while already loading", {
+            isLoading,
+            code,
+          });
+          return;
+        }
+        const entry: HistoryEntry = {
+          error: false,
+          loading: true,
+          request: code,
+          response: "",
+        };
+        // store our initial state in the store
+        set({
+          isLoading: true,
+          history: [...history, entry],
+          promptHistory:
+            code === promptHistory[promptHistory.length - 1]
+              ? promptHistory
+              : [...promptHistory, code].slice(-100),
+        });
+        // then run the code in Manatee and update the store with the result
+        try {
+          const response = await runCode(appUuid, encodeCode(code));
+          entry.response = decodeResponse(response);
+        } catch (e) {
+          entry.response = "" + e;
+          entry.error = true;
+        }
+        entry.loading = false;
+        const newHistory = get().history.map((v) =>
+          v === entry ? { ...entry } : v
+        );
+        set({
+          isLoading: false,
+          history: newHistory,
+        });
+      },
+      clearHistory: () => set(() => ({ history: [] })),
+      prompt: "",
+      setPrompt: (code: string) => set({ prompt: code }),
+      promptHistory: [],
     }),
     {
-        name: "console",
-        partialize: (state) => ({ prompt: state.prompt, promptHistory: state.promptHistory })
+      name: "console",
+      partialize: (state) => ({
+        prompt: state.prompt,
+        promptHistory: state.promptHistory,
+      }),
     }
-));
+  )
+);
 export default useConsoleStore;

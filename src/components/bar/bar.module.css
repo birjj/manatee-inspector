@@ -1,73 +1,73 @@
 .bar {
-    display: flex;
-    flex: 0 0 27px;
-    align-items: stretch;
-    width: 100%;
-    background-color: var(--c-background-1);
-    border-bottom: 1px solid var(--c-hairline);
+  display: flex;
+  flex: 0 0 27px;
+  align-items: stretch;
+  width: 100%;
+  background-color: var(--c-background-1);
+  border-bottom: 1px solid var(--c-hairline);
 }
 
 .bar--warning {
-    align-items: center;
-    padding: 0 1ch;
-    background: var(--c-warning-bg);
-    border-bottom-color: var(--c-warning);
+  align-items: center;
+  padding: 0 1ch;
+  background: var(--c-warning-bg);
+  border-bottom-color: var(--c-warning);
 }
 
-.bar>label {
-    margin-right: 1ch;
-    display: flex;
-    align-items: center;
+.bar > label {
+  margin-right: 1ch;
+  display: flex;
+  align-items: center;
 }
 
-.bar>button {
-    margin-top: 0;
-    margin-bottom: 0;
-    align-self: center;
+.bar > button {
+  margin-top: 0;
+  margin-bottom: 0;
+  align-self: center;
 }
 
 .divider {
-    background-color: var(--c-hairline);
-    width: 1px;
-    margin: 5px 4px;
-    height: 16px;
+  background-color: var(--c-hairline);
+  width: 1px;
+  margin: 5px 4px;
+  height: 16px;
 }
 
 .filler {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .text-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    height: 100%;
-    cursor: pointer;
-    border: none;
-    border-radius: 0;
-    background: none;
-    color: inherit;
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 100%;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
 }
 
-.text-button>svg {
-    fill: currentColor;
-    height: 16px;
-    width: auto;
+.text-button > svg {
+  fill: currentColor;
+  height: 16px;
+  width: auto;
 }
 
 .text-button:hover:not(:disabled) {
-    background: rgba(0, 0, 0, 0.075);
+  background: rgba(0, 0, 0, 0.075);
 }
 
 .text-button:global(.active) {
-    color: var(--c-accent);
+  color: var(--c-accent);
 }
 
 .text-button:disabled {
-    opacity: .5;
-    cursor: initial;
+  opacity: 0.5;
+  cursor: initial;
 }
