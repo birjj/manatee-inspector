@@ -164,7 +164,10 @@ export const NodeSelectButton = ({
   showError = true,
   ...props
 }: NodeSelectButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  const active = useApplications((state) => state.active);
+  const { active, setPage } = useApplications(
+    (state) => ({ active: state.active, setPage: state.setPage }),
+    shallow
+  );
   const { isSelecting, selectNode, error, clearError } = useDOMStore(
     (state) => ({
       isSelecting: state.isSelecting,
@@ -183,7 +186,7 @@ export const NodeSelectButton = ({
   );
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const doSelect: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const doSelect: MouseEventHandler<HTMLButtonElement> = async (e) => {
     if (isSelecting) {
       return;
     }
@@ -192,7 +195,8 @@ export const NodeSelectButton = ({
       setShowDropdown(!showDropdown);
       return;
     }
-    selectNode(active?.uuid || "");
+    await selectNode(active?.uuid || "");
+    setPage("inspect");
   };
 
   const $dropdown = useRef<HTMLDivElement | null>(null);
