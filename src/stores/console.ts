@@ -129,6 +129,7 @@ const useConsoleStore = create<
       partialize: (state) => ({
         prompt: state.prompt,
         promptHistory: state.promptHistory,
+        timeout: state.timeout,
       }),
     }
   )
