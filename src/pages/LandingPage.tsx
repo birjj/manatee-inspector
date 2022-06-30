@@ -34,13 +34,15 @@ export default LandingPage;
 
 export const AppSelector = (props: Omit<Parameters<typeof AppSelect>[0], "value" | "onChange">) => {
     const { username, password } = useCredentials();
-    const { activeApp, setActive, setPage } = useApplications(state => ({ activeApp: state.active, setActive: state.setActive, setPage: state.setPage }), shallow);
+    const { activeApp, setActive, page, setPage } = useApplications(state => ({ activeApp: state.active, setActive: state.setActive, setPage: state.setPage, page: state.page }), shallow);
 
     const selectApp = useCallback((uuid: string) => {
         console.log("AppSelector", uuid);
         setActive(uuid);
-        setPage("inspect");
-    }, [setActive, setPage]);
+        if (!page) {
+            setPage("inspect");
+        }
+    }, [setActive, page, setPage]);
 
     const hasCredentials = username && password;
     return <AppSelect {...props} disabled={!hasCredentials} value={activeApp?.uuid || ""} onChange={selectApp} />
