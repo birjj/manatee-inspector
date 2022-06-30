@@ -53,6 +53,8 @@ const useConsoleStore = create<
   {
     isLoading: boolean;
     history: HistoryEntry[];
+    timeout: number;
+    setTimeout: (ms: number) => void;
     runCode: (appUuid: string, code: string) => void;
     clearHistory: () => void;
     prompt: string;
@@ -65,6 +67,13 @@ const useConsoleStore = create<
     (set, get) => ({
       isLoading: false,
       history: [],
+      timeout: 30000,
+      setTimeout: (ms) => {
+        ms = ms || 0;
+        set({
+          timeout: ms,
+        });
+      },
       runCode: async (appUuid, code) => {
         const { isLoading, history, promptHistory } = get();
         if (isLoading || !code) {
@@ -91,7 +100,11 @@ const useConsoleStore = create<
         });
         // then run the code in Manatee and update the store with the result
         try {
-          const response = await runCode(appUuid, encodeCode(code));
+          const response = await runCode(
+            appUuid,
+            encodeCode(code),
+            get().timeout || 0
+          );
           entry.response = decodeResponse(response);
         } catch (e) {
           entry.response = "" + e;

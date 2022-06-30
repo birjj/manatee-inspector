@@ -1,4 +1,5 @@
 import React, {
+  ChangeEvent,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -16,6 +17,7 @@ import Resizable from "../components/resizable";
 import useConsoleStore, { HistoryEntry } from "../stores/console";
 import shallow from "zustand/shallow";
 import Bar, { Filler, TextButton } from "../components/bar";
+import { Input } from "../components/input";
 
 const ConsolePage = () => {
   const { isLoading, runCode, clearHistory } = useConsoleStore(
@@ -48,6 +50,7 @@ const ConsolePage = () => {
                 <ClearIcon style={{ height: "14px" }} />
               </TextButton>
               <Filler />
+              <ConsoleTimeoutInput />
               <button
                 onClick={() => execute(prompt)}
                 disabled={isLoading || !prompt}
@@ -66,6 +69,32 @@ const ConsolePage = () => {
   );
 };
 export default ConsolePage;
+
+const ConsoleTimeoutInput = () => {
+  const { timeout, setTimeout } = useConsoleStore(
+    (state) => ({
+      timeout: state.timeout,
+      setTimeout: state.setTimeout,
+    }),
+    shallow
+  );
+
+  return (
+    <div className={style.timeout}>
+      Time limit:{" "}
+      <Input
+        postfix={"ms"}
+        className={style["timeout-input"]}
+        innerClass={style["timeout-inner"]}
+        type="number"
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          setTimeout(+e.target.value || 0);
+        }}
+        value={timeout || ""}
+      />
+    </div>
+  );
+};
 
 const ConsolePrompt = ({ execute }: { execute: (code: string) => void }) => {
   const { prompt, setPrompt } = useConsoleStore(
