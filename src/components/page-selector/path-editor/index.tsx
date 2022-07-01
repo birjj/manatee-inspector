@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useHighlightNode } from "../../stores/dom";
-import ActionButton from "../action-button";
-import { CopyIcon, PaintIcon } from "../icons";
+import { useHighlightNode } from "../../../stores/dom";
+import ActionButton from "../../action-button";
+import { CopyIcon, PaintIcon } from "../../icons";
 
 import style from "./path-editor.module.css";
 

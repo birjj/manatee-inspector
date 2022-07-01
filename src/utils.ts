@@ -1,4 +1,4 @@
-import type { PathEntry } from "./components/path-editor";
+import type { PathEntry } from "./components/page-selector/path-editor";
 import type { DOMEntry, DOMEntryJava } from "./manatee/types";
 
 export const getNodePath = (node: DOMEntry, rootPath: string = "") => {

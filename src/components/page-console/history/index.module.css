@@ -1,0 +1,30 @@
+.history {
+  display: flex;
+  flex-direction: column-reverse;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.history-list:not(:empty) {
+  margin-bottom: -1px;
+}
+
+.history-list:empty {
+  background: var(--c-background-0);
+  justify-content: center;
+  align-items: center;
+}
+
+.history-list:empty::before {
+  content: "No history to show";
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--c-text-secondary);
+  opacity: 0.25;
+}

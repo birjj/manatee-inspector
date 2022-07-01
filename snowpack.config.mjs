@@ -12,4 +12,7 @@ export default {
       dest: "/index.html",
     },
   ],
+  packageOptions: {
+    knownEntrypoints: ["react/jsx-runtime"],
+  },
 };

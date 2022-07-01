@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import shallow from "zustand/shallow";
 import Bar from "../components/bar";
-import DOMTree from "../components/dom-tree";
+import DOMTree from "../components/page-inspect/dom-tree";
 import ErrorBoundary from "../components/error-boundary";
-import DOMInspector from "../components/inspector";
+import DOMInspector from "../components/page-inspect/sidebar";
 import Resizable from "../components/resizable";
-import { NodeSelectButton } from "../components/topbar";
+import NodeSelectButton from "../components/topbar/select-button";
 import type { DOMEntry } from "../manatee/types";
 import useDOMStore, { useHighlightNode } from "../stores/dom";
 import { getNodePath } from "../utils";

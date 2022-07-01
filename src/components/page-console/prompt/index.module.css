@@ -1,0 +1,134 @@
+.content {
+  display: flex;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.sidebar {
+  padding: 4px;
+}
+
+.prompt :global(.cm-theme),
+.prompt :global(.cm-editor) {
+  height: 100%;
+}
+
+.input {
+  flex-grow: 1;
+}
+
+.timeout {
+  display: flex;
+  align-items: center;
+  color: #666;
+  margin-right: 1ch;
+}
+.timeout-input {
+  margin-left: 1ch;
+  width: 8ch;
+  appearance: textfield;
+}
+.timeout-inner {
+  width: 8ch;
+  text-align: right;
+}
+.timeout-inner::-webkit-outer-spin-button,
+.timeout-inner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.prompt {
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt-header {
+  display: flex;
+  flex: 0 0 27px;
+  width: 100%;
+  align-items: center;
+  background: var(--c-background-1);
+  border-bottom: 1px solid var(--c-hairline);
+}
+
+.bar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  background: var(--c-background-1);
+  box-shadow: none;
+}
+
+.bar-button > svg {
+  fill: currentColor;
+  height: 16px;
+  width: auto;
+}
+
+.bar-button:hover:not(:disabled) {
+  background: var(--c-background-2);
+}
+
+.bar-button:global(.active) {
+  color: var(--c-accent);
+}
+
+.bar-button:disabled {
+  opacity: 0.5;
+  cursor: initial;
+}
+
+.footer {
+  padding: 2px 4px;
+  background: var(--c-background-1);
+  border-top: 1px solid var(--c-hairline);
+  display: flex;
+  justify-content: stretch;
+}
+
+.button-submit {
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 2px;
+}
+
+.button-submit[disabled] {
+  color: var(--c-text-secondary);
+  border-color: var(--c-text-secondary);
+}
+
+.button-submit--active {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+.loader {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  margin-right: 1ch;
+  display: inline-block;
+  border-radius: 999px;
+  border: 2px solid var(--c-accent);
+  border-top-color: transparent;
+  animation: loader-rotate 0.5s linear infinite;
+}
+
+@keyframes loader-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

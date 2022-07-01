@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PathEditor, { PathEntry } from "../components/path-editor";
+import PathEditor, { PathEntry } from "../components/page-selector/path-editor";
 import type { DOMEntry } from "../manatee/types";
 import useDOMStore, { useHighlightNode } from "../stores/dom";
 import { getPathAlternatives } from "../utils";

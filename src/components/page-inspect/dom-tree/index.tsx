@@ -2,8 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 
-import type { DOMEntry, DOMEntryJava, DOMEntryWeb } from "../../manatee/types";
-import treeFactory, { TreeComponent } from "../tree";
+import type {
+  DOMEntry,
+  DOMEntryJava,
+  DOMEntryWeb,
+} from "../../../manatee/types";
+import treeFactory, { TreeComponent } from "../../tree";
 import style from "./dom-tree.module.css";
 
 const getName = (data: DOMEntry) =>

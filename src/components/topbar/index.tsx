@@ -1,26 +1,19 @@
 /** @fileoverview The top-most bar of the application, containing the element picker amongst other things */
 
-import React, { MouseEventHandler, useCallback, useRef, useState } from "react";
+import React, { useCallback } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import { AppSelector } from "../../pages/LandingPage";
 import useApplications from "../../stores/apps";
 import useDOMStore from "../../stores/dom";
 import { usePorts } from "../../stores/settings";
-import Bar, { Divider, Filler, TextButton } from "../bar";
-import {
-  GitHubIcon,
-  HomeIcon,
-  NodeSelectDelayedIcon,
-  NodeSelectIcon,
-  PlusIcon,
-  SettingsIcon,
-} from "../icons";
+import Bar, { Divider, Filler } from "../bar";
+import { GitHubIcon, PlusIcon, SettingsIcon } from "../icons";
 
 import style from "./topbar.module.css";
 import barStyle from "../bar/bar.module.css";
 import shallow from "zustand/shallow";
-import { useOutsideClick } from "../../hooks";
+import NodeSelectButton from "./select-button";
+import { AppSelector } from "../app-select";
 
 export default function Topbar() {
   const activeApp = useApplications((state) => state.active);
@@ -154,94 +147,3 @@ export default function Topbar() {
     </>
   );
 }
-
-type NodeSelectButtonProps = {
-  showError?: boolean;
-};
-export const NodeSelectButton = ({
-  className,
-  disabled,
-  showError = true,
-  ...props
-}: NodeSelectButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  const { active, setPage } = useApplications(
-    (state) => ({ active: state.active, setPage: state.setPage }),
-    shallow
-  );
-  const { isSelecting, selectNode, error, clearError } = useDOMStore(
-    (state) => ({
-      isSelecting: state.isSelecting,
-      selectNode: state.select,
-      error: state.error,
-      clearError: state.clearError,
-    }),
-    shallow
-  );
-  const { selectOptions, setSelectOptions } = useDOMStore(
-    (state) => ({
-      selectOptions: state.selectOptions,
-      setSelectOptions: state.setSelectOptions,
-    }),
-    shallow
-  );
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const doSelect: MouseEventHandler<HTMLButtonElement> = async (e) => {
-    if (isSelecting) {
-      return;
-    }
-    if (e.shiftKey) {
-      // shift-clicking should just show the dropdown
-      setShowDropdown(!showDropdown);
-      return;
-    }
-    await selectNode(active?.uuid || "");
-    setPage("inspect");
-  };
-
-  const $dropdown = useRef<HTMLDivElement | null>(null);
-  useOutsideClick($dropdown, () => {
-    setShowDropdown(false);
-  });
-
-  return (
-    <div className={style["button-wrapper"]}>
-      <TextButton
-        {...props}
-        className={[
-          style.item,
-          style.button,
-          className,
-          isSelecting ? "active" : "",
-          style["select-button"],
-        ].join(" ")}
-        disabled={disabled || !active}
-        onClick={doSelect}
-      >
-        {selectOptions.delay ? <NodeSelectDelayedIcon /> : <NodeSelectIcon />}
-      </TextButton>
-      {showDropdown && !(showError && error) ? (
-        <div className={style.dropdown} ref={$dropdown}>
-          Delay:{" "}
-          <input
-            autoFocus
-            type="number"
-            value={selectOptions.delay || ""}
-            step={100}
-            min={0}
-            max={10000}
-            onChange={(e) =>
-              setSelectOptions({ delay: e.target.valueAsNumber || 0 })
-            }
-          />
-          ms
-        </div>
-      ) : null}
-      {showError && error ? (
-        <div className={style.error} onClick={clearError}>
-          {error}
-        </div>
-      ) : null}
-    </div>
-  );
-};

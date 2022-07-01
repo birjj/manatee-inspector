@@ -1,10 +1,10 @@
 /** @fileoverview The inspector for the current element, displaying its properties */
 
 import React, { useEffect, useRef } from "react";
-import type { DOMEntry } from "../../manatee/types";
-import useDOMStore from "../../stores/dom";
-import { getNodePath } from "../../utils";
-import Value from "../value";
+import type { DOMEntry } from "../../../manatee/types";
+import useDOMStore from "../../../stores/dom";
+import { getNodePath } from "../../../utils";
+import Value from "../../value";
 import style from "./inspector.module.css";
 
 type DOMInspectorProps = {
