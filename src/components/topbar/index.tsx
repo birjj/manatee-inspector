@@ -111,7 +111,7 @@ export default function Topbar() {
         <Filler />
 
         <Link
-          to={`/app/${activeApp?.uuid}/settings/`}
+          to={`/app/${activeApp?.uuid || ""}/settings/`}
           className={barStyle["text-button"]}
         >
           <PlusIcon />
