@@ -54,7 +54,7 @@ const UriParamsInterceptor = () => {
   const activePath = useAppsStore((state) => state.page);
 
   useEffect(() => {
-    if (!uuid) {
+    if (!uuid || uuid === "undefined") {
       return;
     }
     console.log("Setting app to", uuid);
