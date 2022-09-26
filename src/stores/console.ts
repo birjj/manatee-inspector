@@ -10,15 +10,22 @@ function encodeCode(code: string) {
         if (this[key] instanceof Date) {
             return { ___type: "date", value: isNaN(this[key]) ? "NaN" : +this[key] };
         }
+        // values that are unconverted by Manatee are converted here
+        switch (typeof val) {
+          case "System.UInt32":
+            return +val;
+          case "System.Exception":
+            return "<System.Exception "+val+">";
+        }
         // all other non-objects are just passed directly
         if (!(val instanceof Object)) { return val; }
         // functions are treated specially
         if (val instanceof Function) { return { ___type: "function", value: ""+val, name: val.name }; }
-        // other objects are tested for cyclical paths, which are replaced by the string "<cyclical [previously.seen.path]>"
+        // other objects are tested for cyclical paths, which are replaced by the string "<same as [previously.seen.path]>"
         // note that this doesn't actually test for cyclical paths, only previously seen - this causes issues in e.g. [obj, obj]
         // a proper solution should be implemented if this becomes a problem
         if (!val.___json_path) { Object.defineProperty(val, "___json_path", { value: this.___json_path ? this.___json_path + "." + key : "root", enumerable: false }); }
-        if (val.___json_seen) { return "<cyclical ["+val.___json_path+"]>"; }
+        if (val.___json_seen) { return "<same as ["+val.___json_path+"]>"; }
         Object.defineProperty(val, "___json_seen", { value: true, enumerable: false });
         return val;
     })`;
