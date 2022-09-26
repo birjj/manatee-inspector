@@ -12,7 +12,7 @@ function encodeCode(code: string) {
         }
         // values that are unconverted by Manatee are converted here
         switch (typeof val) {
-          case "System.UInt32":
+          case "number": // System.UInt32
             return +val;
           case "System.Exception":
             return "<System.Exception "+val+">";
