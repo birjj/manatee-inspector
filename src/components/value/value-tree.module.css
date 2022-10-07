@@ -33,6 +33,11 @@
   font-style: italic;
 }
 
+.value--cyclic {
+  font-style: italic;
+  color: var(--c-text-secondary);
+}
+
 .date-tag {
   color: var(--c-text-tag);
 }

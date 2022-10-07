@@ -1,6 +1,7 @@
 /** @fileoverview A representation of a JS value (e.g. an object or a string) */
 
 import React from "react";
+import { Cyclic } from "../../stores/console";
 import treeFactory from "../tree";
 
 import style from "./value-tree.module.css";
@@ -92,9 +93,22 @@ const FunctionValue = ({ data }: FunctionValueProps) => {
   );
 };
 
+/** Representation a cyclical reference (since we run stuff through JSON.stringify) */
+interface CyclicValueProps extends ValueProps {
+  data: Cyclic;
+}
+const CyclicValue = ({ data }: CyclicValueProps) => {
+  return (
+    <span className={style[`value--cyclic`]}>&lt;same as {data.path}&gt;</span>
+  );
+};
+
 const Value = ({ data, expanded = true }: ValueProps) => {
   if (data instanceof Date) {
     return <DateValue data={data} />;
+  }
+  if (data instanceof Cyclic) {
+    return <CyclicValue data={data} />;
   }
   if (data instanceof Object) {
     if (data.___type === "function") {

@@ -2,8 +2,19 @@ import create from "zustand";
 import { persist } from "zustand/middleware";
 import { runCode } from "../manatee";
 
+/** Represents a cyclic value from a JSON object */
+export class Cyclic {
+  path: string;
+  constructor(path: string) {
+    this.path = path;
+  }
+}
+
 function encodeCode(code: string) {
-  return `JSON.stringify((function(){
+  return `(function(){
+    var seen = []; // TODO: replace with an actual Set polyfill
+    var paths = [];
+    return JSON.stringify((function(){
         ${code}
     })(), function replacer(key,val){
         // handle dates (these are given to replacer as strings, since that's the output of Date's .toJSON)
@@ -24,11 +35,16 @@ function encodeCode(code: string) {
         // other objects are tested for cyclical paths, which are replaced by the string "<same as [previously.seen.path]>"
         // note that this doesn't actually test for cyclical paths, only previously seen - this causes issues in e.g. [obj, obj]
         // a proper solution should be implemented if this becomes a problem
-        if (!val.___json_path) { Object.defineProperty(val, "___json_path", { value: this.___json_path ? this.___json_path + "." + key : "root", enumerable: false }); }
-        if (val.___json_seen) { return "<same as ["+val.___json_path+"]>"; }
-        Object.defineProperty(val, "___json_seen", { value: true, enumerable: false });
+        var seenIndex = seen.indexOf(val);
+        if (seenIndex !== -1) {
+          return { ___type: "cyclic", value: paths[seenIndex] };
+        }
+        seen.push(val);
+        var prevPathIndex = seen.indexOf(this);
+        paths.push(prevPathIndex === -1 ? "root" : paths[prevPathIndex]+"."+key);
         return val;
-    })`;
+    })
+  })()`;
 }
 function decodeResponse(response: string) {
   try {
@@ -41,6 +57,8 @@ function decodeResponse(response: string) {
           return new Date(val.value === "NaN" ? NaN : val.value);
         case "function":
           return val; // TODO: add support for displaying functions in pretty format
+        case "cyclic":
+          return new Cyclic(val.value);
         default:
           return val;
       }
